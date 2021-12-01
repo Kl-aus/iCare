@@ -1,0 +1,7 @@
+{
+  "name": "iCare",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
