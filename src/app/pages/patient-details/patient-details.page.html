@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>patientDetails</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="patientDetailsForm" (submit)="addPatientToDb()">
+    <ion-item lines="full">
+      <ion-label position="floating">Vorname</ion-label>
+      <ion-textarea formControlName="firstName" type="text" required></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nachname</ion-label>
+      <ion-textarea formControlName="lastName" type="text" required></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Gewicht</ion-label>
+      <ion-textarea formControlName="weight" type="number" required></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Groesse</ion-label>
+      <ion-textarea formControlName="height" type="number" required></ion-textarea>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Geburtsdatum</ion-label>
+      <ion-datetime formControlName="age" display-format="MM DD YY" placeholder="Waehle Gebrutsdatum"></ion-datetime>
+      <!--ion-input type="number" required></ion-input-->
+    </ion-item>
+
+    <!-- Radio buttons -->
+    <ion-radio-group lines="full">
+      <ion-list-header>
+        <ion-label>Gender</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>Male</ion-label>
+        <ion-radio slot="start" value="male" checked></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Female</ion-label>
+        <ion-radio slot="start" value="female"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>divers</ion-label>
+        <ion-radio slot="start" value="divers"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>inter</ion-label>
+        <ion-radio slot="start" value="inter"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>offen</ion-label>
+        <ion-radio slot="start" value="open"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+
+    <!-- Checkboxes -->
+    <ion-list lines="full">
+      <ion-list-header>
+        <ion-label>Subjects</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label>English</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Maths</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>Science</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label>History</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+    </ion-list>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block">Hinzufuegen</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>

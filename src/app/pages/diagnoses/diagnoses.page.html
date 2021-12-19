@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Diagnosen</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" slot="icon-only | end" ></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row class="ion-align-items-center">
+    <ion-col size="9">
+      <ion-searchbar placeholder="Suche nach Diagnosen" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
+    </ion-col>
+    <!--ion-col size="2">
+      <ion-button (click)="scrollToIndex()" [disabled]="!scrollTo">Search</ion-button>
+    </ion-col-->
+  </ion-row>
+
+  <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500" > <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
+    <ion-list>
+      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm let i = index"
+      tappable (click)="selectItem(item)">
+        <ion-avatar slot="start">
+          <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
+        </ion-avatar>
+        <ion-label>
+          {{item.nursingDiagnosesNanda}}
+        </ion-label>
+        <ion-label>
+          {{item.diagnosesId}}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </cdk-virtual-scroll-viewport>
+
+</ion-content>

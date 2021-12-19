@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" [formGroup]="credentials">
+    <div class="input-group">
+      <ion-item>
+        <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+      </ion-item>
+        <div *ngIf="(email.dirty || email.touched) && email.errors" class="errors">
+          <span *ngIf="email.errors?.required">Email muss eingegeben werden!</span>
+          <span *ngIf="email.errors?.email">Email ungültig</span>
+        </div>
+
+      <ion-item>
+        <ion-input type="text" placeholder="username" formControlName="username"></ion-input>
+      </ion-item>
+      <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
+        <span *ngIf="password.errors?.required">Benutzername muss eingegeben werden!</span>
+      </div>
+
+      <ion-item>
+        <ion-input id="input_pass" type="password" placeholder="Passwort" formControlName="password"></ion-input>
+      </ion-item>
+
+      <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
+        <span *ngIf="password.errors?.required">Passwort muss eingegeben werden!</span>
+        <span *ngIf="password.errors?.minlenght">Passwort muss aus mindenstens 6 Zeichen bestehen!</span>
+      </div>
+
+      <ion-button type="submit" expand="block" >Benutzer registrieren</ion-button>
+    </div>
+  </form>
+</ion-content>
