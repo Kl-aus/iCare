@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PatientDetaisPageRoutingModule } from './patient-details-routing.module';
+import { PatientDetailsPageRoutingModule } from './patient-details-routing.module';
 import { ReactiveFormsModule, FormsModule  } from '@angular/forms';
 import { PatientDetailsPage } from './patient-details.page';
 
@@ -12,9 +12,9 @@ import { PatientDetailsPage } from './patient-details.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    PatientDetaisPageRoutingModule,
+    PatientDetailsPageRoutingModule,
     ReactiveFormsModule
   ],
   declarations: [PatientDetailsPage]
 })
-export class PatientDetaisPageModule {}
+export class PatientDetailsPageModule {}

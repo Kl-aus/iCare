@@ -18,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'patient-details',
-    component: PatientDetailsPage,
+    loadChildren: () => import('./pages/patient-details/patient-details.module').then( m => m.PatientDetailsPageModule),
     canLoad: [AuthGuard]
   },
   {

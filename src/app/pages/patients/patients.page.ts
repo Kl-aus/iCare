@@ -19,11 +19,10 @@ export class PatientsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.backend.getDiagnose().subscribe((data: any) => {
+    this.backend.getPatients().subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
-        //this.items = this.items;
       }
     }, error => {
       console.log(error);
@@ -39,6 +38,6 @@ export class PatientsPage implements OnInit {
   }
 
   addPatient() {
-    this.router.navigateByUrl('/patient-details');
+    this.router.navigateByUrl('/patient-details', {replaceUrl: true});
   }
 }

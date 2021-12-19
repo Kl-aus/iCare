@@ -16,15 +16,7 @@ export class DiagnosesPage implements OnInit {
   searchTerm: string;
   scrollTo: number = null;
   // TODO Respone Klasse
-  items = [
-    {
-      nursingDiagnosesNanda: 'TestDiangose1',
-      diagnosesId: 1
-    },
-    {
-      nursingDiagnosesNanda: 'TestDiangose2',
-      diagnosesId: 2
-    }];
+  items = [];
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 

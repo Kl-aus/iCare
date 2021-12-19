@@ -47,4 +47,5 @@ accessToken = '';
     return this.httpClient.post('http://localhost:8080/api/auth/signup', credentials).pipe(
       map((data: any) => data));
   }
+
 }
