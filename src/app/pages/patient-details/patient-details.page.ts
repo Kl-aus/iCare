@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import  {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertController, LoadingController, ToastController} from '@ionic/angular';
+import {AlertController, LoadingController} from '@ionic/angular';
 import {BackendDataService} from '../../service/backend-data.service';
 import {Router} from '@angular/router';
 
@@ -11,12 +11,10 @@ import {Router} from '@angular/router';
 })
 
 export class PatientDetailsPage implements OnInit {
-  public patientDetailsForm: FormGroup;
-  //public patient: PatientModel;
-
+  selectedGender: any;
+  patientDetailsForm: FormGroup;
 
   constructor(public formBuilder: FormBuilder,
-              private toastCtrl: ToastController,
               private backend: BackendDataService,
               private alertController: AlertController,
               private loadingController: LoadingController,
@@ -26,8 +24,8 @@ export class PatientDetailsPage implements OnInit {
     this.patientDetailsForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      weight: ['', [Validators.required]],
-      height: ['', [Validators.required]],
+      weight: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      height: ['', [Validators.required, Validators.pattern('[0-9]+')]],
       age: ['', [Validators.required]],
       gender: ['', [Validators.required]]
     });
@@ -60,5 +58,30 @@ export class PatientDetailsPage implements OnInit {
           await alert.present();
         }
     );
+  }
+
+  get firstName() {
+    return this.patientDetailsForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.patientDetailsForm.get('lastName');
+  }
+
+  get weight() {
+    return this.patientDetailsForm.get('weight');
+  }
+
+  get height() {
+    return this.patientDetailsForm.get('height');
+  }
+
+  get age() {
+    return this.patientDetailsForm.get('age');
+  }
+
+
+  onChange() {
+   this.patientDetailsForm.controls.gender.setValue(this.selectedGender);
   }
 }

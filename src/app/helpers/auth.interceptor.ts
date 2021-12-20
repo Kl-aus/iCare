@@ -12,6 +12,7 @@ const TOKEN_HEADER_KEY = 'Authorization';
 export class AuthInterceptor implements HttpInterceptor {
   token: string;
   constructor(private authService: AuthenticationService) {
+    this.getToken().then(r => this.token);
   }
 
   async getToken() {

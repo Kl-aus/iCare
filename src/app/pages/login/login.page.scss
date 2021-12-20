@@ -11,7 +11,7 @@ ion-content{
   font-size: small;
   color: #fff;
   background: var(--ion-color-danger);
-  padding-left: 15px;
+  padding-left: 10%;
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -21,5 +21,9 @@ ion-content{
   //border-radius: 10px;
   overflow: hidden;
   margin-bottom: 15px;
-
 }
+
+ion-button{
+  margin-top: 10%;
+}
+

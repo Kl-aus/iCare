@@ -20,7 +20,7 @@
         <ion-input type="text" formControlName="username"></ion-input>
       </ion-item>
       <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
-        <span *ngIf="password.errors?.required">Benutzername muss eingegeben werden!</span>
+        <span *ngIf="username.errors?.required">Benutzername erforderlich!</span>
       </div>
 
       <ion-item>
@@ -29,12 +29,14 @@
       </ion-item>
 
       <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
-        <span *ngIf="password.errors?.required">Passwort muss eingegeben werden!</span>
-        <span *ngIf="password.errors?.minlenght">Passwort muss aus mindenstens 6 Zeichen bestehen!</span>
+        <span *ngIf="password.errors?.minLenght">mindenstens 6 Zeichen!</span>
+        <span *ngIf="password.errors?.required">Passwort erforderlich!</span>
       </div>
 
-      <ion-button type="submit" expand="block" >Login</ion-button>
-      <ion-button type="button" expand="block" color="light" fill="clear" (click)="goto()">Registrieren</ion-button>
     </div>
+
+      <ion-button type="submit" expand="block">Login</ion-button>
+      <ion-button type="button" expand="block" color="secondary" fill="clear" (click)="goto()">Registrieren</ion-button>
+
   </form>
 </ion-content>

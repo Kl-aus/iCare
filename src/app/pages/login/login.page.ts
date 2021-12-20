@@ -22,8 +22,7 @@ export class LoginPage implements OnInit {
     this.credentials = this.fb.group({
         //email: ['', [Validators.required, Validators.email]],
         username: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.minLength(6)]
-        ]
+        password: ['', [Validators.required, Validators.minLength(6)]] //TODO: Span Text wird nicht angezeigt
     });
   }
 
