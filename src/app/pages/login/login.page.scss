@@ -2,6 +2,7 @@ ion-content{
   --padding-top: 20%;
   --padding-start: 10%;
   --padding-end: 10%;
+    align-content: center;
   //--background:
 }
 //ion-item{
@@ -27,3 +28,6 @@ ion-button{
   margin-top: 10%;
 }
 
+ion-icon{
+  font-size: 128px;
+}

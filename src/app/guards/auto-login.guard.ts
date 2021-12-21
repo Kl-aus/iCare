@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {CanLoad, Route, Router, UrlSegment, UrlTree} from '@angular/router';
+import {CanLoad, Router} from '@angular/router';
 import { Observable } from 'rxjs';
 import {AuthenticationService} from '../service/authentication.service';
 import {filter, map, take} from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class AutoLoginGuard implements CanLoad {
       filter(val => val !== null), take(1),
       map(isAuthenticated => {
         if (isAuthenticated) {
-          this.router.navigateByUrl('/menu/patients', {replaceUrl: true} );
+          this.router.navigateByUrl('/menu/core-functions', {replaceUrl: true} );
         } else {
           return true;
         }

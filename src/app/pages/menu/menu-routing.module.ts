@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {Routes, RouterModule, CanActivate} from '@angular/router';
 
 import { MenuPage } from './menu.page';
+import {RoleGuard} from '../../guards/role.guard';
 
 const routes: Routes = [
   {
@@ -9,28 +10,20 @@ const routes: Routes = [
     component: MenuPage,
     children: [
       {
-        path: 'patients',
-        loadChildren: () => import('../patients/patients.module').then(m => m.PatientsPageModule)
+        path: 'core-functions',
+        loadChildren: () => import('../core-functions/core-functions.module').then(m => m.CoreFunctionsPageModule)
       },
       {
-        path: 'diagnoses',
-        loadChildren: () => import('../diagnoses/diagnoses.module').then(m => m.DiagnosesPageModule)
-      },
-      {
-        path: 'recommendations',
-        loadChildren: () => import('../recommendations/recommendations.module').then(m => m.RecommendationsPageModule)
+        path: 'moderator',
+        loadChildren: () => import('../../pages/moderator/moderator.module').then( m => m.ModeratorPageModule),
+        canActivate: [RoleGuard]
       },
       {
         path: 'profile',
         loadChildren: () => import('../../pages/profile/profile.module').then( m => m.ProfilePageModule)
-      }
+      },
     ]
   },
-  {
-    path: '',
-    redirectTo: '/menu/patients',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({

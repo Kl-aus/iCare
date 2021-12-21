@@ -5,7 +5,9 @@
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="logout()" slot="icon-only | end"></ion-button>
+      <ion-button (click)="logout()" slot="icon-only | end">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,14 +18,11 @@
     <ion-col size="auto">
       <ion-searchbar placeholder="Suche Diagnosen" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
     </ion-col>
-    <!--ion-col size="2">
-      <ion-button (click)="scrollToIndex()" [disabled]="!scrollTo">Search</ion-button>
-    </ion-col-->
   </ion-row>
 
-  <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500" > <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
+  <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
-      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm let i = index"
+      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm"
       tappable (click)="selectItem(item)">
         <ion-avatar slot="start">
           <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">

@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>patientDetails</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="backButton()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -50,16 +55,24 @@
       <div *ngIf="(height.dirty || height.touched) && height.errors" class="errors">
         <span *ngIf="height.errors?.required">Bitte Größe eingeben!</span>
         <span *ngIf="height.errors?.pattern">Bitte Zahlen eingeben!</span>
-
       </div>
 
-      <ion-item>
-        <ion-label position="floating">Geburtsdatum</ion-label>
-        <ion-datetime min = "1800-01-01" formControlName="age"></ion-datetime>
+      <!-- Datetime in popover with cover element -->
+      <ion-item button="true" id="open-date-input">
+        <ion-label>Geburtsdatum</ion-label>
+        <ion-text slot="end">{{ dateValue }}</ion-text>
+        <ion-popover trigger="open-date-input" show-backdrop="false">
+          <ng-template>
+            <ion-datetime
+              #popoverDatetime
+              presentation="date"
+              (ionChange)="dateValue = formatDate(popoverDatetime.value)"
+              formControlName="age"
+            ></ion-datetime>
+          </ng-template>
+        </ion-popover>
       </ion-item>
 
-      <div *ngIf="(age.dirty || age.touched) && age.errors" class="errors">
-        <span *ngIf="age.errors?.required">Bitte Geburtsdatum auswählen!</span>
       </div>
 
 
@@ -119,7 +132,7 @@
       </ion-list-->
 
       <ion-button type="submit" color="primary" expand="block">Hinzufuegen</ion-button>
-    </div>
+
   </form>
 
 </ion-content>

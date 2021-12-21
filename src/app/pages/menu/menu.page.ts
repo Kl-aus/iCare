@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
+import {AuthenticationService} from '../../service/authentication.service';
+import {Settings} from '../../helpers/settings';
 
 @Component({
   selector: 'app-menu',
@@ -9,32 +11,35 @@ import { Router, RouterEvent } from '@angular/router';
 export class MenuPage implements OnInit {
 
   selectedPath = '';
+  pages = [];
 
-  pages = [
-    {
-      title: 'Patienten',
-      url: '/menu/patients'
-    },
-    {
-      title: 'Diagnosen',
-      url: '/menu/diagnoses'
-    },
-    {
-      title: 'Pflege Empfehlungen',
-      url: '/menu/recommendations'
-    },
-    {
-      path: 'profile',
-      url: '/menu/profile'
-    }
-  ];
-
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthenticationService) {
     this.router.events.subscribe((event: RouterEvent) => {
-      this.selectedPath = event.url;
+      if(event && event.url) {
+        this.selectedPath = event.url;
+      }
     });
   }
+
   ngOnInit() {
   }
 
+  ionViewWillEnter() {
+    if(Settings.roles == 'ROLE_MODERATOR') { //=== doesnt work,typeconversion(==) required -- why?
+      this.pages = [
+        { title: 'core-functions', url: '/menu/core-functions' },
+        { title: 'moderator', url: '/menu/moderator'},
+        { path: 'profile', url: '/menu/profile'}
+      ];
+    } else {
+      this.pages = [
+        { title: 'core-functions', url: '/menu/core-functions' },
+        { path: 'profile', url: '/menu/profile'}
+      ];
+    }
+  }
+
+  async logout() {
+    await this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
+  }
 }

@@ -18,7 +18,6 @@ export class BackendDataService {
     return this.httpClient.get<any>('http://localhost:8080/patient/all');
   }
 
-
   public postPatient(patient: {firstName; lastName; weight; height; age; gender}): Observable<any> {
     return this.httpClient.post('http://localhost:8080/patient/create', patient).pipe(
       map((data: any) => data));

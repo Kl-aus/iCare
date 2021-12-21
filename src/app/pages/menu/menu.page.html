@@ -1,8 +1,10 @@
-  <ion-split-pane>
-    <ion-menu contentId= "main-content">
+  <ion-app>
+    <ion-text>Swipe right for menu</ion-text> <!--TODO: center text, style text-->
+    <ion-menu contentId="main-content">
       <ion-header>
         <ion-toolbar color="primary">
           <ion-title>Navigation</ion-title>
+
         </ion-toolbar>
       </ion-header>
 
@@ -13,9 +15,13 @@
               {{p.title}}
             </ion-item>
           </ion-menu-toggle>
+          <ion-item tappable (click)="logout();">
+            <ion-icon name="log-out" slot="start"></ion-icon>
+            logout
+          </ion-item>
         </ion-list>
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
+  </ion-app>
 

@@ -2,7 +2,6 @@ import { HTTP_INTERCEPTORS, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Storage } from '@capacitor/storage';
-import { AuthenticationService } from '../service/authentication.service';
 import { Observable } from 'rxjs';
 const TOKEN_KEY = 'my-token';
 const TOKEN_HEADER_KEY = 'Authorization';
@@ -11,7 +10,7 @@ const TOKEN_HEADER_KEY = 'Authorization';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   token: string;
-  constructor(private authService: AuthenticationService) {
+  constructor() {
     this.getToken().then(r => this.token);
   }
 

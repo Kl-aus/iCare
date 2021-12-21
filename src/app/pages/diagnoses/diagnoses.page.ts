@@ -5,7 +5,6 @@ import { ToastController } from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
 
-
 @Component({
   selector: 'app-diagnoses',
   templateUrl: './diagnoses.page.html',
@@ -20,26 +19,32 @@ export class DiagnosesPage implements OnInit {
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
-  constructor(private backend: BackendDataService, private toastCtrl: ToastController,
-              private authService: AuthenticationService, private router: Router) {
-  }
+  constructor(private backend: BackendDataService,
+              private toastCtrl: ToastController,
+              private authService: AuthenticationService,
+              private router: Router) { }
 
   ngOnInit() {
     this.backend.getDiagnose().subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
           this.items.push(data[i]);
           this.items = [...this.items]; //Clone Array for updating Viewport
-          //this.items = this.items;
       }
     }, error => {
       console.log(error);
     });
   }
 
-  scrollToIndex() {
-    if (this.scrollTo > -1) {
-      this.viewPort.scrollToIndex(this.scrollTo, 'smooth');
-    }
+  ionViewWillEnter(){
+    this.items = []; //clear list to avoid duplicated entries
+    this.backend.getDiagnose().subscribe((data: any) => {
+      for(let i = 0; i < data.length; i++) {
+        this.items.push(data[i]);
+        this.items = [...this.items]; //Clone Array for updating Viewport
+      }
+    }, error => {
+      console.log(error);
+    });
   }
 
  async selectItem(item) {
@@ -50,8 +55,7 @@ export class DiagnosesPage implements OnInit {
     await toast.present();
   }
 
-  async logout() {
-    await this.authService.logout();
-    await this.router.navigateByUrl('/', {replaceUrl: true});
+  logout() {
+    this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
 }
