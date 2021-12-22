@@ -8,15 +8,11 @@ import {AlertController} from '@ionic/angular';
 })
 export class RoleGuard implements CanActivate {
 
-
   constructor(private alertController: AlertController, private router: Router) {
 
   }
 
   canActivate(): boolean {
-    console.log('settings: '+ Settings.roles+'END');
-    console.log('should match: ROLE_MODERATOR');
-    console.log('ROLE GUARD: true');
     if (Settings.roles == 'ROLE_MODERATOR') { //Lint: === doesnt work,typeconversion(==) required -- why?
       return true;
     } else {

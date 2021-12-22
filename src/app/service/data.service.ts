@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import {Storage} from '@ionic/storage-angular';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
-import {BehaviorSubject, from, of, switchMap} from 'rxjs';
+import {BehaviorSubject, from, Observable, of, switchMap} from 'rxjs';
 import {filter} from 'rxjs/operators';
 
-//Storage CRUD
+//Storage CRUD for SQLite no need for it atm
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +22,7 @@ private storageReady = new BehaviorSubject(false);
   this.storageReady.next(true);
   }
 
-  async addData(item: any, key: any) {
+  async addData(key: any, item: any) {
     const storedData = await this.storage.get(key) || [];
     storedData.push(item);
     return this.storage.set(key, storedData);
@@ -39,7 +39,7 @@ private storageReady = new BehaviorSubject(false);
   }
 
   getData(key: any) {
-    this.storageReady.pipe(
+   return this.storageReady.pipe(
       filter(ready => ready),
       switchMap(_=> {
        return from(this.storage.get(key)) || of([]); //empty array as fallback
