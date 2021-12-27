@@ -8,7 +8,6 @@ import { Drivers } from '@ionic/storage';
 import { ReactiveFormsModule, FormsModule  } from '@angular/forms';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-
 import {authInterceptorProviders} from './helpers/auth.interceptor';
 import {IonicStorageModule} from '@ionic/storage-angular';
 
@@ -16,7 +15,7 @@ import {IonicStorageModule} from '@ionic/storage-angular';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ReactiveFormsModule, FormsModule, IonicStorageModule.forRoot({
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,ReactiveFormsModule, FormsModule, IonicStorageModule.forRoot({
     name: 'mydb',
     driverOrder: [CordovaSQLiteDriver._driver ,Drivers.IndexedDB, Drivers.LocalStorage]
   })],

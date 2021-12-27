@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {BackendDataService} from '../../service/backend-data.service';
+import { BackendDataService } from '../../service/backend-data.service';
 import {ToastController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';

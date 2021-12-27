@@ -50,7 +50,7 @@ export class PatientDetailsPage implements OnInit {
           buttons: ['OK'],
         });
         await alert.present();
-        await this.router.navigateByUrl('/menu/patients', {replaceUrl: true});
+        await this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
       },
         async (res) => {
           await loading.dismiss();
@@ -94,7 +94,7 @@ export class PatientDetailsPage implements OnInit {
   }
 
   formatDate(value: string) {
-    return format(parseISO(value), 'MMM dd yyyy');
+    return format(parseISO(value), 'MMM-dd-yyyy');
   }
 
   backButton() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
-import {Settings} from '../../helpers/settings';
+import {UserDetails} from '../../helpers/userDetails';
 
 @Component({
   selector: 'app-menu',
@@ -25,7 +25,7 @@ export class MenuPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    if(Settings.roles == 'ROLE_MODERATOR') { //=== doesnt work,typeconversion(==) required -- why?
+    if(UserDetails.roles == 'ROLE_MODERATOR') { //=== doesnt work,typeconversion(==) required -- why?
       this.pages = [
         { title: 'core-functions', url: '/menu/core-functions' },
         { title: 'moderator', url: '/menu/moderator'},

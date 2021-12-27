@@ -20,13 +20,6 @@
         <span *ngIf="firstName.errors?.required">Bitte Vorname eingeben!</span>
       </div>
 
-      <!--span class="error ion-padding" *ngIf= "errorControl.name.errors?.required">
-        Name is required.
-      </span>
-      <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.minlength">
-        Name should be min 2 chars long.
-      </span-->
-
       <ion-item>
         <ion-label position="floating">Nachname</ion-label>
         <ion-input type="text" formControlName="lastName"></ion-input>
@@ -72,7 +65,6 @@
           </ng-template>
         </ion-popover>
       </ion-item>
-
       </div>
 
 
