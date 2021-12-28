@@ -36,7 +36,7 @@ export class PatientDetailsPage implements OnInit {
       gender: ['', [Validators.required]]
     });
   }
-s
+
  async addPatientToDb() {
 
    const loading = await this.loadingController.create();
