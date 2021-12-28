@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../service/authentication.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertController, LoadingController} from '@ionic/angular';
-import {Router} from '@angular/router';
+import {Data, Router} from '@angular/router';
+
+
 
 @Component({
   selector: 'app-login',
@@ -11,6 +13,7 @@ import {Router} from '@angular/router';
 })
 export class LoginPage implements OnInit {
   credentials: FormGroup;
+  private storageString: string;
 
   constructor(private fb: FormBuilder,
               private authService: AuthenticationService,

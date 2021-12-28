@@ -16,7 +16,6 @@ export class AuthenticationService {
   isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   accessToken = '';
   userDetails = [];
-  test: string;
 
   constructor(private httpClient: HttpClient, private dataService: DataService) {
     this.loadToken();
@@ -29,7 +28,7 @@ export class AuthenticationService {
     });
     if (this.accessToken) {
         console.log('set token:', this.accessToken);
-        //TODO: check if token is valid
+      //TODO: check if token is valid
         this.isAuthenticated.next(true);
       } else {
         this.isAuthenticated.next(false);
@@ -37,6 +36,7 @@ export class AuthenticationService {
   }
 
   login(credentials: {username; password}): Observable<any> {
+    this.userDetails = [];
     return this.httpClient.post('http://localhost:8080/api/auth/signin', credentials).pipe(
       tap((data: any) =>
         this.userDetails.push(data)), //works only with push?! clone json didnt work: data isnt accessable/login doesnt work
@@ -51,7 +51,7 @@ export class AuthenticationService {
 
   async logout(): Promise<void> {
     this.isAuthenticated.next(false);
-    //await Storage.remove({key: SETTINGS_KEY}); //commented out for testing
+    await Storage.remove({key: SETTINGS_KEY});
     return await Storage.remove({key: TOKEN_KEY});
   }
 
@@ -74,6 +74,6 @@ export class AuthenticationService {
     UserDetails.username = this.userDetails[0].username;
     UserDetails.roles = this.userDetails[0].roles;
     UserDetails.email = this.userDetails[0].email;
-    UserDetails.id = this.userDetails[0].id;
+    UserDetails.id = parseInt(this.userDetails[0].id, 10);
   }
 }

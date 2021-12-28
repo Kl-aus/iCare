@@ -17,6 +17,7 @@ export class AutoLoginGuard implements CanLoad {
       filter(val => val !== null), take(1),
       map(isAuthenticated => {
         if (isAuthenticated) {
+          console.log('autoLoginGUARD: '+ isAuthenticated);
           this.router.navigateByUrl('/menu/core-functions', {replaceUrl: true} );
         } else {
           return true;

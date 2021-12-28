@@ -4,6 +4,7 @@ import {AlertController, IonDatetime, LoadingController} from '@ionic/angular';
 import {BackendDataService} from '../../service/backend-data.service';
 import {Router} from '@angular/router';
 import { format, parseISO } from 'date-fns';
+import {UserDetails} from '../../helpers/userDetails';
 
 @Component({
   selector: 'app-patient-details',
@@ -35,12 +36,12 @@ export class PatientDetailsPage implements OnInit {
       gender: ['', [Validators.required]]
     });
   }
-
+s
  async addPatientToDb() {
 
    const loading = await this.loadingController.create();
    await loading.present();
-
+  console.log('UserDetailsID: ' + UserDetails.id);
     this.backend.postPatient(this.patientDetailsForm.value).subscribe(async res => {
           await loading.dismiss();
           const alert = await this.alertController.create({
