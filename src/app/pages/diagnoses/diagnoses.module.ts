@@ -7,6 +7,7 @@ import { DiagnosesPage } from './diagnoses.page';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { Ng2SearchPipeModule} from 'ng2-search-filter';
 
+
 @NgModule({
   imports: [
     CommonModule,

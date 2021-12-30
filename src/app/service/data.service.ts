@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 //import {Storage} from '@ionic/storage-angular';
-import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
-import {BehaviorSubject, from, Observable, of, switchMap} from 'rxjs';
-import {filter} from 'rxjs/operators';
-import { Storage } from '@capacitor/storage';
+import {Storage} from '@capacitor/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -52,16 +49,16 @@ import { Storage } from '@capacitor/storage';
   /* Capacitor Storage */
 
   async save(key: string, value: any) {
-    await Storage.set({ key, value });
+    await Storage.set({ key, value: JSON.stringify(value) });
   }
 
   async get(key: string) {
-    const item = await Storage.get({ key });
-    return item.value;
+     const item = await Storage.get({key: key});
+     return JSON.parse(item.value);
   }
 
   async remove(key: string) {
-    await Storage.remove({ key });
+    await Storage.remove({ key: key });
   }
 
 }

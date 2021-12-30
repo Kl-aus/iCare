@@ -2,8 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import { BackendDataService } from '../../service/backend-data.service';
 import {ToastController} from '@ionic/angular';
-import {Router} from '@angular/router';
+import {Data, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
+import {DataService} from '../../service/data.service';
+const PATIENT_KEY = 'patientId';
 
 @Component({
   selector: 'app-patients',
@@ -13,11 +15,13 @@ import {AuthenticationService} from '../../service/authentication.service';
 
 export class PatientsPage implements OnInit {
   items = [];
+  patientSelected: number;
   searchTerm: string;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(private backend: BackendDataService,
+              private dataService: DataService,
               private toastCtrl: ToastController,
               private router: Router,
               private authService: AuthenticationService) { }
@@ -46,11 +50,15 @@ export class PatientsPage implements OnInit {
   }
 
   async selectItem(item) {
-    const toast = await this.toastCtrl.create({
-      message: item,
-      duration: 2000
-    });
-    await toast.present();
+    this.patientSelected = parseInt(item.patientId,10);
+    await this.dataService.save(PATIENT_KEY, item.patientId)
+      .then(r => {
+        console.log('patient saved');
+      }).catch(error => {
+        alert('error while saving patient: '+ error);
+      });
+    console.log('Item from List: ', JSON.stringify(item));
+    console.log('Item saved: ' + this.patientSelected);
   }
 
   addPatient() {

@@ -22,18 +22,18 @@
 
   <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
-      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm"
+      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}"
       tappable (click)="selectItem(item)">
-        <ion-avatar slot="start">
-          <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
-        </ion-avatar>
-        <ion-label>
-          {{item.nursingDiagnosesNanda}}
-        </ion-label>
-        <ion-label>
-          {{item.diagnosesId}}
-        </ion-label>
-      </ion-item>
+          <ion-avatar slot="start">
+            <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
+          </ion-avatar>
+          <ion-label>
+            {{item.nursingDiagnosesNanda}}
+          </ion-label>
+          <ion-label>
+            {{item.diagnosesId}}
+          </ion-label>
+        </ion-item>
     </ion-list>
   </cdk-virtual-scroll-viewport>
 

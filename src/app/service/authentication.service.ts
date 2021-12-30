@@ -6,6 +6,8 @@ import {map, switchMap, tap} from 'rxjs/operators';
 import {UserDetails} from '../helpers/userDetails';
 import {DataService} from './data.service';
 
+const PATIENT_KEY = 'patientId';
+const DIAGNOSES_KEY = 'diagnoses';
 const TOKEN_KEY = 'my-token';
 const SETTINGS_KEY ='my-settings';
 
@@ -22,9 +24,9 @@ export class AuthenticationService {
   }
   async loadToken() {
     await this.dataService.get(TOKEN_KEY).then(res => {
-      this.accessToken = res;
+      this.accessToken = JSON.stringify(res);
     }).catch(error => {
-      alert('error while loading Token '+ error);
+      alert('error while loading token, please log in! ');
     });
     if (this.accessToken) {
         console.log('set token:', this.accessToken);
@@ -51,6 +53,8 @@ export class AuthenticationService {
 
   async logout(): Promise<void> {
     this.isAuthenticated.next(false);
+    await Storage.remove({key: PATIENT_KEY});
+    await Storage.remove({key: DIAGNOSES_KEY});
     await Storage.remove({key: SETTINGS_KEY});
     return await Storage.remove({key: TOKEN_KEY});
   }
@@ -75,5 +79,7 @@ export class AuthenticationService {
     UserDetails.roles = this.userDetails[0].roles;
     UserDetails.email = this.userDetails[0].email;
     UserDetails.id = parseInt(this.userDetails[0].id, 10);
+
+    console.log('UserDetails: ' ,  this.userDetails[0]);
   }
 }

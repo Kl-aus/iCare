@@ -15,7 +15,12 @@ import {IonicStorageModule} from '@ionic/storage-angular';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,ReactiveFormsModule, FormsModule, IonicStorageModule.forRoot({
+  imports: [BrowserModule, IonicModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    IonicStorageModule.forRoot({
     name: 'mydb',
     driverOrder: [CordovaSQLiteDriver._driver ,Drivers.IndexedDB, Drivers.LocalStorage]
   })],
