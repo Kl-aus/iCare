@@ -30,11 +30,11 @@
           <ion-label>
             {{item.nursingDiagnosesNanda}}
           </ion-label>
-          <ion-label>
-            {{item.diagnosesId}}
-          </ion-label>
         </ion-item>
     </ion-list>
   </cdk-virtual-scroll-viewport>
 
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button color="danger" (click)="addDiagnose()">+</ion-fab-button>
+  </ion-fab>
 </ion-content>

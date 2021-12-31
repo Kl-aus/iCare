@@ -5,8 +5,10 @@ import {ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
 import {DataService} from '../../service/data.service';
+import {of} from "rxjs";
 
 const DIAGNOSES_KEY = 'diagnoses';
+const PATIENT_KEY = 'patientId';
 
 @Component({
   selector: 'app-diagnoses',
@@ -29,8 +31,9 @@ export class DiagnosesPage implements OnInit {
               private authService: AuthenticationService,
               private router: Router) { }
 
-  ngOnInit() {
-    this.backend.getDiagnose().subscribe((data: any) => {
+  async ngOnInit() {
+    const selectedPatientId = await this.dataService.get(PATIENT_KEY);
+    this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
           this.items.push(data[i]);
           this.items = [...this.items]; //Clone Array for updating Viewport
@@ -40,9 +43,11 @@ export class DiagnosesPage implements OnInit {
     });
   }
 
-  async ionViewDidEnter() {
-    this.items = []; //clear list to avoid duplicated entries
-    await this.backend.getDiagnose().subscribe((data: any) => {
+  async ionViewWillEnter() {
+    this.items = [];
+    const selectedPatientId = await this.dataService.get(PATIENT_KEY);
+    this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
+      console.log('data array:' + data);
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
@@ -50,47 +55,23 @@ export class DiagnosesPage implements OnInit {
     }, error => {
       console.log(error);
     });
-
-    const diagnoses = await this.dataService.get(DIAGNOSES_KEY);
-    console.log('DIAG: ', diagnoses);
-    //this.selectedItems = diagnoses; //does not work
-    for(let i = 0; i < diagnoses.length; i++) {
-      if(this.selectedItems.includes(diagnoses[i])) {
-        this.selectedItems.push(diagnoses[i]);
-      } else {
-        this.selectedItems.splice(this.selectedItems.indexOf(diagnoses[i].diagnosesId), 1);
-      }
-    }
+    console.log('Items array:' + JSON.stringify(this.items));
   }
 
-  async ionViewDidLeave() {
-     await this.dataService.remove(DIAGNOSES_KEY)
-       .then(r => {
-         console.log('reset diagnoses');
-       }).catch(error => {
-         alert('error while loading diagnoses: '+ error);
-       });
-    console.log('array Diagnoses: ', this.selectedItems);
-    await this.dataService.save(DIAGNOSES_KEY, this.selectedItems)
-      .then(r => {
-        console.log('diagnoses saved');
-      }).catch(error => {
-        alert('error while saving diagnoses: '+ error);
-      });
-    this.selectedItems = [];
+  async ionViewWillLeave() {
   }
 
 
   selectItem(item) {
+  }
 
-    if(!this.selectedItems.includes(item)) {
-      this.selectedItems.push(item);
-    } else {
-      this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
-    }
+
+  addDiagnose() {
+    this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
   }
 
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
+
 }

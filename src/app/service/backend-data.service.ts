@@ -15,6 +15,19 @@ export class BackendDataService {
     return this.httpClient.get<any>('http://localhost:8080/diagnoses/all');
   }
 
+  public getPatientDiagnoses(selectedPatientId) {
+    return this.httpClient.get<any>('http://localhost:8080/diagnoses/getPatientDiagnoses',{params: {selectedPatientId}});
+  }
+
+  public postDiagnoses(diagnose: any, selectedPatientId: any): Observable<any> {
+    const body = {
+      diagnose,
+      selectedPatientId
+    };
+    return this.httpClient.post('http://localhost:8080/diagnoses/savePatientDiagnoses', body).pipe(
+      map((data: any) => data));
+  }
+
   public getPatients() {
     const id = UserDetails.id;
     return this.httpClient.get<any>('http://localhost:8080/patient/byId', {params: {id}});

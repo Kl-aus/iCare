@@ -30,10 +30,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
   {
+    path: 'choose-diagnose',
+    loadChildren: () => import('./pages/choose-diagnose/choose-diagnose.module').then( m => m.ChooseDiagnosePageModule),
+    canLoad: [AuthGuard]
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
+
 ];
 
 @NgModule({

@@ -27,6 +27,7 @@ export class PatientsPage implements OnInit {
               private authService: AuthenticationService) { }
 
   ngOnInit() {
+    this.items = [];
     this.backend.getPatients().subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
@@ -37,7 +38,7 @@ export class PatientsPage implements OnInit {
     });
   }
 
-  ionViewWillEnter(){
+  async ionViewWillEnter(){
     this.items = []; //clear list to avoid duplicated entries
     this.backend.getPatients().subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
@@ -47,6 +48,7 @@ export class PatientsPage implements OnInit {
     }, error => {
       console.log(error);
     });
+    this.patientSelected = await this.dataService.get(PATIENT_KEY);
   }
 
   async selectItem(item) {
@@ -57,8 +59,7 @@ export class PatientsPage implements OnInit {
       }).catch(error => {
         alert('error while saving patient: '+ error);
       });
-    console.log('Item from List: ', JSON.stringify(item));
-    console.log('Item saved: ' + this.patientSelected);
+    const selectedPatientId = await this.dataService.get(PATIENT_KEY);
   }
 
   addPatient() {
