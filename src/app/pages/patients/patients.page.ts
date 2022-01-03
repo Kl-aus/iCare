@@ -27,15 +27,7 @@ export class PatientsPage implements OnInit {
               private authService: AuthenticationService) { }
 
   ngOnInit() {
-    this.items = [];
-    this.backend.getPatients().subscribe((data: any) => {
-      for(let i = 0; i < data.length; i++) {
-        this.items.push(data[i]);
-        this.items = [...this.items]; //Clone Array for updating Viewport
-      }
-    }, error => {
-      console.log(error);
-    });
+
   }
 
   async ionViewWillEnter(){

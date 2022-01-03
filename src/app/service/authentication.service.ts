@@ -20,6 +20,7 @@ export class AuthenticationService {
   userDetails = [];
 
   constructor(private httpClient: HttpClient, private dataService: DataService) {
+    this.isAuthenticated.next(false);
     this.loadToken();
   }
   async loadToken() {

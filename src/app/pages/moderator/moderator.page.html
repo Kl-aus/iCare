@@ -1,9 +1,19 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>moderator</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Diagnosen</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" slot="icon-only | end">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+<ion-button (click)="test()">
+  TEST
+</ion-button>
 </ion-content>

@@ -1,11 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BackendDataService} from '../../service/backend-data.service';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {ToastController} from '@ionic/angular';
+import {NavParams, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
 import {DataService} from '../../service/data.service';
-import {of} from "rxjs";
 
 const DIAGNOSES_KEY = 'diagnoses';
 const PATIENT_KEY = 'patientId';
@@ -16,14 +15,12 @@ const PATIENT_KEY = 'patientId';
   styleUrls: ['./diagnoses.page.scss'],
 })
 
-export class DiagnosesPage implements OnInit {
+export class DiagnosesPage implements OnInit, AfterViewInit {
   searchTerm: string;
-  // TODO Respone Klasse
   items = [];
   selectedItems = [];
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
-
 
   constructor(private backend: BackendDataService,
               private dataService: DataService,
@@ -32,15 +29,10 @@ export class DiagnosesPage implements OnInit {
               private router: Router) { }
 
   async ngOnInit() {
-    const selectedPatientId = await this.dataService.get(PATIENT_KEY);
-    this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
-      for(let i = 0; i < data.length; i++) {
-          this.items.push(data[i]);
-          this.items = [...this.items]; //Clone Array for updating Viewport
-      }
-    }, error => {
-      console.log(error);
-    });
+  }
+
+  ngAfterViewInit() {
+
   }
 
   async ionViewWillEnter() {
@@ -55,16 +47,18 @@ export class DiagnosesPage implements OnInit {
     }, error => {
       console.log(error);
     });
-    console.log('Items array:' + JSON.stringify(this.items));
   }
 
   async ionViewWillLeave() {
   }
 
-
   selectItem(item) {
+    if(!this.selectedItems.includes(item)) {
+      this.selectedItems.push(item);
+    } else {
+      this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+    }
   }
-
 
   addDiagnose() {
     this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
@@ -74,4 +68,12 @@ export class DiagnosesPage implements OnInit {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
 
+  show() {
+    const navParams = {
+      state: {
+        diagnose: this.selectedItems
+      }
+    };
+    this.router.navigate(['/menu/core-functions/core-functions/recommendations'], navParams);
+  }
 }

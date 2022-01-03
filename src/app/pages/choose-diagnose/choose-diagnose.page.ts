@@ -41,7 +41,6 @@ export class ChooseDiagnosePage implements OnInit {
 
   }
 
-
   async ionViewDidEnter() {
     this.items = [];
     await this.backend.getDiagnose().subscribe((data: any) => {
@@ -53,11 +52,6 @@ export class ChooseDiagnosePage implements OnInit {
       console.log(error);
     });
   }
-
-  async ionViewDidLeave() {
-
-  }
-
 
   selectItem(item) {
     if(!this.selectedItems.includes(item)) {

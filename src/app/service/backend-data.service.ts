@@ -43,8 +43,18 @@ export class BackendDataService {
       gender: patient.gender,
       userId: UserDetails.id
     };
-
     return this.httpClient.post('http://localhost:8080/patient/create', body).pipe(
       map((data: any) => data));
   }
+
+  public getRecommendations(diagnoses: any[]) {
+
+    return this.httpClient.post<any>('http://localhost:8080/recommendation/byDiagnose', {diagnose: diagnoses});
+  }
+
+  public setTest() {
+    return this.httpClient.get<any>('http://localhost:8080/recommendation/setTest');
+  }
+
+
 }

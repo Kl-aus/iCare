@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
               private loadingController: LoadingController,
               private router: Router) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.credentials = this.fb.group({
         //email: ['', [Validators.required, Validators.email]],
         username: ['', [Validators.required]],
