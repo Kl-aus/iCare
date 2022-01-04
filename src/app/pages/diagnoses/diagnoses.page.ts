@@ -37,9 +37,12 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
 
   async ionViewWillEnter() {
     this.items = [];
+    this.selectedItems = [];
+    console.log('items array after Enter DIAGNOSES PAGE: '+ JSON.stringify(this.items));
+    console.log('selecteditems array after Enter DIAGNOSES PAGE: '+ JSON.stringify(this.selectedItems));
+
     const selectedPatientId = await this.dataService.get(PATIENT_KEY);
-    this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
-      console.log('data array:' + data);
+    await this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
@@ -50,6 +53,8 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
   }
 
   async ionViewWillLeave() {
+    // console.log('items array on leave DIAGNOSES PAGE: '+ JSON.stringify(this.items));
+    console.log('selecteditems array on leave DIAGNOSES PAGE: '+ JSON.stringify(this.selectedItems));
   }
 
   selectItem(item) {
@@ -74,6 +79,7 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
         diagnose: this.selectedItems
       }
     };
+    console.log('navParams array on leave DIAGNOSES PAGE: '+ JSON.stringify(navParams));
     this.router.navigate(['/menu/core-functions/core-functions/recommendations'], navParams);
   }
 }

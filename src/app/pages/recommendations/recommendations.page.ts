@@ -9,32 +9,31 @@ import {BackendDataService} from '../../service/backend-data.service';
 })
 
 export class RecommendationsPage implements OnInit {
-  diagnose: any[];
-  items: any[];
+  diagnose = [];
+  items = [];
   showContent = false;
   navigation: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private backend: BackendDataService) {
-    this.navigation = this.router.getCurrentNavigation();
-    // if (this.router.getCurrentNavigation().extras.state) {
-    //   this.diagnose = this.router.getCurrentNavigation().extras.state.diagnose;
-    //   this.showContent = true;
-    // } else  {
-    //   this.diagnose = null;
-    // }
+    this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
+      // if (params && params.diagnose) { //for navigateByUrl
+      //   this.diagnose = JSON.parse(params.diagnose);
+      // }
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.diagnose = this.router.getCurrentNavigation().extras.state.diagnose;
+        this.showContent = true;
+      } else  {
+        this.diagnose = null;
+      }
+    });
   }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    if (this.navigation.extras.state) {
-      this.diagnose = this.navigation.extras.state.diagnose;
-      this.showContent = true;
-    } else  {
-      this.diagnose = null;
-    }
 
+    console.log('diagnose array on enter REC PAGE (from trans parameters): '+ JSON.stringify(this.diagnose));
     this.backend.getRecommendations(this.diagnose).subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
@@ -43,6 +42,7 @@ export class RecommendationsPage implements OnInit {
     }, error => {
       console.log(error);
     });
+    console.log('rec items array on enter: ' + JSON.stringify(this.items));
   }
 
   selectItem(item: any) {
@@ -53,5 +53,7 @@ export class RecommendationsPage implements OnInit {
     this.diagnose = [];
     this.items = [];
     this.showContent = false;
+    console.log('items array on leave: ' + JSON.stringify(this.items));
+    console.log('diagnoses array on leave: ' + JSON.stringify(this.diagnose));
   }
 }
