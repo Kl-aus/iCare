@@ -15,7 +15,7 @@ const PATIENT_KEY = 'patientId';
   styleUrls: ['./diagnoses.page.scss'],
 })
 
-export class DiagnosesPage implements OnInit, AfterViewInit {
+export class DiagnosesPage implements OnInit {
   searchTerm: string;
   items = [];
   selectedItems = [];
@@ -31,19 +31,15 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
   async ngOnInit() {
   }
 
-  ngAfterViewInit() {
-
-  }
-
   async ionViewWillEnter() {
     this.items = [];
     this.selectedItems = [];
-    console.log('items array after Enter DIAGNOSES PAGE: '+ JSON.stringify(this.items));
-    console.log('selecteditems array after Enter DIAGNOSES PAGE: '+ JSON.stringify(this.selectedItems));
+    // console.log('items array after Enter DIAGNOSES PAGE: '+ JSON.stringify(this.items));
+    // console.log('selecteditems array after Enter DIAGNOSES PAGE: '+ JSON.stringify(this.selectedItems));
 
     const selectedPatientId = await this.dataService.get(PATIENT_KEY);
-    await this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
-      for(let i = 0; i < data.length; i++) {
+    this.backend.getPatientDiagnoses(selectedPatientId).subscribe((data: any) => {
+      for (let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
       }
@@ -54,7 +50,7 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
 
   async ionViewWillLeave() {
     // console.log('items array on leave DIAGNOSES PAGE: '+ JSON.stringify(this.items));
-    console.log('selecteditems array on leave DIAGNOSES PAGE: '+ JSON.stringify(this.selectedItems));
+    // console.log('selecteditems array on leave DIAGNOSES PAGE: '+ JSON.stringify(this.selectedItems));
   }
 
   selectItem(item) {
@@ -69,10 +65,6 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
     this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
   }
 
-  logout() {
-    this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
-  }
-
   show() {
     const navParams = {
       state: {
@@ -82,4 +74,9 @@ export class DiagnosesPage implements OnInit, AfterViewInit {
     console.log('navParams array on leave DIAGNOSES PAGE: '+ JSON.stringify(navParams));
     this.router.navigate(['/menu/core-functions/core-functions/recommendations'], navParams);
   }
+
+  logout() {
+    this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
+  }
+
 }

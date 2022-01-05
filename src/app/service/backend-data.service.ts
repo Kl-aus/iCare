@@ -47,8 +47,25 @@ export class BackendDataService {
       map((data: any) => data));
   }
 
-  public getRecommendations(diagnoses: any[]) {
+  public deletePatient(patientId: any): Observable<any> {
+    const httpOptions: any = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    httpOptions.body = {
+      patientId,
+      userId: UserDetails.id
+    };
+    return this.httpClient.delete('http://localhost:8080/patient/delete', httpOptions);
+  }
 
+  public deletePatientDiagnoses(diagnoses: any[], patientId: any): Observable<any> {
+    return this.httpClient.post('http://localhost:8080/patient/deleteDiagnoses', {params: {patientId}});
+  }
+
+
+  public getRecommendations(diagnoses: any[]) {
     return this.httpClient.post<any>('http://localhost:8080/recommendation/byDiagnose', {diagnose: diagnoses});
   }
 

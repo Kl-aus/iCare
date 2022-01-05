@@ -42,7 +42,7 @@ export class RecommendationsPage implements OnInit {
     }, error => {
       console.log(error);
     });
-    console.log('rec items array on enter: ' + JSON.stringify(this.items));
+    // console.log('rec items array on enter: ' + JSON.stringify(this.items));
   }
 
   selectItem(item: any) {
@@ -53,7 +53,7 @@ export class RecommendationsPage implements OnInit {
     this.diagnose = [];
     this.items = [];
     this.showContent = false;
-    console.log('items array on leave: ' + JSON.stringify(this.items));
-    console.log('diagnoses array on leave: ' + JSON.stringify(this.diagnose));
+    // console.log('items array on leave: ' + JSON.stringify(this.items));
+    // console.log('diagnoses array on leave: ' + JSON.stringify(this.diagnose));
   }
 }
