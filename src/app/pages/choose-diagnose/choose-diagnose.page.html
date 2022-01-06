@@ -17,26 +17,30 @@
 
   <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
-      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}">
-        <ion-avatar slot="start">
-          <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
-        </ion-avatar>
-        <ion-label>
-          {{item.nursingDiagnosesNanda}}
-        </ion-label>
-        <ion-button (click)="selectItem(item)">
-          Auswählen
-          <ion-icon name="checkbox-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
+          <ion-accordion-group>
+            <ion-accordion *cdkVirtualFor="let item of items | filter: searchTerm; let i = index">
+              <ion-item slot="header" [ngClass]="{'item-selected': selectedItems.includes(item)}">
+                <ion-label>
+                  Titel
+                </ion-label>
+                <ion-button (click)="selectItem(item); $event.preventDefault(); $event.stopPropagation()">
+                  auswählen
+                  <ion-icon name="add-circle"></ion-icon>
+                </ion-button>
+              </ion-item>
+              <ion-item slot="content">
+                <p>{{item.nursingDiagnosesNanda}}</p>
+              </ion-item>
+            </ion-accordion>
+          </ion-accordion-group>
     </ion-list>
   </cdk-virtual-scroll-viewport>
 
   <ion-fab vertical="bottom" horizontal="end">
-    <ion-fab-button color="danger" (click)="add()">+</ion-fab-button>
+    <ion-fab-button color="secondary" (click)="add()">
+      <ion-icon name="options-outline"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 
 </ion-content>
-
-
 

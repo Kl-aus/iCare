@@ -49,7 +49,8 @@ export class BackendDataService {
 
   public deletePatient(patientId: any): Observable<any> {
     const httpOptions: any = {
-      headers: {
+      headers: {//overwritten by Interceptor
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Content-Type': 'application/json'
       }
     };
@@ -60,10 +61,20 @@ export class BackendDataService {
     return this.httpClient.delete('http://localhost:8080/patient/delete', httpOptions);
   }
 
-  public deletePatientDiagnoses(diagnoses: any[], patientId: any): Observable<any> {
-    return this.httpClient.post('http://localhost:8080/patient/deleteDiagnoses', {params: {patientId}});
+  public deletePatientDiagnoses(diagnose: any[], patientId: any): Observable<any> {
+    const httpOptions: any = {
+      headers: {//overwritten by Interceptor
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/json'
+      }
+    };
+    httpOptions.body = {
+      selectedPatientId: patientId,
+      diagnose
+    };
+    console.log('body send: ' + JSON.stringify(httpOptions.body));
+    return this.httpClient.delete('http://localhost:8080/patient/deleteDiagnoses', httpOptions);
   }
-
 
   public getRecommendations(diagnoses: any[]) {
     return this.httpClient.post<any>('http://localhost:8080/recommendation/byDiagnose', {diagnose: diagnoses});
@@ -72,6 +83,4 @@ export class BackendDataService {
   public setTest() {
     return this.httpClient.get<any>('http://localhost:8080/recommendation/setTest');
   }
-
-
 }

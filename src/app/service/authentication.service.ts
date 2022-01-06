@@ -23,13 +23,14 @@ export class AuthenticationService {
     this.isAuthenticated.next(false);
     this.loadToken();
   }
+
   async loadToken() {
     await this.dataService.get(TOKEN_KEY).then(res => {
       this.accessToken = JSON.stringify(res);
     }).catch(error => {
       alert('error while loading token, please log in! ');
     });
-    if (this.accessToken) {
+    if (this.accessToken.length > 0) {
         console.log('set token:', this.accessToken);
       //TODO: check if token is valid
         this.isAuthenticated.next(true);

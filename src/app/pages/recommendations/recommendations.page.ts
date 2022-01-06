@@ -31,10 +31,9 @@ export class RecommendationsPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
-
+  async ionViewWillEnter() {
     console.log('diagnose array on enter REC PAGE (from trans parameters): '+ JSON.stringify(this.diagnose));
-    this.backend.getRecommendations(this.diagnose).subscribe((data: any) => {
+    await this.backend.getRecommendations(this.diagnose).subscribe((data: any) => {
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport

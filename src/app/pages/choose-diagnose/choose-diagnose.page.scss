@@ -1,8 +1,8 @@
 cdk-virtual-scroll-viewport {
-  height: calc(100% - 68px);
+  height: calc(100% - 118px); // - 118px = footer and toolbar, only toolbar: 68px
   width: 100%;
 }
 .item-selected {
-  --ion-item-background: teal;
+  --ion-item-background: #7BDD89;
 }
 

@@ -22,35 +22,24 @@
 
   <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
-      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}">
-      <!--tappable (click)="selectItem(item)"-->
+      <ion-card>
+      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}"
+      tappable (click)="selectItem(item)">
           <ion-avatar slot="start">
             <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
           </ion-avatar>
           <ion-label>
-            {{item.nursingDiagnosesNanda}}
+            <p>{{item.nursingDiagnosesNanda}}</p>
           </ion-label>
-        <ion-button (click)="selectItem(item)">
-          Auswählen
-          <ion-icon name="checkbox-outline"></ion-icon>
-        </ion-button>
         </ion-item>
+      </ion-card>
     </ion-list>
   </cdk-virtual-scroll-viewport>
 
   <ion-fab vertical="bottom" horizontal="end">
-    <ion-fab-button color="danger" (click)="addDiagnose()">+</ion-fab-button>
+    <ion-fab-button color="primary" (click)="presentActionSheet()">
+      <ion-icon name="options-outline"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar color="primary">
-    <ion-title> </ion-title>
-    <ion-buttons>
-      <ion-button (click)="show()" slot="start">Zeige Empfehlungen
-        <!--ion-icon name="bag-add"></ion-icon-->
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>

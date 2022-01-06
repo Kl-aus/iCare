@@ -29,7 +29,7 @@ export class PatientsPage {
 
 
   async ionViewWillEnter() {
-    this.getPatients();
+    await this.getPatients();
   }
 
   async selectItem(item) {
@@ -50,7 +50,7 @@ export class PatientsPage {
     this.backend.deletePatient(this.patientSelected).subscribe(async (data: any) => {
       const alert = await this.alertController.create({
         header: 'Patient gelöscht:',
-        message: data,
+        message: '',
         buttons: ['OK'],
       });
       await alert.present();
@@ -67,7 +67,7 @@ export class PatientsPage {
 
   async getPatients() {
     this.items = []; //clear list to avoid duplicated entries
-    this.backend.getPatients().subscribe((data: any) => {
+    await this.backend.getPatients().subscribe((data: any) => {
       for (let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport

@@ -22,27 +22,30 @@
 
   <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500" > <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
-      <ion-item *cdkVirtualFor="let item of items | filter: searchTerm" [ngClass]="{'item-selected': patientSelected === item.patientId}"
-          tappable (click)="selectItem(item)">
-        <ion-avatar slot="start">
-          <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
-        </ion-avatar>
-        <ion-label>
-          {{item.firstName}}
-        </ion-label>
-        <ion-label>
-          {{item.lastName}}
-        </ion-label>
-
-      </ion-item>
+      <ion-card>
+        <ion-item *cdkVirtualFor="let item of items | filter: searchTerm" [ngClass]="{'item-selected': patientSelected === item.patientId}"
+            tappable (click)="selectItem(item)">
+          <ion-avatar slot="start">
+            <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{item.lastName}}</h2>
+              <p>{{item.firstName}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card>
     </ion-list>
   </cdk-virtual-scroll-viewport>
 
 <ion-fab vertical="bottom" horizontal="end">
-  <ion-fab-button color="danger" (click)="addPatient()">+</ion-fab-button>
+  <ion-fab-button color="success" (click)="addPatient()">
+    <ion-icon name="person-add-sharp"></ion-icon>
+  </ion-fab-button>
 </ion-fab>
   <ion-fab vertical="bottom" horizontal="start">
-    <ion-fab-button color="danger" (click)="deletePatient()">-</ion-fab-button>
+    <ion-fab-button color="danger" (click)="deletePatient()">
+      <ion-icon name="person-remove-sharp"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 
 </ion-content>
