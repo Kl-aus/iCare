@@ -25,15 +25,17 @@ export class MenuPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    if(UserDetails.roles == 'ROLE_MODERATOR') { //=== doesnt work,typeconversion(==) required -- why?
+    if(UserDetails.roles == 'ROLE_MODERATOR') {
       this.pages = [
         { title: 'core-functions', url: '/menu/core-functions' },
         { title: 'moderator', url: '/menu/moderator'},
+        { title: 'maps', url: '/menu/maps' },
         { path: 'profile', url: '/menu/profile'}
       ];
     } else {
       this.pages = [
         { title: 'core-functions', url: '/menu/core-functions' },
+        { title: 'maps', url: '/menu/maps' },
         { path: 'profile', url: '/menu/profile'}
       ];
     }

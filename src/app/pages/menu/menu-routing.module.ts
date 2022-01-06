@@ -19,6 +19,11 @@ const routes: Routes = [
         canActivate: [RoleGuard]
       },
       {
+        path: 'maps',
+        loadChildren: () => import('../../pages/maps/maps.module').then( m => m.MapsPageModule),
+        canActivate: [RoleGuard]
+      },
+      {
         path: 'profile',
         loadChildren: () => import('../../pages/profile/profile.module').then( m => m.ProfilePageModule)
       },

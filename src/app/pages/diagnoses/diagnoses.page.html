@@ -20,11 +20,11 @@
     </ion-col>
   </ion-row>
 
-  <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
+  <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"  [hidden]="hideContent"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
       <ion-card>
       <ion-item *cdkVirtualFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}"
-      tappable (click)="selectItem(item)">
+      tappable (click)="selectItem(item)" >
           <ion-avatar slot="start">
             <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
           </ion-avatar>
@@ -35,6 +35,10 @@
       </ion-card>
     </ion-list>
   </cdk-virtual-scroll-viewport>
+
+  <ion-text class="ion-text-center" color="primary">
+    <h2>{{message}}</h2>
+  </ion-text>
 
   <ion-fab vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" (click)="presentActionSheet()">

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import { BackendDataService } from '../../service/backend-data.service';
-import {AlertController, ToastController} from '@ionic/angular';
+import {AlertController, LoadingController, ToastController} from '@ionic/angular';
 import {Data, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
 import {DataService} from '../../service/data.service';
@@ -24,6 +24,7 @@ export class PatientsPage {
               private dataService: DataService,
               private toastCtrl: ToastController,
               private alertController: AlertController,
+              private loadingController: LoadingController,
               private router: Router,
               private authService: AuthenticationService) { }
 
@@ -62,18 +63,21 @@ export class PatientsPage {
       });
       await alert.present();
     });
-    this.getPatients();
   }
 
   async getPatients() {
+    const loading = await this.loadingController.create();
+    await loading.present();
     this.items = []; //clear list to avoid duplicated entries
-    await this.backend.getPatients().subscribe((data: any) => {
+    await this.backend.getPatients().subscribe(async (data: any) => {
       for (let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
       }
-    }, error => {
+      await loading.dismiss();
+    }, async error => {
       console.log(error);
+      await loading.dismiss();
     });
     this.patientSelected = await this.dataService.get(PATIENT_KEY);
   }

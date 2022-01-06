@@ -8,11 +8,12 @@ import {BackendDataService} from '../../service/backend-data.service';
   styleUrls: ['./recommendations.page.scss'],
 })
 
-export class RecommendationsPage implements OnInit {
+export class RecommendationsPage {
   diagnose = [];
   items = [];
-  showContent = false;
   navigation: any;
+  hideContent = true;
+  message = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private backend: BackendDataService) {
     this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
@@ -21,14 +22,10 @@ export class RecommendationsPage implements OnInit {
       // }
       if (this.router.getCurrentNavigation().extras.state) {
         this.diagnose = this.router.getCurrentNavigation().extras.state.diagnose;
-        this.showContent = true;
       } else  {
         this.diagnose = null;
       }
     });
-  }
-
-  ngOnInit() {
   }
 
   async ionViewWillEnter() {
@@ -37,22 +34,29 @@ export class RecommendationsPage implements OnInit {
       for(let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
+        if(this.items.length > 0) {
+          this.hideContent = false;
+          this.message = '';
+        } else {
+          this.hideContent = true;
+          this.message = 'Bitte wählen Sie eine oder mehrere Diagnose im "Diagnosen" Tab aus und wählen Sie "Zeige Empfehlung" aus dem Menü aus!';
+        }
       }
     }, error => {
+      this.hideContent = true;
+      this.message = 'Bitte wählen Sie eine oder mehrere Diagnose im "Diagnosen" Tab aus und wählen Sie "Zeige Empfehlung" aus dem Menü aus!';
       console.log(error);
     });
-    // console.log('rec items array on enter: ' + JSON.stringify(this.items));
-  }
-
-  selectItem(item: any) {
-
   }
 
   ionViewWillLeave() {
     this.diagnose = [];
     this.items = [];
-    this.showContent = false;
-    // console.log('items array on leave: ' + JSON.stringify(this.items));
-    // console.log('diagnoses array on leave: ' + JSON.stringify(this.diagnose));
+    this.message = '';
+    this.hideContent = true;
   }
+
+  selectItem(item: any) {
+  }
+
 }

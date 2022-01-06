@@ -20,6 +20,8 @@ export class DiagnosesPage {
   items = [];
   selectedItems = [];
   selectedPatientId = 0;
+  hideContent = true;
+  message = '';
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
@@ -36,13 +38,25 @@ export class DiagnosesPage {
     await this.getPatientDiagnoses();
   }
 
-  getPatientDiagnoses() {
+  ionViewWillLeave() {
+    this.message = '';
+    this.hideContent = true;
+  }
+
+  async getPatientDiagnoses() {
     this.items = [];
     this.selectedItems = [];
-    this.backend.getPatientDiagnoses(this.selectedPatientId).subscribe((data: any) => {
+    await this.backend.getPatientDiagnoses(this.selectedPatientId).subscribe((data: any) => {
       for (let i = 0; i < data.length; i++) {
         this.items.push(data[i]);
         this.items = [...this.items]; //Clone Array for updating Viewport
+      }
+      if(this.items.length > 0) {
+        this.hideContent = false;
+        this.message = '';
+      } else {
+        this.hideContent = true;
+        this.message = 'Bitte wählen Sie zuerst einen Patienten und fügen Sie danach Diagnosen hinzu!';
       }
     }, error => {
       console.log(error);
@@ -133,7 +147,6 @@ export class DiagnosesPage {
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
-    console.log('onDidDismiss resolved with role and data', role, data);
   }
 
   logout() {
