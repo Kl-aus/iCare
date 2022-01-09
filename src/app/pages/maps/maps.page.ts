@@ -10,7 +10,7 @@ declare var google: any;
 export class MapsPage implements OnInit {
   map: any;
   infoWindows: any = [];
-  markers: any;
+  markers: any=[];
 
   @ViewChild('map', {read: ElementRef, static: false}) mapRef: ElementRef;
   constructor() { }
@@ -38,10 +38,32 @@ export class MapsPage implements OnInit {
   }
 
   addMarkerToMap(markers) {
+    for(let marker of markers) {
+      let position = new google.maps.LatLng(marker.latitude, marker.longitude);
+      let mapMarker = new  google.maps.marker({
+        position: position,
+        title: marker.title,
+        latitude: marker.latitude,
+        longtitude: marker.longitude
+      });
 
+      mapMarker.setMap(this.map);
+      this.addInfoWindowToMarker(mapMarker);
+    }
   }
-  addInfoWindow(mapMarker: google.maps.Marker) {
 
+  private addInfoWindowToMarker(mapMarker: any) {
+    let infoWindowContent = '<div id="content">' + '<h2 id="firstHeading" class=firstHeading"></h2>' +
+                              '<p>Lat: ' + mapMarker.latitude + '</div>' +
+                                '</div>';
+    let infoWindow = new google.maps.infoWindow({
+      content: infoWindowContent
+    });
+
+    mapMarker.addListener('click', () => {
+      this.closeAllInfoWindows();
+      infoWindow.open(this.map, mapMarker);
+    });
+    this.infoWindows.push(infoWindow);
   }
-
 }

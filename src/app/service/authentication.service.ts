@@ -80,7 +80,5 @@ export class AuthenticationService {
     UserDetails.roles = this.userDetails[0].roles;
     UserDetails.email = this.userDetails[0].email;
     UserDetails.id = parseInt(this.userDetails[0].id, 10);
-
-    console.log('UserDetails: ' ,  this.userDetails[0]);
   }
 }
