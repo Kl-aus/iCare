@@ -41,10 +41,12 @@ export class LoginPage implements OnInit {
           await loading.dismiss();
           const alert = await this.alertController.create({
             header: 'Login fehlgeschlagen',
-            //message: res.error.error,
             message: 'Benutzername oder Passwort nicht gültig!',
             buttons: ['OK'],
           });
+          console.log('\n\rlogin error: ' + JSON.stringify(res));
+          console.log('\n\rlogin error: ' + res.error);
+          console.log('\n\rlogin error: ' + res.error.error);
           await alert.present();
         }
       );

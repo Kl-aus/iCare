@@ -20,12 +20,16 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let authReq = req;
-    this.getToken().then(r => this.token);
-    if (this.token != null) {
-     authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.token) });
+    if(req.url.includes('212.227.176.204')) {//TODO: dont forget to change
+      console.log('backend request..'+ req.url);
+      let authReq = req;
+      this.getToken().then(r => this.token);
+      if (this.token != null) {
+        authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.token) });
+      }
+      return next.handle(authReq);
     }
-    return next.handle(authReq);
+    return next.handle(req);
   }
 }
 

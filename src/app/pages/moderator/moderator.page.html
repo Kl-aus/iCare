@@ -13,6 +13,44 @@
 </ion-header>
 
 <ion-content>
+  <ion-segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="friends">
+      <ion-label>Auswählen</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="enemies">
+      <ion-label>Erstellen</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-item>
+    <ion-label>Diagnosen Titel</ion-label>
+    <ion-input type = "text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Diagnosen Erklärung</ion-label>
+    <ion-input type = "text"></ion-input>
+  </ion-item>
+
+  <ion-segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="friends">
+      <ion-label>Auswählen</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="enemies">
+      <ion-label>Erstellen</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-item>
+    <ion-label>Pflegemaßnahme Titel</ion-label>
+    <ion-input type = "text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Pflegemaßnahme Erklärung</ion-label>
+    <ion-input type = "text"></ion-input>
+  </ion-item>
+
 <ion-button (click)="test()">
   TEST
 </ion-button>

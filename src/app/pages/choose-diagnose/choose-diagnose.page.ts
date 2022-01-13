@@ -38,7 +38,6 @@ export class ChooseDiagnosePage implements OnInit {
     }, error => {
       console.log(error);
     });
-
   }
 
   async ionViewDidEnter() {

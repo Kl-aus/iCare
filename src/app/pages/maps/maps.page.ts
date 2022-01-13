@@ -1,6 +1,10 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {DataGvAtService} from '../../service/data-gv-at.service';
+import { Papa } from 'ngx-papaparse';
+import {LoadingController} from '@ionic/angular';
+import {Observable} from 'rxjs';
 
-declare var google: any;
+declare let google: any;
 
 @Component({
   selector: 'app-maps',
@@ -9,61 +13,101 @@ declare var google: any;
 })
 export class MapsPage implements OnInit {
   map: any;
-  infoWindows: any = [];
-  markers: any=[];
+  infoWindows: any[] = [];
+  markers: any[] = [];
+
+  csvData: any[] = [];
+  headerRow: unknown = [];
 
   @ViewChild('map', {read: ElementRef, static: false}) mapRef: ElementRef;
-  constructor() { }
+  constructor(private dataGvAt: DataGvAtService, private papa: Papa, private loadingController: LoadingController) {
+    this.getMapData();
+  }
 
   ngOnInit() {
   }
 
-
-  showMap() {
-    const location = new google.maps.LatLng(48.2394808451526, 16.377114982086727);
-    const options = {
-      center: location,
-      zoom: 15,
-      disableDefaultUI: true
-    };
-    this.map = new google.maps.Map(this.mapRef.nativeElement, options);
-    console.log('Location var: ' + JSON.stringify(location));
-  }
-
   ionViewDidEnter() {
-    this.showMap();
   }
 
-  getMapData() {
-  }
-
-  addMarkerToMap(markers) {
-    for(let marker of markers) {
-      let position = new google.maps.LatLng(marker.latitude, marker.longitude);
-      let mapMarker = new  google.maps.marker({
-        position: position,
-        title: marker.title,
-        latitude: marker.latitude,
-        longtitude: marker.longitude
-      });
-
-      mapMarker.setMap(this.map);
-      this.addInfoWindowToMarker(mapMarker);
+  closeAllInfoWindows() {
+    for (const window of this.infoWindows) {
+      window.close();
     }
   }
 
-  private addInfoWindowToMarker(mapMarker: any) {
-    let infoWindowContent = '<div id="content">' + '<h2 id="firstHeading" class=firstHeading"></h2>' +
-                              '<p>Lat: ' + mapMarker.latitude + '</div>' +
-                                '</div>';
-    let infoWindow = new google.maps.infoWindow({
+  private addInfoWindowtoMarker(marker) {
+    const infoWindowContent = '<div id="iw-content" >' + '<h2 id="iw-title">' + marker.title + '</h2>'
+      + '<p class="iw.text">'+ '<b> Adresse: </b> ' + marker.address + '\n\r' + '</p>'
+      + '<p class="iw.text">'+ '<b> Bezirk: </b> ' + marker.dist + '\n\r' + '</p>'
+      + '<p class="iw.text">' + '<b> Telefon: </b> ' + marker.tel + '</p>'
+      + '<ion-button id="navigate">+<p>navigieren</p></ion-button>'
+      + '</div>';
+
+    const infoWindow = new google.maps.InfoWindow({
       content: infoWindowContent
     });
 
-    mapMarker.addListener('click', () => {
+    marker.addListener('click', () => {
       this.closeAllInfoWindows();
-      infoWindow.open(this.map, mapMarker);
+      infoWindow.open(this.map, marker);
     });
+
+    google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+      document.getElementById('navigate').addEventListener('click', () => {
+        window.open('https://www.google.com/maps/dir/?api=1&origin=My+Location&destination='+ marker.lat + ',' + marker.lng+'&travelmode=driving' );
+      });
+    });
+
     this.infoWindows.push(infoWindow);
+  }
+
+  private addMarkerToMap(markers) {
+    for (let i = 0; i < markers.length -1; i++) {
+      console.log('markerlength:' + markers.length);
+      const tempString = markers[i][2].split(' ');
+      const position = new google.maps.LatLng(tempString[2].replace(/[^.\d]/g, ''), tempString[1].replace(/[^.\d]/g, ''));
+      const mapMarker = new google.maps.Marker({
+        position,
+        title: markers[i][6],
+        address: markers[i][5],
+        dist: markers[i][4],
+        tel: markers[i][8],
+        lat: tempString[2].replace(/[^.\d]/g, ''),
+        lng: tempString[1].replace(/[^.\d]/g, ''),
+      });
+      mapMarker.setMap(this.map);
+      this.addInfoWindowtoMarker(mapMarker);
+    }
+  }
+
+    private showMap() {
+    const location = new google.maps.LatLng(48.2394808451526, 16.377114982086727); //FH
+    const options = {
+      center: location,
+      zoom: 10,
+      disableDefaultUI: true
+    };
+    this.map = new google.maps.Map(this.mapRef.nativeElement, options);
+    this.addMarkerToMap(this.csvData);
+  }
+
+  private getMapData() {
+    this.dataGvAt.getAdviceCenters().subscribe( data => {
+      this.extractData(data);
+      this.showMap();
+    }, error => {
+      console.log('Error while fetching data from data.gv.at: ' + JSON.stringify(error.error));
+    });
+  }
+
+  private extractData(data) {
+    const csvData = data || '';
+      this.papa.parse(csvData, {
+      complete: parsedData => {
+        this.headerRow = parsedData.data.splice(0,1)[0];
+        this.csvData = parsedData.data;
+      }
+    });
   }
 }

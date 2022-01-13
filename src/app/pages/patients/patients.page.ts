@@ -5,6 +5,7 @@ import {AlertController, LoadingController, ToastController} from '@ionic/angula
 import {Data, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
 import {DataService} from '../../service/data.service';
+import {BehaviorSubject, from, Observable, of} from "rxjs";
 const PATIENT_KEY = 'patientId';
 
 @Component({
@@ -15,6 +16,7 @@ const PATIENT_KEY = 'patientId';
 
 export class PatientsPage {
   items = [];
+  itemsObs = from(this.items);
   patientSelected: number;
   searchTerm: string;
 
@@ -26,12 +28,17 @@ export class PatientsPage {
               private alertController: AlertController,
               private loadingController: LoadingController,
               private router: Router,
-              private authService: AuthenticationService) { }
+              private authService: AuthenticationService) {
 
-
-  async ionViewWillEnter() {
-    await this.getPatients();
+    this.backend.dataObservable.subscribe((data: any) => {
+      this.items.push(data);
+    });
   }
+
+  ionViewWillEnter() {
+    this.getPatients();
+  }
+
 
   async selectItem(item) {
     this.patientSelected = parseInt(item.patientId,10);
@@ -65,22 +72,18 @@ export class PatientsPage {
     });
   }
 
-  async getPatients() {
-    const loading = await this.loadingController.create();
-    await loading.present();
-    this.items = []; //clear list to avoid duplicated entries
-    await this.backend.getPatients().subscribe(async (data: any) => {
-      for (let i = 0; i < data.length; i++) {
-        this.items.push(data[i]);
-        this.items = [...this.items]; //Clone Array for updating Viewport
-      }
-      await loading.dismiss();
-    }, async error => {
-      console.log(error);
-      await loading.dismiss();
-    });
-    this.patientSelected = await this.dataService.get(PATIENT_KEY);
-  }
+   async getPatients() {
+     this.items = []; //clear list to avoid duplicated entries
+     this.backend.getPatients().subscribe((data: any) => {
+       for (let i = 0; i < data.length; i++) {
+         this.items.push(data[i]);
+         this.items = [...this.items]; //Clone Array for updating Viewport
+       }
+     }, error => {
+       console.log(error);
+     });
+     this.patientSelected = await this.dataService.get(PATIENT_KEY);
+   }
 
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));

@@ -21,7 +21,6 @@ const routes: Routes = [
       {
         path: 'maps',
         loadChildren: () => import('../../pages/maps/maps.module').then( m => m.MapsPageModule),
-        canActivate: [RoleGuard]
       },
       {
         path: 'profile',

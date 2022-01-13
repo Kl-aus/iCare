@@ -13,7 +13,7 @@ export class RoleGuard implements CanActivate {
   }
 
   canActivate(): boolean {
-    if (UserDetails.roles == 'ROLE_MODERATOR') { //Lint: === doesnt work,typeconversion(==) required -- why?
+    if (UserDetails.roles == 'ROLE_MODERATOR') {
       return true;
     } else {
       this.presentAlert(); //TODO: returned promise ?

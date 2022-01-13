@@ -20,6 +20,7 @@ export class AuthenticationService {
   userDetails = [];
 
   constructor(private httpClient: HttpClient, private dataService: DataService) {
+    this.isAuthenticated.next(false);
     this.loadToken();
   }
 
@@ -27,9 +28,9 @@ export class AuthenticationService {
     await this.dataService.get(TOKEN_KEY).then(res => {
       this.accessToken = JSON.stringify(res);
     }).catch(error => {
-      alert('error while loading token, please log in! ');
+      alert('Nicht berechtigt, bitte neu einloggen! ');
     });
-    if (this.accessToken.length > 0) {
+    if (this.accessToken.length > 0) { // TODO: filtert nicht auf null!!!!
         console.log('set token:', this.accessToken);
       //TODO: check if token is valid
         this.isAuthenticated.next(true);
@@ -40,7 +41,7 @@ export class AuthenticationService {
 
   login(credentials: {username; password}): Observable<any> {
     this.userDetails = [];
-    return this.httpClient.post('http://localhost:8080/api/auth/signin', credentials).pipe(
+    return this.httpClient.post('http://212.227.176.204:8080/api/auth/signin', credentials).pipe(
       tap((data: any) =>
         this.userDetails.push(data)), //works only with push?! clone json didnt work: data isnt accessable/login doesnt work
       map((data: any) => data.accessToken),
@@ -61,7 +62,7 @@ export class AuthenticationService {
   }
 
   register(credentials: {username; password; email}): Observable<any> {
-    return this.httpClient.post('http://localhost:8080/api/auth/signup', credentials).pipe(
+    return this.httpClient.post('http://212.227.176.204:8080/api/auth/signup', credentials).pipe(
       map((data: any) => data));
   }
 

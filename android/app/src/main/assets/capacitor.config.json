@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "iCare",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
