@@ -4,7 +4,7 @@ import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {ActionSheetController, AlertController, NavParams, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
-import {DataService} from '../../service/data.service';
+import {Storage} from '@capacitor/storage';
 
 const DIAGNOSES_KEY = 'diagnoses';
 const PATIENT_KEY = 'patientId';
@@ -23,18 +23,33 @@ export class DiagnosesPage {
   hideContent = true;
   message = '';
 
-  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
-
-  constructor(private backend: BackendDataService,
-              private dataService: DataService,
+  constructor(private backendDataService: BackendDataService,
               private toastCtrl: ToastController,
               private alertController: AlertController,
               private authService: AuthenticationService,
               private actionSheetController: ActionSheetController,
-              private router: Router) { }
+              private router: Router) {
+    this.backendDataService.patientDiagnosesObservable.subscribe((data: any[]) => {
+      this.items = [];
+      this.selectedItems = [];
+      this.items = data;
+
+      if(this.items.length > 0) {
+            this.hideContent = false;
+            this.message = '';
+          } else {
+            this.hideContent = true;
+            this.message = 'Bitte wählen Sie zuerst einen Patienten und fügen Sie danach Diagnosen hinzu!';
+          }
+    }, error => { //TODO Error handling data = null (switch to page without choosen patient)
+          console.log(error);
+    });
+  }
 
   async ionViewWillEnter() {
-    this.selectedPatientId = await this.dataService.get(PATIENT_KEY);
+    await Storage.get({key: PATIENT_KEY}).then(res => {
+      this.selectedPatientId = Number(res.value);
+    });
     await this.getPatientDiagnoses();
   }
 
@@ -44,23 +59,7 @@ export class DiagnosesPage {
   }
 
   async getPatientDiagnoses() {
-    this.items = [];
-    this.selectedItems = [];
-    await this.backend.getPatientDiagnoses(this.selectedPatientId).subscribe((data: any) => {
-      for (let i = 0; i < data.length; i++) {
-        this.items.push(data[i]);
-        this.items = [...this.items]; //Clone Array for updating Viewport
-      }
-      if(this.items.length > 0) {
-        this.hideContent = false;
-        this.message = '';
-      } else {
-        this.hideContent = true;
-        this.message = 'Bitte wählen Sie zuerst einen Patienten und fügen Sie danach Diagnosen hinzu!';
-      }
-    }, error => {
-      console.log(error);
-    });
+    await this.backendDataService.getPatientDiagnoses(this.selectedPatientId);
   }
 
   selectItem(item) {
@@ -75,24 +74,8 @@ export class DiagnosesPage {
     this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
   }
 
-  deleteDiagnose() {
-    this.backend.deletePatientDiagnoses(this.selectedItems, this.selectedPatientId).subscribe(async (data: any) => {
-      const alert = await this.alertController.create({
-        header: 'Diagnose gelöscht:',
-        message: '',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }, async error => {
-      const alert = await this.alertController.create({
-        header: 'Fehler',
-        message: 'Bitte überprüfen Sie Ihre Internetverbindung und probieren sie es nochmal!',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    });
-    this.getPatientDiagnoses();
-    this.items = [...this.items]; //Clone Array for updating Viewport
+  async deleteDiagnose() {
+    this.backendDataService.deletePatientDiagnoses(this.selectedItems, this.selectedPatientId);
   }
 
   show() {

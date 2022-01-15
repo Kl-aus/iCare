@@ -21,7 +21,7 @@ export class PatientDetailsPage implements OnInit {
   dateValue: any;
 
   constructor(public formBuilder: FormBuilder,
-              private backend: BackendDataService,
+              private backendDataService: BackendDataService,
               private alertController: AlertController,
               private loadingController: LoadingController,
               private router: Router) {  }
@@ -38,32 +38,8 @@ export class PatientDetailsPage implements OnInit {
   }
 
  async addPatientToDb() {
-
-   const loading = await this.loadingController.create();
-   await loading.present();
-  console.log('UserDetailsID: ' + UserDetails.id);
-    this.backend.postPatient(this.patientDetailsForm.value).subscribe(async res => {
-          await loading.dismiss();
-          const alert = await this.alertController.create({
-          header: 'Patient erstellt',
-          //message: res.error.error,
-          message: 'Bitte wählen Sie nun zuerst den Patient und dann die Pflegediagnosen aus',
-          buttons: ['OK'],
-        });
-        await alert.present();
-        await this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
-      },
-        async (res) => {
-          await loading.dismiss();
-          const alert = await this.alertController.create({
-            header: 'Erstellen fehlgeschlagen',
-            //message: res.error.error,
-            message: 'Überprüfen Sie Eingabedaten und Internetverbindung',
-            buttons: ['OK'],
-          });
-          await alert.present();
-        }
-    );
+    this.backendDataService.postPatient(this.patientDetailsForm.value);
+    this.backendDataService.getPatients(); //new get because Database generates id;
   }
 
   get firstName() {

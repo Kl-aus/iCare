@@ -9,17 +9,17 @@ import {filter, map, take} from 'rxjs/operators';
 })
 export class AutoLoginGuard implements CanLoad {
 
-  constructor(private authService: AuthenticationService, private router: Router) {
-  }
+  constructor(private authService: AuthenticationService, private router: Router) {}
 
   canLoad(): Observable<boolean> {
     return this.authService.isAuthenticated.pipe(
       filter(val => val !== null), take(1),
       map(isAuthenticated => {
         if (isAuthenticated) {
-          console.log('autoLoginGUARD: '+ isAuthenticated);
-          this.router.navigateByUrl('/menu/core-functions', {replaceUrl: true} );
+          console.log('autoLoginGUARD: is auth '+ isAuthenticated);
+          this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
         } else {
+          console.log('autoLoginGUARD: is auth '+ isAuthenticated);
           return true;
         }
       })

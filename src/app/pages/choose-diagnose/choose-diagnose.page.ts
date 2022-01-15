@@ -5,6 +5,7 @@ import {DataService} from '../../service/data.service';
 import {AlertController, LoadingController, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
+import {Storage} from '@capacitor/storage';
 
 const PATIENT_KEY = 'patientId';
 
@@ -15,41 +16,24 @@ const PATIENT_KEY = 'patientId';
 })
 export class ChooseDiagnosePage implements OnInit {
   searchTerm: string;
-  // TODO Respone Klasse
   items = [];
   selectedItems = [];
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
 
-  constructor(private backend: BackendDataService,
+  constructor(private backendDataService: BackendDataService,
               private dataService: DataService,
               private alertController: AlertController,
               private loadingController: LoadingController,
-              private toastCtrl: ToastController,
               private authService: AuthenticationService,
-              private router: Router) { }
-
-  ngOnInit() {
-    this.backend.getDiagnose().subscribe((data: any) => {
-      for(let i = 0; i < data.length; i++) {
-        this.items.push(data[i]);
-        this.items = [...this.items]; //Clone Array for updating Viewport
-      }
-    }, error => {
-      console.log(error);
+              private router: Router) {
+    this.backendDataService.diagnosesObservable.subscribe((data: any[]) => {
+      this.items = data;
     });
   }
 
-  async ionViewDidEnter() {
-    this.items = [];
-    await this.backend.getDiagnose().subscribe((data: any) => {
-      for(let i = 0; i < data.length; i++) {
-        this.items.push(data[i]);
-        this.items = [...this.items]; //Clone Array for updating Viewport
-      }
-    }, error => {
-      console.log(error);
-    });
+  ngOnInit() {
+    this.backendDataService.getDiagnose();
   }
 
   selectItem(item) {
@@ -62,8 +46,7 @@ export class ChooseDiagnosePage implements OnInit {
   }
 
   async add() {
-    const selectedPatientId = await this.dataService.get(PATIENT_KEY);
-    console.log('patientId: ' + selectedPatientId);
+    const selectedPatientId = await Storage.get({key: PATIENT_KEY});
     if (this.selectedItems.length < 1) {
       const alert = await this.alertController.create({
         header: 'Auswahl',
@@ -72,30 +55,7 @@ export class ChooseDiagnosePage implements OnInit {
       });
       await alert.present();
     }
-    const loading = await this.loadingController.create();
-    await loading.present();
-     // const diagnoses = JSON.stringify(this.selectedItems);
-    this.backend.postDiagnoses(this.selectedItems, selectedPatientId).subscribe(async res => {
-        await loading.dismiss();
-        const alert = await this.alertController.create({
-          header: 'Diagnosen hinzugefügt',
-          message: 'Bitte wählen Sie nun die Pflegediagnosen aus um Pflegeempfehlungen anzuzeigen',
-          buttons: ['OK'],
-        });
-        await alert.present();
-        this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
-      },
-      async (res) => {
-        await loading.dismiss();
-        const alert = await this.alertController.create({
-          header: 'Erstellen fehlgeschlagen',
-          //message: res.error.error,
-          message: 'Überprüfen Sie Eingabedaten und Internetverbindung',
-          buttons: ['OK'],
-        });
-        await alert.present();
-      }
-    );
+    await this.backendDataService.postDiagnoses(this.selectedItems, selectedPatientId.value);
   }
 
   backButton() {

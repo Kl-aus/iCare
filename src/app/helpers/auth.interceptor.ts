@@ -3,29 +3,31 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Storage } from '@capacitor/storage';
 import { Observable } from 'rxjs';
+import {AuthenticationService} from '../service/authentication.service';
 const TOKEN_KEY = 'my-token';
 const TOKEN_HEADER_KEY = 'Authorization';
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  token: string;
-  constructor() {
-    this.getToken().then(r => this.token);
+  // token: string;
+
+  constructor(private authService: AuthenticationService) {
+    // this.getToken().then(r => this.token);
   }
 
-  async getToken() {
-    const accessToken = await Storage.get({key: TOKEN_KEY});
-    this.token = accessToken.value;
-  }
+  // async getToken() {
+  //   const accessToken = await Storage.get({key: TOKEN_KEY});
+  //   this.token = accessToken.value;
+  // }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(req.url.includes('212.227.176.204')) {//TODO: dont forget to change
-      console.log('backend request..'+ req.url);
+    if(req.url.includes('localhost')) {
       let authReq = req;
-      this.getToken().then(r => this.token);
-      if (this.token != null) {
-        authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.token) });
+      if (this.authService.accessToken != null) {
+        authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.authService.accessToken) });
+      } else {
+        console.log('Interceptor: token from auth service is null:' + this.authService.accessToken);
       }
       return next.handle(authReq);
     }

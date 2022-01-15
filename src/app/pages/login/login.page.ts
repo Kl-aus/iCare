@@ -13,13 +13,14 @@ import {Data, Router} from '@angular/router';
 })
 export class LoginPage implements OnInit {
   credentials: FormGroup;
-  private storageString: string;
 
   constructor(private fb: FormBuilder,
               private authService: AuthenticationService,
               private alertController: AlertController,
               private loadingController: LoadingController,
-              private router: Router) { }
+              private router: Router) {
+    authService.loadToken();
+  }
 
   async ngOnInit(): Promise<void> {
     this.credentials = this.fb.group({
@@ -44,9 +45,6 @@ export class LoginPage implements OnInit {
             message: 'Benutzername oder Passwort nicht gültig!',
             buttons: ['OK'],
           });
-          console.log('\n\rlogin error: ' + JSON.stringify(res));
-          console.log('\n\rlogin error: ' + res.error);
-          console.log('\n\rlogin error: ' + res.error.error);
           await alert.present();
         }
       );

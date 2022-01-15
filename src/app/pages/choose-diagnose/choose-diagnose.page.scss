@@ -6,3 +6,21 @@ cdk-virtual-scroll-viewport {
   --ion-item-background: #7BDD89;
 }
 
+.headerItem {
+  --min-height: 100px;
+}
+
+ion-button {
+  font-size: 12px;
+  text-transform: lowercase;
+}
+
+ion-icon {
+  margin: 2px;
+}
+
+.diagnoseTitle {
+  color: #3880ff; //primary
+  font-size: 14px;
+  font-weight: bold;
+}

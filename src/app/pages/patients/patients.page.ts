@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import { BackendDataService } from '../../service/backend-data.service';
-import {AlertController, LoadingController, ToastController} from '@ionic/angular';
-import {Data, Router} from '@angular/router';
-import {AuthenticationService} from '../../service/authentication.service';
-import {DataService} from '../../service/data.service';
-import {BehaviorSubject, from, Observable, of} from "rxjs";
+import { LoadingController, ToastController} from '@ionic/angular';
+import { Router} from '@angular/router';
+import { AuthenticationService } from '../../service/authentication.service';
+import { Storage } from '@capacitor/storage';
+
 const PATIENT_KEY = 'patientId';
 
 @Component({
@@ -14,35 +14,35 @@ const PATIENT_KEY = 'patientId';
   styleUrls: ['./patients.page.scss'],
 })
 
-export class PatientsPage {
+export class PatientsPage implements OnInit{
   items = [];
-  itemsObs = from(this.items);
   patientSelected: number;
   searchTerm: string;
+  selectedItemIndex: number;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
-  constructor(private backend: BackendDataService,
-              private dataService: DataService,
+  constructor(private backendDataService: BackendDataService,
               private toastCtrl: ToastController,
-              private alertController: AlertController,
               private loadingController: LoadingController,
               private router: Router,
               private authService: AuthenticationService) {
+    this.backendDataService.getPatients();
+  }
 
-    this.backend.dataObservable.subscribe((data: any) => {
-      this.items.push(data);
+  ngOnInit(): void {
+    this.backendDataService.patientsObservable.subscribe((data: any[]) => {
+      this.items = data;
     });
   }
 
-  ionViewWillEnter() {
-    this.getPatients();
+  ionViewDidEnter() {
   }
 
-
-  async selectItem(item) {
+  async selectItem(item, i) {
+    this.selectedItemIndex = i;
     this.patientSelected = parseInt(item.patientId,10);
-    await this.dataService.save(PATIENT_KEY, item.patientId)
+    await Storage.set({key: PATIENT_KEY, value: item.patientId})
       .then(r => {
         console.log('patient selected, id: ' + this.patientSelected);
       }).catch(error => {
@@ -55,38 +55,12 @@ export class PatientsPage {
   }
 
   deletePatient() {
-    this.backend.deletePatient(this.patientSelected).subscribe(async (data: any) => {
-      const alert = await this.alertController.create({
-        header: 'Patient gelöscht:',
-        message: '',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }, async error => {
-      const alert = await this.alertController.create({
-        header: 'Fehler',
-        message: 'Bitte überprüfen Sie Ihre Internetverbindung und probieren sie es nochmal!',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    });
+    this.backendDataService.deletePatient(this.patientSelected);
   }
-
-   async getPatients() {
-     this.items = []; //clear list to avoid duplicated entries
-     this.backend.getPatients().subscribe((data: any) => {
-       for (let i = 0; i < data.length; i++) {
-         this.items.push(data[i]);
-         this.items = [...this.items]; //Clone Array for updating Viewport
-       }
-     }, error => {
-       console.log(error);
-     });
-     this.patientSelected = await this.dataService.get(PATIENT_KEY);
-   }
 
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
+
 
 }

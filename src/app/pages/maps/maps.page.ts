@@ -21,10 +21,19 @@ export class MapsPage implements OnInit {
 
   @ViewChild('map', {read: ElementRef, static: false}) mapRef: ElementRef;
   constructor(private dataGvAt: DataGvAtService, private papa: Papa, private loadingController: LoadingController) {
-    this.getMapData();
+    this.dataGvAt.mapsObservable.subscribe((data: any) => {
+      this.extractData(data);
+      this.showMap();
+    });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const loading = await this.loadingController.create({
+      message: 'lade ...',
+    });
+    await loading.present();
+    this.getMapData();
+    await loading.dismiss();
   }
 
   ionViewDidEnter() {
@@ -41,7 +50,7 @@ export class MapsPage implements OnInit {
       + '<p class="iw.text">'+ '<b> Adresse: </b> ' + marker.address + '\n\r' + '</p>'
       + '<p class="iw.text">'+ '<b> Bezirk: </b> ' + marker.dist + '\n\r' + '</p>'
       + '<p class="iw.text">' + '<b> Telefon: </b> ' + marker.tel + '</p>'
-      + '<ion-button id="navigate">+<p>navigieren</p></ion-button>'
+      + '<ion-button id="navigate"> <p> navigieren </p> </ion-button>'
       + '</div>';
 
     const infoWindow = new google.maps.InfoWindow({
@@ -93,15 +102,10 @@ export class MapsPage implements OnInit {
   }
 
   private getMapData() {
-    this.dataGvAt.getAdviceCenters().subscribe( data => {
-      this.extractData(data);
-      this.showMap();
-    }, error => {
-      console.log('Error while fetching data from data.gv.at: ' + JSON.stringify(error.error));
-    });
+    this.dataGvAt.getAdviceCenters();
   }
 
-  private extractData(data) {
+  private extractData(data) { //ERROR TypeError: FileReader.readAsText: Argument 1 does not implement interface Blob. <-- seems to be a firefox problem
     const csvData = data || '';
       this.papa.parse(csvData, {
       complete: parsedData => {
