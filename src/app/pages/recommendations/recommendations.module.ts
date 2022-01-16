@@ -8,16 +8,18 @@ import { RecommendationsPageRoutingModule } from './recommendations-routing.modu
 
 import { RecommendationsPage } from './recommendations.page';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SwiperModule,
-    Ng2SearchPipeModule,
-    RecommendationsPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SwiperModule,
+        Ng2SearchPipeModule,
+        RecommendationsPageRoutingModule,
+        MatExpansionModule
+    ],
   declarations: [RecommendationsPage]
 })
 export class RecommendationsPageModule {}

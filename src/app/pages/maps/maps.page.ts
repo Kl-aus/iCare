@@ -50,7 +50,7 @@ export class MapsPage implements OnInit {
       + '<p class="iw.text">'+ '<b> Adresse: </b> ' + marker.address + '\n\r' + '</p>'
       + '<p class="iw.text">'+ '<b> Bezirk: </b> ' + marker.dist + '\n\r' + '</p>'
       + '<p class="iw.text">' + '<b> Telefon: </b> ' + marker.tel + '</p>'
-      + '<ion-button id="navigate"> <p> navigieren </p> </ion-button>'
+      + '<ion-button id="navigate"> <p>navigieren</p> </ion-button>'
       + '</div>';
 
     const infoWindow = new google.maps.InfoWindow({

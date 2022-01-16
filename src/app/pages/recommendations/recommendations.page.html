@@ -9,56 +9,39 @@
 
 <ion-content>
 
-  <ion-list [hidden]="hideContent">
-    <ion-accordion-group>
-      <ion-accordion *ngFor="let item of items | filter: searchTerm; let i = index" id = "acc" class = "accBigHeader" >
-        <ion-item slot="header" >
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-label class = "recommendationTitle">
-                  {{item.careRecommendationTitle}}
-                </ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+  <ion-list [hidden]="hideContent" *ngFor="let item of items | filter: searchTerm; let i = index">
+  <div class="accordion-container">
 
-        </ion-item>
-        <ion-item slot="content">
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{item.careRecommendationTitle}}
+          </mat-panel-title>
+          <mat-panel-description>
 
-            <ion-grid>
-                  <swiper #swiper [config] = "config" class="swiper-container">
-                    <!--ng-template swiperSlide *ngFor = "let img of images">
-                   <img [src] = "img">
-                 </ng-template-->
-                    <ng-template swiperSlide class="swiper-slide">
-                      <img  class="swiper-slide-container"  height="150 px" width="150 px" src = "../../../assets/img/rand1.jpg">
-                    </ng-template>
-                    <ng-template swiperSlide class="swiper-slide">
-                      <img class="swiper-slide-container"  height="150 px" width="150 px" src = "../../../assets/img/rand2.jpeg">
-                    </ng-template>
-                    <ng-template swiperSlide class="swiper-slide">
-                      <img class="swiper-slide-container"  height="150 px" width="150 px" src = "../../../assets/img/rand3.png">
-                    </ng-template>
-                    <ng-template swiperSlide class="swiper-slide">
-                      <img class="swiper-slide-container"  height="150 px" width="150 px" src = "../../../assets/img/rand4.jpg">
-                    </ng-template>
-                  </swiper>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <swiper #swiper [config] = "config" class="swiper-container">
+          <ng-template swiperSlide class="swiper-slide">
+            <img  class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand1.jpg">
+          </ng-template>
+          <ng-template swiperSlide class="swiper-slide">
+            <img class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand2.jpeg">
+          </ng-template>
+          <ng-template swiperSlide class="swiper-slide">
+            <img class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand3.png">
+          </ng-template>
+          <ng-template swiperSlide class="swiper-slide">
+            <img class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand4.jpg">
+          </ng-template>
+        </swiper>
+        <p>This is the primary content of the panel.</p>
+        {{item.careRecommendation}}
+      </mat-expansion-panel>
+    </mat-accordion>
 
-              <ion-row>
-                <ion-col>
-
-                  <h2>{{item.careRecommendationTitle}}</h2>
-                  <p>------------------------</p>
-                  <p>{{item.careRecommendation}}</p>
-
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-
-        </ion-item>
-      </ion-accordion>
-    </ion-accordion-group>
+  </div>
   </ion-list>
   <ion-text class="ion-text-center" color="primary">
     <h2>{{message}}</h2>
