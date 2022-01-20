@@ -5,8 +5,10 @@ import { LoadingController, ToastController} from '@ionic/angular';
 import { Router} from '@angular/router';
 import { AuthenticationService } from '../../service/authentication.service';
 import { Storage } from '@capacitor/storage';
+import {DataService} from '../../service/data.service';
 
 const PATIENT_KEY = 'patientId';
+const TEST = 'test';
 
 @Component({
   selector: 'app-patients',
@@ -19,11 +21,11 @@ export class PatientsPage implements OnInit{
   patientSelected: number;
   searchTerm: string;
   selectedItemIndex: number;
-
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(private backendDataService: BackendDataService,
               private toastCtrl: ToastController,
+              private dataService: DataService,
               private loadingController: LoadingController,
               private router: Router,
               private authService: AuthenticationService) {
@@ -37,6 +39,7 @@ export class PatientsPage implements OnInit{
   }
 
   ionViewDidEnter() {
+
   }
 
   async selectItem(item, i) {
@@ -61,6 +64,5 @@ export class PatientsPage implements OnInit{
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
-
 
 }

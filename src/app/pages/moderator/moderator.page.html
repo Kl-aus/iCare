@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Diagnosen</ion-title>
+    <ion-title>Moderator</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
@@ -13,45 +13,183 @@
 </ion-header>
 
 <ion-content>
-  <ion-segment (ionChange)="segmentChanged($event)">
-    <ion-segment-button value="friends">
-      <ion-label>Auswählen</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="enemies">
-      <ion-label>Erstellen</ion-label>
-    </ion-segment-button>
-  </ion-segment>
 
-  <ion-item>
-    <ion-label>Diagnosen Titel</ion-label>
-    <ion-input type = "text"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label>Diagnosen Erklärung</ion-label>
-    <ion-input type = "text"></ion-input>
-  </ion-item>
-
-  <ion-segment (ionChange)="segmentChanged($event)">
-    <ion-segment-button value="friends">
-      <ion-label>Auswählen</ion-label>
+  <ion-segment [(ngModel)]="segmentType" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="author" [disabled] = "authorSegment">
+      <ion-icon name="information-circle"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="enemies">
-      <ion-label>Erstellen</ion-label>
+    <ion-segment-button value="diagnose" [disabled] = "diagnoseSegment">
+      <ion-icon name="medical"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="measure" [disabled] = "measureSegment">
+      <ion-icon name="medkit"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="save" [disabled] = "lastSegment">
+      <ion-icon name="cloud-done"></ion-icon>
     </ion-segment-button>
   </ion-segment>
 
-  <ion-item>
-    <ion-label>Pflegemaßnahme Titel</ion-label>
-    <ion-input type = "text"></ion-input>
-  </ion-item>
 
-  <ion-item>
-    <ion-label>Pflegemaßnahme Erklärung</ion-label>
-    <ion-input type = "text"></ion-input>
-  </ion-item>
+  <div [ngSwitch]="segmentType">
+    <div *ngSwitchCase="'author'">
 
-<ion-button (click)="test()">
-  TEST
-</ion-button>
+      <div class="textTitle">
+        <h2>Author & Quellen</h2>
+      </div>
+
+      <form (ngSubmit)="submitInfoForm()" [formGroup]="author">
+        <div class="input-group">
+          <ion-item>
+            <ion-label position="floating">Name</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+          </ion-item>
+          <div *ngIf="(name.dirty || name.touched) && name.errors" class="errors">
+            <span *ngIf="name.errors?.required">Eingabe erforderlich!</span>
+          </div>
+
+          <ion-item>
+            <ion-label position="floating">Quellen</ion-label>
+            <ion-textarea type="text" formControlName="literatureSources" inputmode="text" auto-grow="true" maxlength="300"></ion-textarea>
+          </ion-item>
+          <div *ngIf="(literatureSources.dirty || literatureSources.touched) && literatureSources.errors" class="errors">
+            <span *ngIf="literatureSources.errors?.required">Quellenangabe erforderlich!</span>
+          </div>
+        </div>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-button type="submit" >speichern</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+
+    </div>
+  </div>
+
+
+  <div [ngSwitch]="segmentType">
+        <div *ngSwitchCase="'diagnose'">
+
+          <div class="textTitle">
+            <h2>Erstelle eine Diagnose!</h2>
+          </div>
+
+          <form (ngSubmit)="submitDiagnoseForm()" [formGroup]="diagnoseData">
+            <div class="input-group">
+              <ion-item>
+                <ion-label position="floating">Diagnosen Titel</ion-label>
+                <ion-textarea type="text" formControlName="diagnoseTitle" inputmode="text" auto-grow="true" maxlength="300"></ion-textarea>
+              </ion-item>
+              <div *ngIf="(diagnoseTitle.dirty || diagnoseTitle.touched) && diagnoseTitle.errors" class="errors">
+                <span *ngIf="diagnoseTitle.errors?.required">Diagnosen Titel erforderlich!</span>
+              </div>
+
+              <ion-item>
+                <ion-label position="floating">Diagnosen Beschreibung</ion-label>
+                <ion-textarea type="text" formControlName="diagnoseDescription" inputmode="text" auto-grow="true" maxlength="1500"></ion-textarea>
+              </ion-item>
+              <div *ngIf="(diagnoseDescription.dirty || diagnoseDescription.touched) && diagnoseDescription.errors" class="errors">
+                <span *ngIf="diagnoseDescription.errors?.required">Diagnosen Beschreibung erforderlich!</span>
+              </div>
+            </div>
+            <ion-grid>
+              <ion-row>
+                <ion-col class="ion-text-center">
+                  <ion-button type="submit" >speichern</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+        </form>
+
+      </div>
+    </div>
+
+    <div [ngSwitch]="segmentType">
+      <div *ngSwitchCase="'measure'">
+
+        <div class="textTitle">
+          <h2>Erstelle eine PflegeMaßnahme</h2>
+        </div>
+
+          <form (ngSubmit)="submitRecommendationForm()" [formGroup]="recommendationsData">
+            <div class="input-group">
+
+              <ion-item>
+                <ion-label position="floating">Empfehlungs Titel</ion-label>
+                <ion-textarea type="text" formControlName="recommendationTitle" inputmode="text" auto-grow="true" maxlength="300"></ion-textarea>
+              </ion-item>
+              <div *ngIf="(recommendationTitle.dirty || recommendationTitle.touched) && recommendationTitle.errors" class="errors">
+                <span *ngIf="recommendationTitle.errors?.required">Empfehlungstitel erforderlich!</span>
+              </div>
+
+              <ion-item>
+                <ion-label position="floating">Empfehlung Beschreibung</ion-label>
+                <ion-textarea type="text" formControlName="recommendationDescription" inputmode="text" auto-grow="true" maxlength="1500"></ion-textarea>
+              </ion-item>
+              <div *ngIf="(recommendationDescription.dirty || recommendationDescription.touched) && recommendationDescription.errors" class="errors">
+                <span *ngIf="recommendationDescription.errors?.required">Empfehlungs Beschreibung erforderlich!</span>
+              </div>
+              <ion-grid>
+                <ion-row>
+                  <ion-col class="ion-text-center">
+                    <ion-button type="submit" >speichern & hinzufügen</ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </form>
+
+      </div>
+    </div>
+
+    <div [ngSwitch]="segmentType">
+      <div *ngSwitchCase="'save'">
+
+          <div>
+            <h2 class="textTitle">Gegenüberstellung:</h2>
+          </div>
+          <ion-card>
+            <ion-label>
+              <h3 class="textTitle">Diagnose:</h3>
+            </ion-label>
+            <ion-grid>
+              <ion-row>
+                <ion-col class="ion-text-center">
+                  <ion-chip>
+                    <ion-icon name="medical"></ion-icon>
+                    <ion-label>{{diagnose._nursingDiagnosesNanda}}</ion-label>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+          </ion-card>
+          <ion-card>
+            <ion-label>
+              <h3 class="textTitle">Plfegemaßnahmen:</h3>
+            </ion-label>
+            <ion-grid>
+              <ion-row>
+                <ion-col class="ion-text-center">
+                    <ion-chip *ngFor="let item of nursingMeasures">
+                      <ion-icon name="medkit"></ion-icon>
+                      <ion-label>{{item.careRecommendationTitle}}</ion-label>
+                    </ion-chip>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-button (click)="saveRecommendation()" >Pflegeempfehlung speichern</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </div>
+    </div>
+
 </ion-content>

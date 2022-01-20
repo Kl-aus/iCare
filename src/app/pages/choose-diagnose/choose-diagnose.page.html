@@ -18,7 +18,7 @@
   <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500"> <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
           <ion-accordion-group>
-            <ion-accordion *cdkVirtualFor="let item of items | filter: searchTerm; let i = index" id = "acc" class = "accBigHeader">
+            <ion-accordion *cdkVirtualFor="let item of items | filter: searchTerm; let i = index">
               <ion-item slot="header" [ngClass]="{'item-selected': selectedItems.includes(item)}" class="headerItem">
                 <ion-grid>
 
@@ -50,8 +50,8 @@
   </cdk-virtual-scroll-viewport>
 
   <ion-fab vertical="bottom" horizontal="end">
-    <ion-fab-button color="secondary" (click)="add()">
-      <ion-icon name="options-outline"></ion-icon>
+    <ion-fab-button color="primary" (click)="add()">
+      <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 

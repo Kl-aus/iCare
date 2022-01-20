@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {async, BehaviorSubject} from 'rxjs';
 import { UserDetails } from '../helpers/userDetails';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
@@ -11,7 +10,6 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class BackendDataService {
-  // public patients = [];
   public patientsObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public patientDiagnosesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public diagnosesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -178,8 +176,32 @@ export class BackendDataService {
      this.recommendationsObservable.next(data);
     });
   }
+  /*########## Moderator requests ##########*/
 
-  public setTest() {
-    return this.httpClient.get<any>('http://localhost:8080/recommendation/setTest');
-  }
+
+  public saveRecommendation(authorInfo: any, diagnose: any, nursingMeasures: any[]) { //pass objects here ?! this.diagnose ...
+    const body = {
+      name: authorInfo._name,
+      author: authorInfo._author,
+      nursingDiagnosesNanda: diagnose._nursingDiagnosesNanda,
+      nursingDiagnosesDescription: diagnose._nursingDiagnosesDescription,
+      nursingMeasures: nursingMeasures
+    };
+
+    this.httpClient.post<any>('http://localhost:8080/recommendation/save', body).subscribe(async (data: any) => {
+      const alert = await this.alertController.create({
+        header: 'Pflegeempfehlung gespeichert',
+        message: '',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }, async error => {
+        const alert = await this.alertController.create({
+          header: 'Fehler',
+          message: 'Bitte überprüfen Sie Ihre Internetverbindung und probieren sie es nochmal!',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      });
+    }
 }

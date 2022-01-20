@@ -1,0 +1,41 @@
+ion-content{
+  --padding-top: 10%;
+  --padding-start: 2%;
+  --padding-end: 2%;
+  align-content: center;
+  //--background:
+}
+
+.textTitle {
+  margin: 15px;
+  font-size: 20px;
+  color: #3880ff;
+}
+
+.errors{
+  font-size: small;
+  color: #fff;
+  background: var(--ion-color-danger);
+  padding-left: 10%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.input-group {
+  background: transparent;
+  //border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.textTitle {
+  text-align: center;
+}
+
+ion-button{
+  margin-top: 10%;
+}
+
+ion-card {
+  padding: 2px;
+}

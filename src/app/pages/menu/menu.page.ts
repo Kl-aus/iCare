@@ -27,16 +27,16 @@ export class MenuPage implements OnInit {
   ionViewWillEnter() {
     if(UserDetails.roles == 'ROLE_MODERATOR') {
       this.pages = [
-        { title: 'core-functions', url: '/menu/core-functions' },
+        { title: 'pflege', url: '/menu/core-functions' },
         { title: 'moderator', url: '/menu/moderator'},
         { title: 'maps', url: '/menu/maps' },
-        { path: 'profile', url: '/menu/profile'}
+        // { title: 'Symbole', url: '/menu/profile'}
       ];
     } else {
       this.pages = [
-        { title: 'core-functions', url: '/menu/core-functions' },
+        { title: 'Pflege', url: '/menu/core-functions' },
         { title: 'maps', url: '/menu/maps' },
-        { path: 'profile', url: '/menu/profile'}
+        // { title: 'profile', url: '/menu/profile'}
       ];
     }
   }

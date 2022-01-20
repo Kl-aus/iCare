@@ -10,6 +10,7 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {authInterceptorProviders} from './helpers/auth.interceptor';
 import {IonicStorageModule} from '@ionic/storage-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -22,8 +23,10 @@ import {IonicStorageModule} from '@ionic/storage-angular';
     FormsModule,
     IonicStorageModule.forRoot({
     name: 'mydb',
-    driverOrder: [CordovaSQLiteDriver._driver ,Drivers.IndexedDB, Drivers.LocalStorage]
-  })],
+      // eslint-disable-next-line no-underscore-dangle
+    driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+  }),
+    BrowserAnimationsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, authInterceptorProviders],
   bootstrap: [AppComponent],
 })

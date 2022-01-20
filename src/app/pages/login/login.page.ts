@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../service/authentication.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertController, LoadingController} from '@ionic/angular';
-import {Data, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 
 
@@ -26,7 +26,7 @@ export class LoginPage implements OnInit {
     this.credentials = this.fb.group({
         //email: ['', [Validators.required, Validators.email]],
         username: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.minLength(6)]] //TODO: Span Text wird nicht angezeigt
+        password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -49,7 +49,6 @@ export class LoginPage implements OnInit {
         }
       );
     }
-
 
   get email() {
     return this.credentials.get('email');

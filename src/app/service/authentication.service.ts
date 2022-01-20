@@ -17,19 +17,20 @@ const SETTINGS_KEY ='my-settings';
 export class AuthenticationService {
   isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   accessToken = '';
-  userDetails = [];
+  userDetails: any;
 
   constructor(private httpClient: HttpClient, private dataService: DataService) {
     this.loadToken();
-    this.loadSettings();
   }
 
   async loadToken() {
-      await Storage.get({key: TOKEN_KEY}).then(res => {
+      await Storage.get({key: TOKEN_KEY}).then(async  res => {
         this.accessToken = res.value;
         if (this.accessToken) {
           console.log('LOAD TOKEN: not null ' + this.accessToken);
-          this.isAuthenticated.next(true);
+          await this.loadSettings().then(()=> {
+            this.isAuthenticated.next(true);
+          });
         } else {
           console.log('LOAD TOKEN: null ' + this.accessToken);
           this.isAuthenticated.next(false);
@@ -68,14 +69,10 @@ export class AuthenticationService {
   }
 
   async saveSettings() {
-    UserDetails.username = this.userDetails[0].username;
-    UserDetails.roles = this.userDetails[0].roles;
-    UserDetails.email = this.userDetails[0].email;
-    UserDetails.id = this.userDetails[0].id;
-
-    await Storage.set({key: SETTINGS_KEY, value: JSON.stringify(UserDetails)})
+    // await this.dataService.save(SETTINGS_KEY, this.userDetails);
+     await Storage.set({key: SETTINGS_KEY, value: this.userDetails})
       .then(r => {
-      console.log('user details saved');
+      console.log('user details saved', JSON.stringify(UserDetails));
      }).catch(error => {
         console.log('error while saving user details: '+ error);
      });
@@ -85,14 +82,8 @@ export class AuthenticationService {
   async loadSettings() {
     await Storage.get({key: SETTINGS_KEY})
       .then(res => {
-        const userDetailsObject = JSON.parse(res.value);
-        UserDetails.username = userDetailsObject.username;
-        UserDetails.roles = userDetailsObject.roles;
-        UserDetails.email = userDetailsObject.email;
-        UserDetails.id = userDetailsObject.id;
-        this.isAuthenticated.next(true);
+        console.log(this.userDetails);
       }).catch(error => {
-        this.isAuthenticated.next(false);
         console.log('user details not loaded, please log in');
       });
   }
