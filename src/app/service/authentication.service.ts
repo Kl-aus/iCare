@@ -50,6 +50,7 @@ export class AuthenticationService {
       tap(async _ => {
         await this.loadToken();
         await this.saveSettings();
+        await this.loadSettings();
         this.isAuthenticated.next(true);
       }),
     );
@@ -69,22 +70,34 @@ export class AuthenticationService {
   }
 
   async saveSettings() {
-    // await this.dataService.save(SETTINGS_KEY, this.userDetails);
-     await Storage.set({key: SETTINGS_KEY, value: this.userDetails})
-      .then(r => {
-      console.log('user details saved', JSON.stringify(UserDetails));
-     }).catch(error => {
-        console.log('error while saving user details: '+ error);
-     });
-    console.log('USER DETAILS : ' + UserDetails.id + '' + UserDetails.username);
+    await this.dataService.saveData(SETTINGS_KEY, this.userDetails[0]).subscribe((data: any) =>{
+      console.log('user data saved');
+    }, error => {
+      console.log('error saving user data' + error);
+    });
+
+    //  await Storage.set({key: SETTINGS_KEY, value: this.userDetails})
+    //   .then(r => {
+    //   console.log('user details saved', JSON.stringify(UserDetails));
+    //  }).catch(error => {
+    //     console.log('error while saving user details: '+ error);
+    //  });
+    // console.log('USER DETAILS : ' + UserDetails.id + '' + UserDetails.username);
   }
 
   async loadSettings() {
-    await Storage.get({key: SETTINGS_KEY})
-      .then(res => {
-        console.log(this.userDetails);
-      }).catch(error => {
-        console.log('user details not loaded, please log in');
-      });
+   await this.dataService.loadUserDetails().subscribe((data: any) =>{
+      console.log('user data loaded');
+      // eslint-disable-next-line no-underscore-dangle
+    }, error => {
+      console.log('error loading user data' + error);
+    });
+
+    // await Storage.get({key: SETTINGS_KEY})
+    //   .then(res => {
+    //     console.log(this.userDetails);
+    //   }).catch(error => {
+    //     console.log('user details not loaded, please log in');
+    //   });
   }
 }

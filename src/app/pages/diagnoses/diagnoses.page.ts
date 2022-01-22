@@ -5,6 +5,7 @@ import {ActionSheetController, AlertController, NavParams, ToastController} from
 import {AuthenticationService} from '../../service/authentication.service';
 import {Router} from '@angular/router';
 import {Storage} from '@capacitor/storage';
+import {DataService} from '../../service/data.service';
 
 const DIAGNOSES_KEY = 'diagnoses';
 const PATIENT_KEY = 'patientId';
@@ -24,6 +25,7 @@ export class DiagnosesPage {
   message = '';
 
   constructor(private backendDataService: BackendDataService,
+              private dataService: DataService,
               private toastCtrl: ToastController,
               private alertController: AlertController,
               private authService: AuthenticationService,
@@ -47,8 +49,10 @@ export class DiagnosesPage {
   }
 
   async ionViewWillEnter() {
-    await Storage.get({key: PATIENT_KEY}).then(res => {
-      this.selectedPatientId = Number(res.value);
+    await this.dataService.getData(PATIENT_KEY).subscribe(data => {
+      this.selectedPatientId = data;
+    }, error => {
+      console.log('get patientId from storage failed ' + error);
     });
     await this.getPatientDiagnoses();
   }
@@ -59,7 +63,7 @@ export class DiagnosesPage {
   }
 
   async getPatientDiagnoses() {
-    await this.backendDataService.getPatientDiagnoses(this.selectedPatientId);
+    await this.backendDataService.getPatientDiagnoses();
   }
 
   selectItem(item) {

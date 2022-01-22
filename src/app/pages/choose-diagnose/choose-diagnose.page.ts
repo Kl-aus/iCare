@@ -18,6 +18,7 @@ export class ChooseDiagnosePage implements OnInit {
   searchTerm: string;
   items = [];
   selectedItems = [];
+  selectedPatientId: number;
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
 
@@ -42,20 +43,24 @@ export class ChooseDiagnosePage implements OnInit {
     } else {
       this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
     }
-    console.log(this.selectedItems);
   }
 
   async add() {
-    const selectedPatientId = await Storage.get({key: PATIENT_KEY});
-    if (this.selectedItems.length < 1) {
-      const alert = await this.alertController.create({
-        header: 'Auswahl',
-        message: 'Bitte wählen Diagnosen aus!',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }
-    await this.backendDataService.postDiagnoses(this.selectedItems, selectedPatientId.value);
+    this.dataService.getData(PATIENT_KEY).subscribe(async (data: number) => {
+      this.selectedPatientId = data;
+      if (this.selectedItems.length < 1) {
+        const alert = await this.alertController.create({
+          header: 'Auswahl',
+          message: 'Bitte wählen Diagnosen aus!',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      } else {
+        await this.backendDataService.postDiagnoses(this.selectedItems, this.selectedPatientId);
+      }
+    }, error => {
+      console.log('error loading patientId from storage: ' + error);
+    });
   }
 
   backButton() {

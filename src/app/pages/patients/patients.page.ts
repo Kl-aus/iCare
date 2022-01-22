@@ -29,7 +29,6 @@ export class PatientsPage implements OnInit{
               private loadingController: LoadingController,
               private router: Router,
               private authService: AuthenticationService) {
-    this.backendDataService.getPatients();
   }
 
   ngOnInit(): void {
@@ -39,18 +38,17 @@ export class PatientsPage implements OnInit{
   }
 
   ionViewDidEnter() {
-
+    this.backendDataService.getPatients();
   }
 
   async selectItem(item, i) {
     this.selectedItemIndex = i;
     this.patientSelected = parseInt(item.patientId,10);
-    await Storage.set({key: PATIENT_KEY, value: item.patientId})
-      .then(r => {
-        console.log('patient selected, id: ' + this.patientSelected);
-      }).catch(error => {
-        alert('error while saving patient: '+ error);
-      });
+    this.dataService.saveData(PATIENT_KEY, this.patientSelected).subscribe(result => {
+      console.log('patient selected, id: ' + this.patientSelected);
+    }, error => {
+      console.log('save patientId failed ' + error);
+    });
   }
 
   addPatient() {

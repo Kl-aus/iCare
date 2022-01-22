@@ -4,6 +4,9 @@ import {async, BehaviorSubject} from 'rxjs';
 import { UserDetails } from '../helpers/userDetails';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
+import {DataService} from './data.service';
+
+const PATIENT_KEY = 'patientId';
 
 
 @Injectable({
@@ -17,6 +20,7 @@ export class BackendDataService {
 
 
   constructor(private httpClient: HttpClient,
+              private dataService: DataService,
               private alertController: AlertController,
               private loadingController: LoadingController,
               private router: Router) {  }
@@ -29,9 +33,16 @@ export class BackendDataService {
     });
   }
 
-  public getPatientDiagnoses(selectedPatientId) {
-    this.httpClient.get<any>('http://localhost:8080/diagnoses/getPatientDiagnoses',{params: {selectedPatientId}}).subscribe((data: any) => {
-      this.patientDiagnosesObservable.next(data);
+  public getPatientDiagnoses() {
+    this.dataService.getData(PATIENT_KEY).subscribe((data: number) => {
+      const selectedPatientId = data;
+      this.httpClient.get<any>('http://localhost:8080/diagnoses/getPatientDiagnoses',{params: {selectedPatientId}}).subscribe((res: any) => {
+        this.patientDiagnosesObservable.next(res);
+      }, error => {
+        console.log('error fetching patientdiagnoses form backend: ' + JSON.stringify(error));
+      });
+    }, error => {
+      console.log('error loading patientId from storage: ' + error);
     });
   }
 
@@ -83,7 +94,7 @@ export class BackendDataService {
         message: '',
         buttons: ['OK'],
       });
-      await this.getPatientDiagnoses(patientId);
+      await this.getPatientDiagnoses();
       await alert.present();
     }, async error => {
       const alert = await this.alertController.create({
@@ -97,12 +108,10 @@ export class BackendDataService {
 
   /*########## Patient requests ##########*/
   public getPatients() {
-    // this.patients = [];
-    const id = UserDetails.id;
-    console.log('backend-data-service: getPatients(): userId: ' + id + ' UserDetailsClass: ' + UserDetails.id);
+    console.log('USER id backenddata: ' + this.dataService.userDetailsModel.id);
+    const id = this.dataService.userDetailsModel.id;
     this.httpClient.get<any>('http://localhost:8080/patient/byId', {params: {id}}).subscribe((data: any) => {
        this.patientsObservable.next(data);
-       // this.patients = [...this.patients];
     }, error => {
        console.log(error);
      });

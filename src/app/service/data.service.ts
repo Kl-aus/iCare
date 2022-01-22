@@ -3,35 +3,18 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, from, of} from 'rxjs';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import {Storage} from '@ionic/storage-angular';
-import {filter, switchMap} from 'rxjs/operators';
+import {filter, map, switchMap, tap} from 'rxjs/operators';
+import {UserDetailsModel} from '../models/userDetailsModel';
 
 @Injectable({
   providedIn: 'root'
 })
-
  export class DataService {
+  userDetailsModel: UserDetailsModel  = null;
 
-  /* Capacitor Storage */
-  // userData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  //
-  // async save(key: string, value: any) {
-  //   await Storage.set({ key, value });
-  // }
-  //
-  // async get(key: string) {
-  //   await Storage.get({key}).then(data => {
-  //     this.userData.next(data.value);
-  //   });
-  // }
-  //
-  // async remove(key: string) {
-  //   await Storage.remove({ key });
-  // }
-
-  /* Ionic Storage v3 CRUD */
-
-private storageReadyObservable  = new BehaviorSubject(false);
-  private storageDataObservable: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  /* Ionic Storage v3*/
+  public userDetailsReadyObservable = new BehaviorSubject(false);
+  private storageReadyObservable = new BehaviorSubject(false);
 
   constructor(private storage: Storage) {
     this.init();
@@ -43,11 +26,11 @@ private storageReadyObservable  = new BehaviorSubject(false);
 
   async init() {
     await this.storage.defineDriver(CordovaSQLiteDriver);
-    await this.storage.create().then(_=> {
+    await this.storage.create().then(_ => {
       this.storageReadyObservable.next(true);
     }, error => {
-        console.log('create storage failed: ' + error);
-      });
+      console.log('create storage failed: ' + error);
+    });
   }
 
   async addDatatoArray(key: any, item: any) {
@@ -65,14 +48,14 @@ private storageReadyObservable  = new BehaviorSubject(false);
   saveData(key: any, item: any) {
     return this.storageReadyObservable.pipe(
       filter(ready => ready),
-      switchMap(_=> from(this.storage.set(key, item)))
+      switchMap(_ => from(this.storage.set(key, item)))
     );
   }
 
   removeData(key: any) {
     return this.storageReadyObservable.pipe(
       filter(ready => ready),
-      switchMap(_=> from(this.storage.remove(key)))
+      switchMap(_ => from(this.storage.remove(key)))
     );
   }
 
@@ -83,7 +66,17 @@ private storageReadyObservable  = new BehaviorSubject(false);
   getData(key: any) {
     return this.storageReadyObservable.pipe(
       filter(ready => ready),
-      switchMap(_=> from(this.storage.get(key)))
+      switchMap(_ => from(this.storage.get(key)))
+    );
+  }
+
+  loadUserDetails() {
+    return this.storageReadyObservable.pipe(
+      filter(ready => ready),
+      switchMap(_ => from(this.storage.get('my-settings').then(data => {
+        this.userDetailsModel = data;
+      }))),
+      tap( _=> this.userDetailsReadyObservable.next(true))
     );
   }
 }
