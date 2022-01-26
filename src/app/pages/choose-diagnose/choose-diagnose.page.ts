@@ -4,7 +4,7 @@ import {BackendDataService} from '../../service/backend-data.service';
 import {DataService} from '../../service/data.service';
 import {AlertController, LoadingController, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Storage} from '@capacitor/storage';
 
 const PATIENT_KEY = 'patientId';
@@ -19,6 +19,7 @@ export class ChooseDiagnosePage implements OnInit {
   items = [];
   selectedItems = [];
   selectedPatientId: number;
+  patientItem: any;
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
 
@@ -27,9 +28,21 @@ export class ChooseDiagnosePage implements OnInit {
               private alertController: AlertController,
               private loadingController: LoadingController,
               private authService: AuthenticationService,
+              private route: ActivatedRoute,
               private router: Router) {
     this.backendDataService.diagnosesObservable.subscribe((data: any[]) => {
       this.items = data;
+    });
+    this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
+      // if (params && params.diagnose) { //for navigateByUrl
+      //   this.diagnose = JSON.parse(params.diagnose);
+      // }
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.patientItem = this.router.getCurrentNavigation().extras.state.patient;
+      } else {
+        this.patientItem = {};
+        this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
+      }
     });
   }
 
@@ -37,12 +50,13 @@ export class ChooseDiagnosePage implements OnInit {
     this.backendDataService.getDiagnose();
   }
 
-  selectItem(item) {
+  selectItem(item, event) {
     if(!this.selectedItems.includes(item)) {
       this.selectedItems.push(item);
     } else {
       this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
     }
+    event.stopPropagation();
   }
 
   async add() {
@@ -70,6 +84,4 @@ export class ChooseDiagnosePage implements OnInit {
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
-
-
 }

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import {AuthenticationService} from '../service/authentication.service';
 import {filter, map, take} from 'rxjs/operators';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +17,7 @@ export class AuthGuard implements CanLoad {
       filter(val => val !== null), take(1),
       map(isAuthenticated => {
         if (isAuthenticated) {
-        console.log('GUARD:' + isAuthenticated);
+        console.log('authentication guard:' + isAuthenticated);
         return true;
       } else {
         this.router.navigateByUrl('/login');

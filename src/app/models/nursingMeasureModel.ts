@@ -1,10 +1,10 @@
-export class NursingMeasureModel {
+import {Images} from './images';
 
+export class NursingMeasureModel {
+  images: Images[] = [];
   private careRecommendation: string;
   private careRecommendationTitle: string;
-
   constructor(_careRecommendation: string, _careRecommendationTitle: string) {
-
     this.careRecommendation = _careRecommendation;
     this.careRecommendationTitle = _careRecommendationTitle;
   }

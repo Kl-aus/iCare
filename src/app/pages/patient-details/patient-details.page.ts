@@ -39,7 +39,7 @@ export class PatientDetailsPage implements OnInit {
 
  async addPatientToDb() {
     this.backendDataService.postPatient(this.patientDetailsForm.value);
-    this.backendDataService.getPatients(); //new get because Database generates id;
+    this.backendDataService.getPatients();
   }
 
   get firstName() {

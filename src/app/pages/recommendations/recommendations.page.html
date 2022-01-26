@@ -8,7 +8,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-list [hidden]="hideContent" *ngFor="let item of items | filter: searchTerm; let i = index">
   <div class="accordion-container">
 
@@ -22,17 +21,8 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <swiper #swiper [config] = "config" class="swiper-container">
-          <ng-template swiperSlide class="swiper-slide">
-            <img  class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand1.jpg">
-          </ng-template>
-          <ng-template swiperSlide class="swiper-slide">
-            <img class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand2.jpeg">
-          </ng-template>
-          <ng-template swiperSlide class="swiper-slide">
-            <img class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand3.png">
-          </ng-template>
-          <ng-template swiperSlide class="swiper-slide">
-            <img class="swiper-slide-container"  height="300 px" width="300 px" src = "../../../assets/img/rand4.jpg">
+          <ng-template swiperSlide class="swiper-slide" *ngFor = "let img of item.images">
+            <img  class="swiper-slide-container"  height="300 px" width="300 px" [src] = "img.data">
           </ng-template>
         </swiper>
         <h2>{{item.careRecommendationTitle}}</h2>

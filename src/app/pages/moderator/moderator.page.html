@@ -14,7 +14,7 @@
 
 <ion-content>
 
-  <ion-segment [(ngModel)]="segmentType" (ionChange)="segmentChanged($event)">
+  <ion-segment [(ngModel)]="segmentType">
     <ion-segment-button value="author" [disabled] = "authorSegment">
       <ion-icon name="information-circle"></ion-icon>
     </ion-segment-button>
@@ -130,6 +130,26 @@
               <div *ngIf="(recommendationDescription.dirty || recommendationDescription.touched) && recommendationDescription.errors" class="errors">
                 <span *ngIf="recommendationDescription.errors?.required">Empfehlungs Beschreibung erforderlich!</span>
               </div>
+
+              <h3 *ngIf="images.length == 0" class="ion-padding ion-text-center">Please Select Image!</h3>
+              <ion-list>
+                <ion-item *ngFor="let file of images">
+                  <ion-thumbnail slot="start">
+                    <ion-img [src]="file.data"></ion-img>
+                  </ion-thumbnail>
+                  <ion-label class="ion-text-wrap">
+                    {{ file.imageName }}
+                  </ion-label>
+                  <ion-button slot="end" fill="clear" (click)="deleteImage(file)">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+              <ion-button fill="clear" expand="full" color="primary" (click)="selectImage()">
+                <ion-icon slot="start" name="camera"></ion-icon>
+                wähle Foto
+              </ion-button>
+
               <ion-grid>
                 <ion-row>
                   <ion-col class="ion-text-center">
@@ -139,7 +159,6 @@
               </ion-grid>
             </div>
           </form>
-
       </div>
     </div>
 
@@ -172,9 +191,9 @@
             <ion-grid>
               <ion-row>
                 <ion-col class="ion-text-center">
-                    <ion-chip *ngFor="let item of nursingMeasures">
+                    <ion-chip>
                       <ion-icon name="medkit"></ion-icon>
-                      <ion-label>{{item.careRecommendationTitle}}</ion-label>
+                      <ion-label>{{measure._careRecommendationTitle}}</ion-label>
                     </ion-chip>
                 </ion-col>
               </ion-row>

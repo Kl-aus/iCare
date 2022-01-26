@@ -4,7 +4,26 @@
 //}
 
 .item-selected {
-  --ion-item-background:  #ad8456;
+  --ion-item-background:  #2B8C68;
 }
 
 
+ion-checkbox {
+  margin-right: 50px;
+}
+
+.patient-chip {
+  color: #3880ff; //primary
+  font-size: 24px;
+  font-weight: normal;
+}
+
+.big-icon {
+  font-size: 48px;
+}
+
+ion-chip {
+  height: 50px;
+  padding: 25px;
+  border-radius: 25px;
+}

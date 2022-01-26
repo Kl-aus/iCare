@@ -6,13 +6,13 @@
       <ion-label>Patienten</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="diagnoses">
+    <ion-tab-button tab="diagnoses" [disabled]="diagnosesTabDisabled">
       <ion-icon name="medical"></ion-icon>
       <ion-label>Diagnosen</ion-label>
 
     </ion-tab-button>
 
-    <ion-tab-button tab="recommendations">
+    <ion-tab-button tab="recommendations" disabled="true">
       <ion-icon name="medkit"></ion-icon>
       <ion-label>Pflege</ion-label>
     </ion-tab-button>

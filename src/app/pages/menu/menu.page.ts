@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
-import {AuthenticationService} from '../../service/authentication.service';
-import {UserDetails} from '../../helpers/userDetails';
+import { AuthenticationService } from '../../service/authentication.service';
+import { DataService } from '../../service/data.service';
 
 @Component({
   selector: 'app-menu',
@@ -13,7 +13,9 @@ export class MenuPage implements OnInit {
   selectedPath = '';
   pages = [];
 
-  constructor(private router: Router, private authService: AuthenticationService) {
+  constructor(private router: Router,
+              private dataService: DataService,
+              private authService: AuthenticationService) {
     this.router.events.subscribe((event: RouterEvent) => {
       if(event && event.url) {
         this.selectedPath = event.url;
@@ -25,7 +27,7 @@ export class MenuPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    if(UserDetails.roles == 'ROLE_MODERATOR') {
+    if(this.dataService.userDetailsModel.roles[0] == 'ROLE_MODERATOR') {
       this.pages = [
         { title: 'pflege', url: '/menu/core-functions' },
         { title: 'moderator', url: '/menu/moderator'},

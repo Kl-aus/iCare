@@ -14,17 +14,19 @@
 
 <ion-content>
 
-  <ion-row class="ion-align-items-center">
-    <ion-col size="auto">
-      <ion-searchbar placeholder="Suche Patienten" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
-    </ion-col>
-  </ion-row>
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <ion-searchbar placeholder="Suche Patienten" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
-  <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1500" > <!-- ItemSize: with cards for example choose the height of the card, min and max for the PIXELS to render (px hight/min px....) -->
     <ion-list>
-      <ion-card>
-        <ion-item *cdkVirtualFor="let item of items | filter: searchTerm; let i = index;" [ngClass]="{'item-selected': patientSelected === item.patientId}"
-            tappable (click)="selectItem(item, i)">
+        <ion-item *ngFor="let item of items | filter: searchTerm;" [ngClass]="{'item-selected': patientSelected === item.patientId}"
+            tappable (click)="selectItem(item)">
           <ion-avatar slot="start">
             <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
           </ion-avatar>
@@ -32,20 +34,12 @@
             <h2>{{item.lastName}}</h2>
               <p>{{item.firstName}}</p>
           </ion-label>
+          <ion-icon slot="end" name="trash" (click)="deletePatient(item); $event.preventDefault(); $event.stopPropagation()"></ion-icon> <!--Trash icon? really?-->
         </ion-item>
-      </ion-card>
     </ion-list>
-  </cdk-virtual-scroll-viewport>
-
 <ion-fab vertical="bottom" horizontal="end">
   <ion-fab-button color="success" (click)="addPatient()">
     <ion-icon name="person-add-sharp"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-  <ion-fab vertical="bottom" horizontal="start">
-    <ion-fab-button color="danger" (click)="deletePatient()">
-      <ion-icon name="person-remove-sharp"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
 </ion-content>

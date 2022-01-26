@@ -24,33 +24,44 @@ export class AuthenticationService {
   }
 
   async loadToken() {
-      await Storage.get({key: TOKEN_KEY}).then(async  res => {
-        this.accessToken = res.value;
-        if (this.accessToken) {
-          console.log('LOAD TOKEN: not null ' + this.accessToken);
-          await this.loadSettings().then(()=> {
-            this.isAuthenticated.next(true);
-          });
-        } else {
-          console.log('LOAD TOKEN: null ' + this.accessToken);
-          this.isAuthenticated.next(false);
-        }
-    }).catch(error => {
-        console.log('Storage get error: '+ error);
+    this.dataService.getData(TOKEN_KEY).subscribe(async  res => {
+      this.accessToken = res;
+      if (this.accessToken) {
+        await this.loadSettings().then(()=> {
+          this.isAuthenticated.next(true);
+        });
+      } else {
+        this.isAuthenticated.next(false);
+      }
+    },error => {
+      console.log('Storage get error: '+ error);
     });
   }
+
+  // login(credentials: {username; password}): Observable<any> {
+  //   this.userDetails = [];
+  //   return this.httpClient.post('http://localhost:8080/api/auth/signin', credentials).pipe(
+  //     tap((data: any) =>
+  //       this.userDetails.push(data)),
+  //     map((data: any) => data.accessToken),
+  //     switchMap(accessToken => this.dataService.saveData(TOKEN_KEY, accessToken)),
+  //     tap(async _ => {
+  //       await this.loadToken();
+  //       await this.saveSettings();
+  //       await this.loadSettings();
+  //       this.isAuthenticated.next(true);
+  //     }),
+  //   );
+  // }
 
   login(credentials: {username; password}): Observable<any> {
     this.userDetails = [];
     return this.httpClient.post('http://localhost:8080/api/auth/signin', credentials).pipe(
-      tap((data: any) =>
-        this.userDetails.push(data)), //works only with push?! clone json didnt work: data isnt accessable/login doesnt work
-      map((data: any) => data.accessToken),
-      switchMap(accessToken => from(Storage.set({key: TOKEN_KEY, value: accessToken}))),
-      tap(async _ => {
+      map((data: any) => this.dataService.userDetailsModel = data),
+      switchMap( _=> this.dataService.saveData(TOKEN_KEY, this.dataService.userDetailsModel.accessToken)),
+      tap(async _=> {
         await this.loadToken();
         await this.saveSettings();
-        await this.loadSettings();
         this.isAuthenticated.next(true);
       }),
     );
@@ -70,34 +81,17 @@ export class AuthenticationService {
   }
 
   async saveSettings() {
-    await this.dataService.saveData(SETTINGS_KEY, this.userDetails[0]).subscribe((data: any) =>{
+    await this.dataService.saveData(SETTINGS_KEY, this.dataService.userDetailsModel).subscribe((data: any) =>{
       console.log('user data saved');
     }, error => {
       console.log('error saving user data' + error);
     });
-
-    //  await Storage.set({key: SETTINGS_KEY, value: this.userDetails})
-    //   .then(r => {
-    //   console.log('user details saved', JSON.stringify(UserDetails));
-    //  }).catch(error => {
-    //     console.log('error while saving user details: '+ error);
-    //  });
-    // console.log('USER DETAILS : ' + UserDetails.id + '' + UserDetails.username);
   }
 
   async loadSettings() {
-   await this.dataService.loadUserDetails().subscribe((data: any) =>{
-      console.log('user data loaded');
-      // eslint-disable-next-line no-underscore-dangle
+   await this.dataService.loadUserDetails().subscribe(_=>{
     }, error => {
       console.log('error loading user data' + error);
     });
-
-    // await Storage.get({key: SETTINGS_KEY})
-    //   .then(res => {
-    //     console.log(this.userDetails);
-    //   }).catch(error => {
-    //     console.log('user details not loaded, please log in');
-    //   });
   }
 }

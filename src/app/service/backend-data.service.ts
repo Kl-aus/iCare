@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {async, BehaviorSubject} from 'rxjs';
-import { UserDetails } from '../helpers/userDetails';
+import {BehaviorSubject} from 'rxjs';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {DataService} from './data.service';
@@ -17,6 +16,7 @@ export class BackendDataService {
   public patientDiagnosesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public diagnosesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public recommendationsObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public imageObservable: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
 
   constructor(private httpClient: HttpClient,
@@ -36,7 +36,8 @@ export class BackendDataService {
   public getPatientDiagnoses() {
     this.dataService.getData(PATIENT_KEY).subscribe((data: number) => {
       const selectedPatientId = data;
-      this.httpClient.get<any>('http://localhost:8080/diagnoses/getPatientDiagnoses',{params: {selectedPatientId}}).subscribe((res: any) => {
+      this.httpClient.get<any>('http://localhost:8080/diagnoses/getPatientDiagnoses',
+        {params: {selectedPatientId}}).subscribe((res: any) => {
         this.patientDiagnosesObservable.next(res);
       }, error => {
         console.log('error fetching patientdiagnoses form backend: ' + JSON.stringify(error));
@@ -57,7 +58,7 @@ export class BackendDataService {
         await loading.dismiss();
         const alert = await this.alertController.create({
           header: 'Diagnosen hinzugefügt',
-          message: 'Bitte wählen Sie nun die Pflegediagnosen aus um Pflegeempfehlungen anzuzeigen',
+          message: 'Bitt wähle nun die Pflegediagnosen aus um Pflegeempfehlungen anzuzeigen',
           buttons: ['OK'],
         });
         await alert.present();
@@ -69,7 +70,7 @@ export class BackendDataService {
         const alert = await this.alertController.create({
           header: 'Erstellen fehlgeschlagen',
           //message: res.error.error,
-          message: 'Überprüfen Sie Eingabedaten und Internetverbindung',
+          message: 'Überprüfe deine Eingabedaten und Internetverbindung',
           buttons: ['OK'],
         });
         await alert.present();
@@ -99,7 +100,7 @@ export class BackendDataService {
     }, async error => {
       const alert = await this.alertController.create({
         header: 'Fehler',
-        message: 'Bitte überprüfen Sie Ihre Internetverbindung und probieren sie es nochmal!',
+        message: 'Bitte überprüfe deine Internetverbindung und probiere es nochmal!',
         buttons: ['OK'],
       });
       await alert.present();
@@ -108,7 +109,6 @@ export class BackendDataService {
 
   /*########## Patient requests ##########*/
   public getPatients() {
-    console.log('USER id backenddata: ' + this.dataService.userDetailsModel.id);
     const id = this.dataService.userDetailsModel.id;
     this.httpClient.get<any>('http://localhost:8080/patient/byId', {params: {id}}).subscribe((data: any) => {
        this.patientsObservable.next(data);
@@ -125,14 +125,14 @@ export class BackendDataService {
       height: patient.height,
       age: patient.age,
       gender: patient.gender,
-      userId: UserDetails.id
+      userId: this.dataService.userDetailsModel.id,
     };
 
     this.httpClient.post('http://localhost:8080/patient/create', body).subscribe(async res => {
         const alert = await this.alertController.create({
           header: 'Patient erstellt',
           //message: res.error.error,
-          message: 'Bitte wählen Sie nun zuerst den Patient und dann die Pflegediagnosen aus',
+          message: 'Bitte wähle nun zuerst den Patient und dann die Pflegediagnosen aus',
           buttons: ['OK'],
         });
         await alert.present();
@@ -142,7 +142,7 @@ export class BackendDataService {
         const alert = await this.alertController.create({
           header: 'Erstellen fehlgeschlagen',
           //message: res.error.error,
-          message: 'Überprüfen Sie Eingabedaten und Internetverbindung',
+          message: 'Überprüfe dine Eingabedaten und Internetverbindung',
           buttons: ['OK'],
         });
         await alert.present();
@@ -159,12 +159,58 @@ export class BackendDataService {
     };
     httpOptions.body = {
       patientId,
-      userId: UserDetails.id
+      userId: this.dataService.userDetailsModel.id,
     };
     this.httpClient.delete('http://localhost:8080/patient/delete', httpOptions).subscribe(async (data: any) => {
       this.getPatients();
       const alert = await this.alertController.create({
         header: 'Patient gelöscht',
+        message: '',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }, async error => {
+      const alert = await this.alertController.create({
+        header: 'Fehler',
+        message: 'Bitte überprüfe deine Internetverbindung und probiere es nochmal!',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    });
+  }
+
+  /*########## Nursing Measure requests ##########*/
+  public getRecommendations(diagnoses: any[]) {
+    this.httpClient.post<any>('http://localhost:8080/recommendation/byDiagnose', {diagnose: diagnoses}).subscribe((data: any) => {
+     this.recommendationsObservable.next(data);
+    }, async error => {
+      const alert = await this.alertController.create({
+        header: 'Fehler',
+        message: 'Um Empfehlungen zu sehen musst du Diagnosen auswählen!',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    });
+  }
+
+
+  /*########## Moderator requests ##########*/
+
+  public async saveRecommendation(authorInfo: any, diagnose: any, nursingMeasure: any) {
+    const body = { //TODO: send objects, not variables...
+      // eslint-disable-next-line no-underscore-dangle
+      name: authorInfo._name,
+      // eslint-disable-next-line no-underscore-dangle
+      author: authorInfo._author,
+      // eslint-disable-next-line no-underscore-dangle
+      nursingDiagnosesNanda: diagnose._nursingDiagnosesNanda,
+      // eslint-disable-next-line no-underscore-dangle
+      nursingDiagnosesDescription: diagnose._nursingDiagnosesDescription,
+      nursingMeasure
+    };
+    this.httpClient.post<any>('http://localhost:8080/recommendation/save', body).subscribe(async (data: any) => {
+      const alert = await this.alertController.create({
+        header: 'Pflegeempfehlung gespeichert',
         message: '',
         buttons: ['OK'],
       });
@@ -179,38 +225,16 @@ export class BackendDataService {
     });
   }
 
-  /*########## Nursing Measure requests ##########*/
-  public getRecommendations(diagnoses: any[]) {
-    this.httpClient.post<any>('http://localhost:8080/recommendation/byDiagnose', {diagnose: diagnoses}).subscribe((data: any) => {
-     this.recommendationsObservable.next(data);
+  public saveImages(formData) {
+    this.httpClient.post('http://localhost:8080/files/saveImg', formData).subscribe(async (data: any) => {
+      console.log('Images uploaded, ' + data);
+    }, async error => {
+      console.log('upload error, ' + error);
     });
   }
-  /*########## Moderator requests ##########*/
 
 
-  public saveRecommendation(authorInfo: any, diagnose: any, nursingMeasures: any[]) { //pass objects here ?! this.diagnose ...
-    const body = {
-      name: authorInfo._name,
-      author: authorInfo._author,
-      nursingDiagnosesNanda: diagnose._nursingDiagnosesNanda,
-      nursingDiagnosesDescription: diagnose._nursingDiagnosesDescription,
-      nursingMeasures: nursingMeasures
-    };
-
-    this.httpClient.post<any>('http://localhost:8080/recommendation/save', body).subscribe(async (data: any) => {
-      const alert = await this.alertController.create({
-        header: 'Pflegeempfehlung gespeichert',
-        message: '',
-        buttons: ['OK'],
-      });
-      await alert.present();
-    }, async error => {
-        const alert = await this.alertController.create({
-          header: 'Fehler',
-          message: 'Bitte überprüfen Sie Ihre Internetverbindung und probieren sie es nochmal!',
-          buttons: ['OK'],
-        });
-        await alert.present();
-      });
-    }
+  public getImages(filename) {
+    return this.httpClient.get('http://localhost:8080/files/getImg', {params: {filename}, responseType: 'blob'});
+  }
 }

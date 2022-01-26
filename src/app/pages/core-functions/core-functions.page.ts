@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {DataService} from '../../service/data.service';
 
 @Component({
   selector: 'app-core-functions',
@@ -6,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./core-functions.page.scss'],
 })
 export class CoreFunctionsPage implements OnInit {
-
-  constructor() { }
+  diagnosesTabDisabled = true;
+  constructor(private dataService: DataService) {
+    this.dataService.diagnosesTab.subscribe(res => {
+      this.diagnosesTabDisabled = res;
+    });
+  }
 
   ngOnInit() {
   }

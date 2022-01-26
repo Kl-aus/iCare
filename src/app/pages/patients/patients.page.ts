@@ -8,7 +8,6 @@ import { Storage } from '@capacitor/storage';
 import {DataService} from '../../service/data.service';
 
 const PATIENT_KEY = 'patientId';
-const TEST = 'test';
 
 @Component({
   selector: 'app-patients',
@@ -20,7 +19,8 @@ export class PatientsPage implements OnInit{
   items = [];
   patientSelected: number;
   searchTerm: string;
-  selectedItemIndex: number;
+  patientItem: any;
+
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(private backendDataService: BackendDataService,
@@ -39,28 +39,33 @@ export class PatientsPage implements OnInit{
 
   ionViewDidEnter() {
     this.backendDataService.getPatients();
+    this.dataService.diagnosesTab.next(true);
   }
 
-  async selectItem(item, i) {
-    this.selectedItemIndex = i;
+  async selectItem(item) {
+    const navParams = {
+      state: {
+        patient: item
+      }
+    };
     this.patientSelected = parseInt(item.patientId,10);
     this.dataService.saveData(PATIENT_KEY, this.patientSelected).subscribe(result => {
-      console.log('patient selected, id: ' + this.patientSelected);
+      this.router.navigate(['/menu/core-functions/core-functions/diagnoses'], navParams);
     }, error => {
       console.log('save patientId failed ' + error);
     });
+    this.dataService.diagnosesTab.next(false);
   }
 
   addPatient() {
     this.router.navigateByUrl('/patient-details', {replaceUrl: true});
   }
 
-  deletePatient() {
-    this.backendDataService.deletePatient(this.patientSelected);
+  deletePatient(item) {
+    this.backendDataService.deletePatient(parseInt(item.patientId,10));
   }
 
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
-
 }

@@ -1,10 +1,9 @@
-import {Injectable} from '@angular/core';
-// import {Storage} from '@capacitor/storage';
-import {BehaviorSubject, from, of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, from } from 'rxjs';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
-import {Storage} from '@ionic/storage-angular';
-import {filter, map, switchMap, tap} from 'rxjs/operators';
-import {UserDetailsModel} from '../models/userDetailsModel';
+import { Storage } from '@ionic/storage-angular';
+import { filter, switchMap } from 'rxjs/operators';
+import { UserDetailsModel } from '../models/userDetailsModel';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +12,7 @@ import {UserDetailsModel} from '../models/userDetailsModel';
   userDetailsModel: UserDetailsModel  = null;
 
   /* Ionic Storage v3*/
+  public diagnosesTab = new BehaviorSubject(true);
   public userDetailsReadyObservable = new BehaviorSubject(false);
   private storageReadyObservable = new BehaviorSubject(false);
 
@@ -75,8 +75,7 @@ import {UserDetailsModel} from '../models/userDetailsModel';
       filter(ready => ready),
       switchMap(_ => from(this.storage.get('my-settings').then(data => {
         this.userDetailsModel = data;
-      }))),
-      tap( _=> this.userDetailsReadyObservable.next(true))
+      })))
     );
   }
 }

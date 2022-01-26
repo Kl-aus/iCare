@@ -3,12 +3,13 @@ import {BackendDataService} from '../../service/backend-data.service';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {ActionSheetController, AlertController, NavParams, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Storage} from '@capacitor/storage';
 import {DataService} from '../../service/data.service';
 
-const DIAGNOSES_KEY = 'diagnoses';
+
 const PATIENT_KEY = 'patientId';
+const PATIENT_ITEM_KEY = 'patientItem';
 
 @Component({
   selector: 'app-diagnoses',
@@ -23,6 +24,7 @@ export class DiagnosesPage {
   selectedPatientId = 0;
   hideContent = true;
   message = '';
+  patientItem: any;
 
   constructor(private backendDataService: BackendDataService,
               private dataService: DataService,
@@ -30,7 +32,20 @@ export class DiagnosesPage {
               private alertController: AlertController,
               private authService: AuthenticationService,
               private actionSheetController: ActionSheetController,
+              private route: ActivatedRoute,
               private router: Router) {
+    this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
+      // if (params && params.diagnose) { //for navigateByUrl
+      //   this.diagnose = JSON.parse(params.diagnose);
+      // }
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.patientItem = this.router.getCurrentNavigation().extras.state.patient;
+      } else {
+        this.patientItem = {};
+        this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
+      }
+    });
+
     this.backendDataService.patientDiagnosesObservable.subscribe((data: any[]) => {
       this.items = [];
       this.selectedItems = [];
@@ -49,11 +64,6 @@ export class DiagnosesPage {
   }
 
   async ionViewWillEnter() {
-    await this.dataService.getData(PATIENT_KEY).subscribe(data => {
-      this.selectedPatientId = data;
-    }, error => {
-      console.log('get patientId from storage failed ' + error);
-    });
     await this.getPatientDiagnoses();
   }
 
@@ -75,8 +85,13 @@ export class DiagnosesPage {
   }
 
   addDiagnose() {
-    this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
-  }
+    const navParams = {
+      state: {
+        patient: this.patientItem
+      }
+    };
+    this.router.navigate(['/choose-diagnose'], navParams);
+    }
 
   async deleteDiagnose() {
     this.backendDataService.deletePatientDiagnoses(this.selectedItems, this.selectedPatientId);
