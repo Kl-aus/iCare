@@ -6,7 +6,8 @@ import {Router} from '@angular/router';
 import {DataService} from './data.service';
 
 const PATIENT_KEY = 'patientId';
-
+// const url = 'http://localhost:8080';
+const url = 'http://212.227.176.204:8080';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,8 @@ export class BackendDataService {
 
   /*########## Diagnose requests ##########*/
 
-  public getDiagnose() {//212.227.176.204
-    return this.httpClient.get<any>('http://localhost:8080/diagnoses/all').subscribe((data: any) => {
+  public getDiagnose() {
+    return this.httpClient.get<any>(url + '/diagnoses/all').subscribe((data: any) => {
       this.diagnosesObservable.next(data);
     });
   }
@@ -36,7 +37,7 @@ export class BackendDataService {
   public getPatientDiagnoses() {
     this.dataService.getData(PATIENT_KEY).subscribe((data: number) => {
       const selectedPatientId = data;
-      this.httpClient.get<any>('http://localhost:8080/diagnoses/getPatientDiagnoses',
+      this.httpClient.get<any>(url + '/diagnoses/getPatientDiagnoses',
         {params: {selectedPatientId}}).subscribe((res: any) => {
         this.patientDiagnosesObservable.next(res);
       }, error => {
@@ -54,7 +55,7 @@ export class BackendDataService {
     };
     const loading = await this.loadingController.create();
     await loading.present();
-    this.httpClient.post('http://localhost:8080/diagnoses/savePatientDiagnoses', diagnoses).subscribe(async res => {
+    this.httpClient.post(url + '/diagnoses/savePatientDiagnoses', diagnoses).subscribe(async res => {
         await loading.dismiss();
         const alert = await this.alertController.create({
           header: 'Diagnosen hinzugefügt',
@@ -89,7 +90,7 @@ export class BackendDataService {
       selectedPatientId: patientId,
       diagnose
     };
-    return this.httpClient.delete('http://localhost:8080/patient/deleteDiagnoses', httpOptions).subscribe(async (data: any) => {
+    return this.httpClient.delete(url + '/patient/deleteDiagnoses', httpOptions).subscribe(async (data: any) => {
       const alert = await this.alertController.create({
         header: 'Diagnose gelöscht:',
         message: '',
@@ -110,7 +111,7 @@ export class BackendDataService {
   /*########## Patient requests ##########*/
   public getPatients() {
     const id = this.dataService.userDetailsModel.id;
-    this.httpClient.get<any>('http://localhost:8080/patient/byId', {params: {id}}).subscribe((data: any) => {
+    this.httpClient.get<any>(url + '/patient/byId', {params: {id}}).subscribe((data: any) => {
        this.patientsObservable.next(data);
     }, error => {
        console.log(error);
@@ -128,7 +129,7 @@ export class BackendDataService {
       userId: this.dataService.userDetailsModel.id,
     };
 
-    this.httpClient.post('http://localhost:8080/patient/create', body).subscribe(async res => {
+    this.httpClient.post(url + '/patient/create', body).subscribe(async res => {
         const alert = await this.alertController.create({
           header: 'Patient erstellt',
           //message: res.error.error,
@@ -161,7 +162,7 @@ export class BackendDataService {
       patientId,
       userId: this.dataService.userDetailsModel.id,
     };
-    this.httpClient.delete('http://localhost:8080/patient/delete', httpOptions).subscribe(async (data: any) => {
+    this.httpClient.delete(url + '/patient/delete', httpOptions).subscribe(async (data: any) => {
       this.getPatients();
       const alert = await this.alertController.create({
         header: 'Patient gelöscht',
@@ -181,8 +182,8 @@ export class BackendDataService {
 
   /*########## Nursing Measure requests ##########*/
   public getRecommendations(diagnoses: any[]) {
-    this.httpClient.post<any>('http://localhost:8080/recommendation/byDiagnose', {diagnose: diagnoses}).subscribe((data: any) => {
-     this.recommendationsObservable.next(data);
+    this.httpClient.post<any>(url + '/recommendation/byDiagnose', {diagnose: diagnoses}).subscribe((data: any) => {
+      this.recommendationsObservable.next(data);
     }, async error => {
       const alert = await this.alertController.create({
         header: 'Fehler',
@@ -208,7 +209,7 @@ export class BackendDataService {
       nursingDiagnosesDescription: diagnose._nursingDiagnosesDescription,
       nursingMeasure
     };
-    this.httpClient.post<any>('http://localhost:8080/recommendation/save', body).subscribe(async (data: any) => {
+    this.httpClient.post<any>(url + '/recommendation/save', body).subscribe(async (data: any) => {
       const alert = await this.alertController.create({
         header: 'Pflegeempfehlung gespeichert',
         message: '',
@@ -226,7 +227,7 @@ export class BackendDataService {
   }
 
   public saveImages(formData) {
-    this.httpClient.post('http://localhost:8080/files/saveImg', formData).subscribe(async (data: any) => {
+    this.httpClient.post(url + '/files/saveImg', formData).subscribe(async (data: any) => {
       console.log('Images uploaded, ' + data);
     }, async error => {
       console.log('upload error, ' + error);
@@ -235,6 +236,6 @@ export class BackendDataService {
 
 
   public getImages(filename) {
-    return this.httpClient.get('http://localhost:8080/files/getImg', {params: {filename}, responseType: 'blob'});
+    return this.httpClient.get(url + '/files/getImg', {params: {filename}, responseType: 'blob'});
   }
 }

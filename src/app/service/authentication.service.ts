@@ -10,6 +10,8 @@ const PATIENT_KEY = 'patientId';
 const DIAGNOSES_KEY = 'diagnoses';
 const TOKEN_KEY = 'my-token';
 const SETTINGS_KEY ='my-settings';
+const url = 'http://localhost:8080';
+// const url = 'http://212.227.176.204:8080';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +58,7 @@ export class AuthenticationService {
 
   login(credentials: {username; password}): Observable<any> {
     this.userDetails = [];
-    return this.httpClient.post('http://localhost:8080/api/auth/signin', credentials).pipe(
+    return this.httpClient.post(url + '/api/auth/signin', credentials).pipe(
       map((data: any) => this.dataService.userDetailsModel = data),
       switchMap( _=> this.dataService.saveData(TOKEN_KEY, this.dataService.userDetailsModel.accessToken)),
       tap(async _=> {
@@ -76,7 +78,7 @@ export class AuthenticationService {
   }
 
   register(credentials: {username; password; email}): Observable<any> {
-    return this.httpClient.post('http://localhost:8080/api/auth/signup', credentials).pipe(
+    return this.httpClient.post(url + '/api/auth/signup', credentials).pipe(
       map((data: any) => data));
   }
 
