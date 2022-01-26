@@ -64,6 +64,11 @@ export class DiagnosesPage {
   }
 
   async ionViewWillEnter() {
+    this.dataService.getData(PATIENT_KEY).subscribe(result => {
+      this.selectedPatientId = result;
+    }, error => {
+      console.log('get patientId failed ' + error);
+    });
     await this.getPatientDiagnoses();
   }
 

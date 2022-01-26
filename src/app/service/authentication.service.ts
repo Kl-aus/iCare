@@ -10,8 +10,8 @@ const PATIENT_KEY = 'patientId';
 const DIAGNOSES_KEY = 'diagnoses';
 const TOKEN_KEY = 'my-token';
 const SETTINGS_KEY ='my-settings';
-const url = 'http://localhost:8080';
-// const url = 'http://212.227.176.204:8080';
+// const url = 'http://localhost:8080';
+const url = 'http://212.227.176.204:8080';
 
 @Injectable({
   providedIn: 'root'
