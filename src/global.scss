@@ -47,6 +47,17 @@
   min-height: 100px !important;
 }
 
+ion-toolbar {
+  height: 100px;
+}
+
+.menu-logo {
+  margin-top: 10px;
+  margin-left: 38px;
+  height:45px;
+  width: 50px;
+  --ion-background-color: transparent !important;
+}
 //.gm-style-iw-d {
 //}
 

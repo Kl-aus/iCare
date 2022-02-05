@@ -1,13 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {BackendDataService} from '../../service/backend-data.service';
-import {DataService} from '../../service/data.service';
+import {DataService, PATIENT_ITEM, PATIENT_KEY} from '../../service/data.service';
 import {AlertController, LoadingController, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Storage} from '@capacitor/storage';
 
-const PATIENT_KEY = 'patientId';
 
 @Component({
   selector: 'app-choose-diagnose',
@@ -33,17 +31,22 @@ export class ChooseDiagnosePage implements OnInit {
     this.backendDataService.diagnosesObservable.subscribe((data: any[]) => {
       this.items = data;
     });
-    this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
-      // if (params && params.diagnose) { //for navigateByUrl
-      //   this.diagnose = JSON.parse(params.diagnose);
-      // }
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.patientItem = this.router.getCurrentNavigation().extras.state.patient;
-      } else {
-        this.patientItem = {};
-        this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
-      }
+    this.dataService.getData(PATIENT_ITEM).subscribe(async (data: number) => {
+      this.patientItem = data;
+    }, error => {
+      console.log('error loading patient from storage: ' + error);
     });
+    // this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
+    //   // if (params && params.diagnose) { //for navigateByUrl
+    //   //   this.diagnose = JSON.parse(params.diagnose);
+    //   // }
+    //   if (this.router.getCurrentNavigation().extras.state) {
+    //     this.patientItem = this.router.getCurrentNavigation().extras.state.patient;
+    //   } else {
+    //     this.patientItem = {};
+    //     this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
+    //   }
+    // });
   }
 
   ngOnInit() {

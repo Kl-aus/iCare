@@ -3,13 +3,10 @@ import {Storage} from '@capacitor/storage';
 import {BehaviorSubject, from, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map, switchMap, tap} from 'rxjs/operators';
-import {UserDetails} from '../helpers/userDetails';
 import {DataService} from './data.service';
+import {PATIENT_KEY, DIAGNOSES_KEY, SETTINGS_KEY, TOKEN_KEY} from './data.service';
 
-const PATIENT_KEY = 'patientId';
-const DIAGNOSES_KEY = 'diagnoses';
-const TOKEN_KEY = 'my-token';
-const SETTINGS_KEY ='my-settings';
+
 // const url = 'http://localhost:8080';
 const url = 'http://212.227.176.204:8080';
 
@@ -71,6 +68,11 @@ export class AuthenticationService {
 
   async logout(): Promise<void> {
     this.isAuthenticated.next(false);
+    await this.dataService.removeData(PATIENT_KEY);
+    await this.dataService.removeData(DIAGNOSES_KEY);
+    await this.dataService.removeData(SETTINGS_KEY);
+    await this.dataService.removeData(TOKEN_KEY);
+
     await Storage.remove({key: PATIENT_KEY});
     await Storage.remove({key: DIAGNOSES_KEY});
     await Storage.remove({key: SETTINGS_KEY});

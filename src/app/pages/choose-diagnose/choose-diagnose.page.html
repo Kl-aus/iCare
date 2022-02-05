@@ -15,7 +15,7 @@
           <ion-chip>
             <ion-icon class="big-icon" name="person-circle"></ion-icon>
             <ion-label>
-              <div class="patient-chip">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
+              <div *ngIf="patientItem != null" class="patient-chip">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
             </ion-label>
           </ion-chip>
         </ion-col>

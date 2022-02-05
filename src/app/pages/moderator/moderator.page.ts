@@ -13,13 +13,6 @@ import {Images} from '../../models/images';
 
 const IMAGE_DIR = 'stored-images';
 
-// interface LocalFile {
-//   name: string;
-//   measureTitle: string;
-//   path: string;
-//   data: string;
-// }
-
 @Component({
   selector: 'app-moderator',
   templateUrl: './moderator.page.html',

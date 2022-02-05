@@ -1,20 +1,19 @@
-//cdk-virtual-scroll-viewport {
-//  height: calc(100% - 68px);
-//  width: 100%;
-//}
 
 .item-selected {
   --ion-item-background:  #2B8C68;
 }
 
-
 ion-checkbox {
-  margin-right: 50px;
+
+}
+
+ion-list {
+  margin: 20px auto
 }
 
 .patient-chip {
   color: #3880ff; //primary
-  font-size: 24px;
+  font-size: 18px;
   font-weight: normal;
 }
 
@@ -26,4 +25,51 @@ ion-chip {
   height: 50px;
   padding: 25px;
   border-radius: 25px;
+  margin: 20px auto;
 }
+
+.swiper-container {
+  width: 100%;
+  height: 100%;
+
+}
+
+.swiper-slide {
+
+}
+
+.swiper-wrapper {
+  justify-content: center;
+}
+
+ion-card {
+  width:100%; // adjust width on your ion-card suitable on your screen
+  height: 350px;
+}
+
+ion-card-header {
+  color: white;
+  background-color: #489097;
+  min-height: 80px;
+}
+
+ion-card-title {
+  font-size: 16px;
+  color: white;
+}
+
+ion-card-content {
+  margin: 5px;
+}
+
+h3 {
+  background-color: #489097;
+  color: white;
+  border-radius: 5px;
+}
+
+.categoryTitle {
+  color: #489097;
+}
+
+

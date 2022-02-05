@@ -4,7 +4,6 @@ import {AlertController, IonDatetime, LoadingController} from '@ionic/angular';
 import {BackendDataService} from '../../service/backend-data.service';
 import {Router} from '@angular/router';
 import { format, parseISO } from 'date-fns';
-import {UserDetails} from '../../helpers/userDetails';
 
 @Component({
   selector: 'app-patient-details',

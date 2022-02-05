@@ -1,12 +1,10 @@
-import {AfterContentChecked, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackendDataService} from '../../service/backend-data.service';
 import {SwiperComponent} from 'swiper/angular';
 import Swiper, {SwiperOptions, Pagination} from 'swiper';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {NursingMeasureModel} from '../../models/nursingMeasureModel';
-
-
 
 @Component({
   selector: 'app-recommendations',

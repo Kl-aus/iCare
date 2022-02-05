@@ -13,8 +13,6 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-card>
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-center">
@@ -22,7 +20,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-  </ion-card>
 
     <ion-list>
         <ion-item *ngFor="let item of items | filter: searchTerm;" [ngClass]="{'item-selected': patientSelected === item.patientId}"
@@ -37,7 +34,8 @@
           <ion-icon slot="end" name="trash" (click)="deletePatient(item); $event.preventDefault(); $event.stopPropagation()"></ion-icon> <!--Trash icon? really?-->
         </ion-item>
     </ion-list>
-<ion-fab vertical="bottom" horizontal="end">
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button color="success" (click)="addPatient()">
     <ion-icon name="person-add-sharp"></ion-icon>
   </ion-fab-button>

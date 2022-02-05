@@ -12,15 +12,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-card>
+<ion-content class="ion-margin">
       <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center">
             <ion-chip>
               <ion-icon class="big-icon" name="person-circle"></ion-icon>
               <ion-label>
-                <div class="patient-chip">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
+                <div *ngIf="patientItem != null" class="patient-chip">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
               </ion-label>
             </ion-chip>
           </ion-col>
@@ -34,12 +33,56 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-card>
 
+    <ion-list class="ion-text-center">
+      <h2 class="categoryTitle">Haut:</h2>
+      <swiper #swiper [config] = "config" [effect]="'coverflow'" [grabCursor]="true" class="swiper-container" >
+          <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
+            <ion-card tappable (click)="selectItem(item)" class="ion-text-center">
+              <ion-card-header>
+                <ion-card-title>
+                  <ion-checkbox [checked]="selectedItems.includes(item)"></ion-checkbox>
+                  {{item.nursingDiagnosesNanda}}
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+              <p>{{item.nursingDiagnosesDescription}}</p>
+              </ion-card-content>
+            </ion-card>
+          </ng-template>
+      </swiper>
 
-    <ion-list>
+        <h2 class="categoryTitle">Psyche:</h2>
 
-        <ion-item *ngFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}"
+      <swiper #swiper [config] = "config" [effect]="'coverflow'" [grabCursor]="true" class="swiper-container" >
+        <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
+          <ion-card tappable (click)="selectItem(item)" class="ion-text-center">
+            <ion-card-header>
+              <ion-card-title>{{item.nursingDiagnosesNanda}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{item.nursingDiagnosesDescription}}</p>
+              <ion-checkbox [checked]="selectedItems.includes(item)"></ion-checkbox>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
+
+      <h2 class="categoryTitle">Bewegung:</h2>
+      <swiper #swiper [config] = "config" [effect]="'coverflow'" [grabCursor]="true" class="swiper-container" >
+        <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
+          <ion-card tappable (click)="selectItem(item)" class="ion-text-center">
+            <ion-card-header>
+              <ion-card-title>{{item.nursingDiagnosesNanda}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{item.nursingDiagnosesDescription}}</p>
+              <ion-checkbox [checked]="selectedItems.includes(item)"></ion-checkbox>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
+        <!--ion-item *ngFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}"
           tappable (click)="selectItem(item)" >
             <ion-avatar slot="start">
               <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
@@ -48,8 +91,7 @@
               <p>{{item.nursingDiagnosesNanda}}</p>
             </ion-label>
           <ion-checkbox slot="end" [checked]="selectedItems.includes(item)"></ion-checkbox>
-          </ion-item>
-
+          </ion-item-->
     </ion-list>
 
 

@@ -6,6 +6,7 @@ import { DiagnosesPageRoutingModule } from './diagnoses-routing.module';
 import { DiagnosesPage } from './diagnoses.page';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { Ng2SearchPipeModule} from 'ng2-search-filter';
+import {SwiperModule} from "swiper/angular";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { Ng2SearchPipeModule} from 'ng2-search-filter';
     IonicModule,
     DiagnosesPageRoutingModule,
     ScrollingModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    SwiperModule
   ],
   declarations: [DiagnosesPage]
 })

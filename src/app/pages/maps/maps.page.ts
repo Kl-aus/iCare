@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {DataGvAtService} from '../../service/data-gv-at.service';
 import { Papa } from 'ngx-papaparse';
 import {LoadingController} from '@ionic/angular';
-import {Observable} from 'rxjs';
 
 declare let google: any;
 
@@ -64,7 +63,7 @@ export class MapsPage implements OnInit {
 
     google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
       document.getElementById('navigate').addEventListener('click', () => {
-        window.open('https://www.google.com/maps/dir/?api=1&origin=My+Location&destination='+ marker.lat + ',' + marker.lng+'&travelmode=driving' );
+        window.open('https://www.google.com/maps/dir/?api=1&origin=My+Location&destination='+ marker.lat + ',' + marker.lng+'&travelmode=driving' ); //TODO: MyLocation doesnt work
       });
     });
 

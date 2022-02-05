@@ -5,6 +5,14 @@ import { Storage } from '@ionic/storage-angular';
 import { filter, switchMap } from 'rxjs/operators';
 import { UserDetailsModel } from '../models/userDetailsModel';
 
+export const TOKEN_HEADER_KEY = 'Authorization';
+export const PATIENT_KEY = 'patientId';
+export const DIAGNOSES_KEY = 'diagnoses';
+export const TOKEN_KEY = 'my-token';
+export const SETTINGS_KEY ='my-settings';
+export const PATIENT_ITEM = 'patientItem';
+export const INTRO_KEY = 'intro-seen';
+
 @Injectable({
   providedIn: 'root'
 })

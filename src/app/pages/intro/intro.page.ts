@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {INTRO_KEY} from '../../guards/intro.guard';
 import {Router} from '@angular/router';
 import {IonSlides} from '@ionic/angular';
-import { Storage } from '@capacitor/storage';
+import {DataService, INTRO_KEY} from '../../service/data.service';
 
 @Component({
   selector: 'app-intro',
@@ -12,7 +11,7 @@ import { Storage } from '@capacitor/storage';
 export class IntroPage implements OnInit {
   @ViewChild(IonSlides) slides: IonSlides;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private dataService: DataService) { }
 
   ngOnInit() {
   }
@@ -22,8 +21,11 @@ export class IntroPage implements OnInit {
   }
 
   async start() {
-    await Storage.set({key: INTRO_KEY, value: 'true'});
+    this.dataService.saveData(INTRO_KEY, 'true').subscribe(result => {
+      console.log(result);
+    }, error => {
+      console.log('error saving intro key: ' + error);
+    });
     await this.router.navigateByUrl(`/login`, {replaceUrl: true});
   }
-
 }

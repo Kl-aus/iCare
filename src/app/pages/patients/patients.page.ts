@@ -4,10 +4,7 @@ import { BackendDataService } from '../../service/backend-data.service';
 import { LoadingController, ToastController} from '@ionic/angular';
 import { Router} from '@angular/router';
 import { AuthenticationService } from '../../service/authentication.service';
-import { Storage } from '@capacitor/storage';
-import {DataService} from '../../service/data.service';
-
-const PATIENT_KEY = 'patientId';
+import {DataService, PATIENT_ITEM, PATIENT_KEY} from '../../service/data.service';
 
 @Component({
   selector: 'app-patients',
@@ -43,14 +40,14 @@ export class PatientsPage implements OnInit{
   }
 
   async selectItem(item) {
-    const navParams = {
-      state: {
-        patient: item
-      }
-    };
+    this.dataService.saveData(PATIENT_ITEM, item).subscribe(result => {
+      console.log('patient saved');
+    }, error => {
+      console.log('save patientId failed ' + error);
+    });
     this.patientSelected = parseInt(item.patientId,10);
     this.dataService.saveData(PATIENT_KEY, this.patientSelected).subscribe(result => {
-      this.router.navigate(['/menu/core-functions/core-functions/diagnoses'], navParams);
+      this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
     }, error => {
       console.log('save patientId failed ' + error);
     });

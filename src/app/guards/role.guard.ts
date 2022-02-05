@@ -15,6 +15,7 @@ export class RoleGuard implements CanActivate {
   }
 
   canActivate(): boolean {
+    // eslint-disable-next-line eqeqeq
     if (this.dataService.userDetailsModel.roles[0] == 'ROLE_MODERATOR') { //TODO
       return true;
     } else {

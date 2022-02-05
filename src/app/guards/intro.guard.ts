@@ -1,11 +1,6 @@
-import { Injectable } from '@angular/core';
-import {CanLoad, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-
-export const INTRO_KEY = 'intro-seen';
-
-import { Storage } from '@capacitor/storage';
-
+import {Injectable} from '@angular/core';
+import {CanLoad, Router} from '@angular/router';
+import {DataService, INTRO_KEY} from '../service/data.service';
 
 
 @Injectable({
@@ -13,19 +8,22 @@ import { Storage } from '@capacitor/storage';
 })
 export class IntroGuard implements CanLoad {
 
-
-  constructor(private router: Router) {
+  constructor(private router: Router, private dataService: DataService) {
   }
 
   async canLoad(): Promise<boolean> {
-    const hasSeenIntro = await Storage.get({key: INTRO_KEY});
-    if (hasSeenIntro && (hasSeenIntro.value === 'true')) {
+    this.dataService.getData(INTRO_KEY).subscribe(result => {
+      if (result === 'true') {
+        return true;
+      } else {
+        this.router.navigateByUrl('/intro', {replaceUrl: true});
+        return true;
+      }
+    }, error => {
+      console.log('load intro Key failed: ' + error);
+      this.router.navigateByUrl('/intro', {replaceUrl: true});
       return true;
-    } else {
-      this.router.navigateByUrl('/intro', {replaceUrl: true}); //reset Nav Stack and replace Url -> same as set root url
-      return true;
-    }
-
-
+    });
+    return true;
   }
 }

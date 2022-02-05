@@ -3,9 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
-import {DataService} from './data.service';
+import {DataService, PATIENT_KEY} from './data.service';
 
-const PATIENT_KEY = 'patientId';
 // const url = 'http://localhost:8080';
 const url = 'http://212.227.176.204:8080';
 

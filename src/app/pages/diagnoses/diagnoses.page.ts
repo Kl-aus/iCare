@@ -1,15 +1,16 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentChecked, Component, ViewChild} from '@angular/core';
 import {BackendDataService} from '../../service/backend-data.service';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {ActionSheetController, AlertController, NavParams, ToastController} from '@ionic/angular';
+import {ActionSheetController, AlertController, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Storage} from '@capacitor/storage';
 import {DataService} from '../../service/data.service';
+import {SwiperComponent} from 'swiper/angular';
+import SwiperCore, { EffectCoverflow, Pagination } from 'swiper';
 
+import {PATIENT_KEY, PATIENT_ITEM} from '../../service/data.service';
+import {SwiperOptions} from 'swiper';
 
-const PATIENT_KEY = 'patientId';
-const PATIENT_ITEM_KEY = 'patientItem';
+SwiperCore.use([EffectCoverflow, Pagination]);
 
 @Component({
   selector: 'app-diagnoses',
@@ -17,7 +18,9 @@ const PATIENT_ITEM_KEY = 'patientItem';
   styleUrls: ['./diagnoses.page.scss'],
 })
 
-export class DiagnosesPage {
+export class DiagnosesPage implements AfterContentChecked{
+  @ViewChild('swiper') swiper: SwiperComponent;
+
   searchTerm: string;
   items = [];
   selectedItems = [];
@@ -25,6 +28,24 @@ export class DiagnosesPage {
   hideContent = true;
   message = '';
   patientItem: any;
+
+  config: SwiperOptions = {
+    slidesPerView: 1.3,
+    spaceBetween: 20,
+    loop: true,
+    centeredSlides: true,
+    grabCursor: true,
+    watchOverflow: true,
+
+
+    coverflowEffect: {
+      rotate: 0,
+      stretch: 0,
+      depth: 50,
+      modifier: 1,
+      slideShadows: false,
+    }
+  };
 
   constructor(private backendDataService: BackendDataService,
               private dataService: DataService,
@@ -34,18 +55,6 @@ export class DiagnosesPage {
               private actionSheetController: ActionSheetController,
               private route: ActivatedRoute,
               private router: Router) {
-    this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
-      // if (params && params.diagnose) { //for navigateByUrl
-      //   this.diagnose = JSON.parse(params.diagnose);
-      // }
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.patientItem = this.router.getCurrentNavigation().extras.state.patient;
-      } else {
-        this.patientItem = {};
-        this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
-      }
-    });
-
     this.backendDataService.patientDiagnosesObservable.subscribe((data: any[]) => {
       this.items = [];
       this.selectedItems = [];
@@ -63,7 +72,20 @@ export class DiagnosesPage {
     });
   }
 
+  //swiper not implemented right -- update swiper for "snapping behaviour"
+  ngAfterContentChecked(): void {
+    if (this.swiper) { //check if swiper is defined
+      this.swiper.updateSwiper({});
+    }
+  }
+
   async ionViewWillEnter() {
+    this.dataService.getData(PATIENT_ITEM).subscribe(result => {
+      this.patientItem = result;
+    }, error => {
+      console.log('get patientItem failed ' + error);
+    });
+
     this.dataService.getData(PATIENT_KEY).subscribe(result => {
       this.selectedPatientId = result;
     }, error => {
@@ -90,12 +112,7 @@ export class DiagnosesPage {
   }
 
   addDiagnose() {
-    const navParams = {
-      state: {
-        patient: this.patientItem
-      }
-    };
-    this.router.navigate(['/choose-diagnose'], navParams);
+    this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
     }
 
   async deleteDiagnose() {
