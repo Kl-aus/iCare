@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Dashboard</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" slot="icon-only | end">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-align-items-center">
+  <br>
+  <ion-thumbnail class="center-image">
+      <img src="assets/img/patient.png">
+    </ion-thumbnail>
+    <ion-text color="primary" class="ion-text-center">
+      <div class="patient-card-title" *ngIf="patientItem != null">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
+    </ion-text>
+  <br>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card class="ion-text-center" tappable (click)="goTo('patient-details')">
+          <ion-thumbnail class="center-image">
+            <img src="assets/img/patientDetails.png">
+          </ion-thumbnail>
+          <ion-text color="primary">
+            <div class="card-title">Patientendaten</div>
+          </ion-text>
+          <ion-text>
+            <p class="card-text">Alter, Gewicht, Geschlecht...</p>
+          </ion-text>
+        </ion-card>
+
+      </ion-col>
+      <ion-col class="ion-text-center">
+
+        <ion-card class="ion-text-center" tappable (click)="goTo('patient-anamnesis')">
+          <ion-thumbnail class="center-image">
+            <img src="assets/img/anamnesis.png">
+          </ion-thumbnail>
+          <ion-text color="primary">
+            <div class="card-title">Ananmnese</div>
+          </ion-text>
+          <ion-text>
+            <p class="card-text">Krankengeschichte bis jetzt</p>
+          </ion-text>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+
+        <ion-card class="ion-text-center" tappable (click)="goTo('diagnoses')">
+          <ion-thumbnail class="center-image">
+            <img src="assets/img/patientDiagnoses.png">
+          </ion-thumbnail>
+          <ion-text color="primary">
+            <div class="card-title">Diagnosen</div>
+          </ion-text>
+          <ion-text>
+            <p class="card-text">Pflegeprobleme anhand der Anamanese</p>
+          </ion-text>
+        </ion-card>
+
+      </ion-col>
+      <ion-col class="ion-text-center">
+
+        <ion-card class="ion-text-center" tappable (click)="goTo('recommendations')">
+          <ion-thumbnail class="center-image">
+            <img src="../../../assets/img/measures.png">
+          </ion-thumbnail>
+          <ion-text color="primary">
+            <div class="card-title">Maßnahmen</div>
+          </ion-text>
+          <ion-text>
+            <p class="card-text">Pflegeempfehlungen laut Diagnosen</p>
+          </ion-text>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+
+        <ion-card class="ion-text-center" tappable (click)="goTo('recommendations')">
+          <ion-thumbnail class="center-image">
+            <img src="assets/img/calendar.png">
+          </ion-thumbnail>
+          <ion-text color="primary">
+            <div class="card-title">Kalender</div>
+          </ion-text>
+          <ion-text>
+            <p class="card-text">wichtige Termine...</p>
+          </ion-text>
+        </ion-card>
+
+      </ion-col>
+      <ion-col class="ion-text-center">
+
+        <ion-card class="ion-text-center" tappable (click)="goTo('recommendations')">
+          <ion-thumbnail class="center-image">
+            <img src="assets/img/medication.png">
+          </ion-thumbnail>
+          <ion-text color="primary">
+            <div class="card-title">Medikamente</div>
+          </ion-text>
+          <ion-text>
+            <p class="card-text">Aktuelle Verordungen</p>
+          </ion-text>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

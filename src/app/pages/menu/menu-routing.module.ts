@@ -10,23 +10,57 @@ const routes: Routes = [
     component: MenuPage,
     children: [
       {
-        path: 'core-functions',
-        loadChildren: () => import('../core-functions/core-functions.module').then(m => m.CoreFunctionsPageModule)
+        path: 'care',
+        children: [
+          {
+            path: '',
+            redirectTo: '/menu/care/patients',
+            pathMatch: 'full'
+          },
+          {
+            path: 'patients',
+            loadChildren: () => import('../../pages/patients/patients.module').then(m => m.PatientsPageModule)
+          },
+          {
+            path: 'patient-dashboard',
+            loadChildren: () => import('../../pages/patient-dashboard/patient-dashboard.module').then(m => m.PatientDashboardPageModule)
+          },
+          {
+            path: 'patient-anamnesis',
+            loadChildren: () => import('../../pages/patient-anamnesis/patient-anamnesis.module').then(m => m.PatientAnamnesisPageModule)
+          },
+          {
+            path: 'patient-details',
+            loadChildren: () => import('../../pages/patient-details/patient-details.module').then( m => m.PatientDetailsPageModule),
+          },
+          {
+            path: 'recommendations',
+            loadChildren: () => import('../../pages/recommendations/recommendations.module').then( m => m.RecommendationsPageModule),
+          },
+          {
+            path: 'diagnoses',
+            loadChildren: () => import('../../pages/diagnoses/diagnoses.module').then( m => m.DiagnosesPageModule)
+          },
+        ]
+      },
+      {
+        path: '',
+        redirectTo: '/menu/care/patients',
+        pathMatch: 'full'
       },
       {
         path: 'moderator',
-        loadChildren: () => import('../../pages/moderator/moderator.module').then( m => m.ModeratorPageModule),
+        loadChildren: () => import('../moderator/moderator.module').then( m => m.ModeratorPageModule),
         canActivate: [RoleGuard]
       },
       {
         path: 'maps',
-        loadChildren: () => import('../../pages/maps/maps.module').then( m => m.MapsPageModule),
+        loadChildren: () => import('../maps/maps.module').then( m => m.MapsPageModule),
       },
       {
         path: 'profile',
-        loadChildren: () => import('../../pages/profile/profile.module').then( m => m.ProfilePageModule)
+        loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
       },
-
     ]
   },
 ];

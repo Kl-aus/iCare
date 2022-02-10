@@ -5,8 +5,8 @@ import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {DataService, PATIENT_KEY} from './data.service';
 
-// const url = 'http://localhost:8080';
-const url = 'http://212.227.176.204:8080';
+const url = 'http://localhost:8080';
+// const url = 'http://212.227.176.204:8080';
 
 @Injectable({
   providedIn: 'root'
@@ -150,6 +150,7 @@ export class BackendDataService {
     );
   }
 
+  //TODO: 1x PatientId holen und in dataservice rein
   public deletePatient(patientId: any) {
     const httpOptions: any = {
       headers: {//overwritten by Interceptor
@@ -180,8 +181,8 @@ export class BackendDataService {
   }
 
   /*########## Nursing Measure requests ##########*/
-  public getRecommendations(diagnoses: any[]) {
-    this.httpClient.post<any>(url + '/recommendation/byDiagnose', {diagnose: diagnoses}).subscribe((data: any) => {
+  public getRecommendations(patientId) {
+    this.httpClient.get<any>(url + '/recommendation/byPatient', {params: {patientId}}).subscribe((data: any) => {
       this.recommendationsObservable.next(data);
     }, async error => {
       const alert = await this.alertController.create({

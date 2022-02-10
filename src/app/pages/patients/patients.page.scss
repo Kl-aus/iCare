@@ -10,3 +10,25 @@ cdk-virtual-scroll-viewport {
 .item-notSelected {
   --ion-item-background: white;
 }
+
+.patient-card {
+  padding: 5px;
+  text-align: center;
+  color: white; //primary
+  font-size: 18px;
+  font-weight: normal;
+  border-radius: 30px;
+  border-color: #90d3ea;
+}
+
+.patient-card-title {
+  font-size: 18px;
+  font-weight: normal;
+  margin: 50px;
+}
+
+.image-margin {
+  max-width: 80px !important;
+  max-height: 80px !important;
+  margin-left: 50px;
+}

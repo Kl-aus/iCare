@@ -4,8 +4,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
 
-
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -36,7 +34,7 @@ export class LoginPage implements OnInit {
       this.authService.login(this.credentials.value).subscribe(
         async (res) => {
           await loading.dismiss();
-          await this.router.navigateByUrl('/menu/core-functions', {replaceUrl: true});
+          await this.router.navigateByUrl('menu/care/patients', {replaceUrl: true});
         },
         async (res) => {
           await loading.dismiss();

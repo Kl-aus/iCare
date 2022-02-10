@@ -5,6 +5,7 @@ import {SwiperComponent} from 'swiper/angular';
 import Swiper, {SwiperOptions, Pagination} from 'swiper';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {NursingMeasureModel} from '../../models/nursingMeasureModel';
+import {DataService, PATIENT_KEY} from '../../service/data.service';
 
 @Component({
   selector: 'app-recommendations',
@@ -14,8 +15,6 @@ import {NursingMeasureModel} from '../../models/nursingMeasureModel';
 
 export class RecommendationsPage implements AfterContentChecked, OnInit {
   @ViewChild('swiper') swiper: SwiperComponent;
-
-  diagnose = [];
   //items = [];
   items: NursingMeasureModel[] = [];
   images = [];
@@ -24,6 +23,7 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
   hideContent = true;
   message = '';
   photo: any;
+  selectedPatientId = 0;
 
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -34,21 +34,10 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
               private alertController: AlertController,
               private loadingController: LoadingController,
+              private dataService: DataService,
               private backendDataService: BackendDataService) {
-    this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
-      // if (params && params.diagnose) { //for navigateByUrl
-      //   this.diagnose = JSON.parse(params.diagnose);
-      // }
-      if (this.router.getCurrentNavigation().extras.state) {
-        this.diagnose = this.router.getCurrentNavigation().extras.state.diagnose;
-      } else  {
-        this.diagnose = null;
-      }
-    });
-
     this.backendDataService.recommendationsObservable.subscribe((data: any) => {
-      this.items  = data;
-      console.log('DATA ARRAY: ' + JSON.stringify(data));
+      this.items = data;
       if(this.items.length > 0) {
         this.hideContent = false;
         this.message = '';
@@ -62,11 +51,16 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
 
   ngOnInit(): void {
         Swiper.use([Pagination]);
-        this.backendDataService.getImages('asd');
+        //this.backendDataService.getImages('asd');
     }
 
   async ionViewWillEnter() {
-    await this.backendDataService.getRecommendations(this.diagnose);
+    this.dataService.getData(PATIENT_KEY).subscribe(result => {
+      this.selectedPatientId = result;
+      this.backendDataService.getRecommendations(this.selectedPatientId);
+    }, error => {
+      console.log('get patientId failed ' + error);
+    });
   }
 
   async blobToBase64(blob) {
@@ -95,7 +89,6 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
   }
 
   ionViewWillLeave() {
-    this.diagnose = [];
     this.items = [];
     this.message = '';
     this.hideContent = true;

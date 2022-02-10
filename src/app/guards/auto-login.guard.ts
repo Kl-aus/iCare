@@ -17,7 +17,7 @@ export class AutoLoginGuard implements CanLoad {
       map(isAuthenticated => {
         if (isAuthenticated) {
           console.log('autologin guard: '+ isAuthenticated);
-          this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
+          this.router.navigateByUrl('menu/care/patients', {replaceUrl: true});
         } else {
           console.log('autologin guard: '+ isAuthenticated);
           return true;

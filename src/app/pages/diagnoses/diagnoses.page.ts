@@ -125,7 +125,7 @@ export class DiagnosesPage implements AfterContentChecked{
         diagnose: this.selectedItems
       }
     };
-    this.router.navigate(['/menu/core-functions/core-functions/recommendations'], navParams);
+    // this.router.navigate(['/menu/core-functions/core-functions/recommendations'], navParams);
   }
 
   async presentActionSheet() {
@@ -171,6 +171,10 @@ export class DiagnosesPage implements AfterContentChecked{
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
+  }
+
+  backButton() {
+    this.router.navigateByUrl('menu/care/patient-dashboard', {replaceUrl: true});
   }
 
   logout() {

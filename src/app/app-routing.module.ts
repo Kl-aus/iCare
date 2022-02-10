@@ -17,11 +17,6 @@ const routes: Routes = [
     canLoad: [AuthGuard]
   },
   {
-    path: 'patient-details',
-    loadChildren: () => import('./pages/patient-details/patient-details.module').then( m => m.PatientDetailsPageModule),
-    canLoad: [AuthGuard]
-  },
-  {
     path: 'intro',
     loadChildren: () => import('./pages/intro/intro.module').then( m => m.IntroPageModule)
   },
@@ -29,16 +24,19 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
-  {
-    path: 'choose-diagnose',
-    loadChildren: () => import('./pages/choose-diagnose/choose-diagnose.module').then( m => m.ChooseDiagnosePageModule),
-    canLoad: [AuthGuard]
-  },
+
+  // {
+  //   path: 'choose-diagnose',
+  //   loadChildren: () => import('./pages/choose-diagnose/choose-diagnose.module').then( m => m.ChooseDiagnosePageModule),
+  //   canLoad: [AuthGuard]
+  // },
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
+
 ];
 
 @NgModule({

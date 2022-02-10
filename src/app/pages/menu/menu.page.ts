@@ -29,14 +29,14 @@ export class MenuPage implements OnInit {
   ionViewWillEnter() {
     if(this.dataService.userDetailsModel.roles[0] == 'ROLE_MODERATOR') {
       this.pages = [
-        { title: 'pflege', url: '/menu/core-functions' },
+        { title: 'pflege', url: '/menu/care' },
         { title: 'moderator', url: '/menu/moderator'},
         { title: 'maps', url: '/menu/maps' },
         // { title: 'Symbole', url: '/menu/profile'}
       ];
     } else {
       this.pages = [
-        { title: 'Pflege', url: '/menu/core-functions' },
+        { title: 'pflege', url: '/menu/care' },
         { title: 'maps', url: '/menu/maps' },
         // { title: 'profile', url: '/menu/profile'}
       ];

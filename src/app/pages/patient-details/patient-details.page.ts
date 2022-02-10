@@ -74,6 +74,6 @@ export class PatientDetailsPage implements OnInit {
   }
 
   backButton() {
-    this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
+    this.router.navigateByUrl('menu/care/patient-dashboard', {replaceUrl: true});
   }
 }

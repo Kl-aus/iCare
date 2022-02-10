@@ -7,8 +7,8 @@ import {DataService} from './data.service';
 import {PATIENT_KEY, DIAGNOSES_KEY, SETTINGS_KEY, TOKEN_KEY} from './data.service';
 
 
-// const url = 'http://localhost:8080';
-const url = 'http://212.227.176.204:8080';
+const url = 'http://localhost:8080';
+// const url = 'http://212.227.176.204:8080';
 
 @Injectable({
   providedIn: 'root'

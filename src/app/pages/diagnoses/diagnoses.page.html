@@ -5,6 +5,11 @@
       <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <ion-button (click)="backButton()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
       <ion-button (click)="logout()" slot="icon-only | end">
         <ion-icon name="log-out"></ion-icon>
       </ion-button>

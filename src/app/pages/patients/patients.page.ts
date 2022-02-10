@@ -47,7 +47,7 @@ export class PatientsPage implements OnInit{
     });
     this.patientSelected = parseInt(item.patientId,10);
     this.dataService.saveData(PATIENT_KEY, this.patientSelected).subscribe(result => {
-      this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
+      this.router.navigateByUrl('menu/care/patient-dashboard', {replaceUrl: true});
     }, error => {
       console.log('save patientId failed ' + error);
     });

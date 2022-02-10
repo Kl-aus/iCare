@@ -81,7 +81,7 @@ export class ChooseDiagnosePage implements OnInit {
   }
 
   backButton() {
-    this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
+    // this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
   }
 
   logout() {

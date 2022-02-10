@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(req.url.includes('212.227.176.204')) { //212.227.176.204
+    if(req.url.includes('localhost')) { //212.227.176.204
       let authReq = req;
       if (this.authService.accessToken != null) {
         authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + this.authService.accessToken) });

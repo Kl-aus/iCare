@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Patienten</ion-title>
-    <ion-buttons slot="start">
-      <ion-menu-button autoHide="false"></ion-menu-button>
-    </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="logout()" slot="icon-only | end">
         <ion-icon name="log-out"></ion-icon>
@@ -24,13 +21,12 @@
     <ion-list>
         <ion-item *ngFor="let item of items | filter: searchTerm;" [ngClass]="{'item-selected': patientSelected === item.patientId}"
             tappable (click)="selectItem(item)">
-          <ion-avatar slot="start">
-            <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
-          </ion-avatar>
-          <ion-label>
-            <h2>{{item.lastName}}</h2>
-              <p>{{item.firstName}}</p>
-          </ion-label>
+          <ion-thumbnail class="image-margin">
+            <img src="assets/img/patient.png">
+          </ion-thumbnail>
+          <ion-text color="primary" class="ion-text-center">
+            <div class="patient-card-title" *ngIf="item != null"><b>{{item.lastName}}</b> {{item.firstName}}</div>
+          </ion-text>
           <ion-icon slot="end" name="trash" (click)="deletePatient(item); $event.preventDefault(); $event.stopPropagation()"></ion-icon> <!--Trash icon? really?-->
         </ion-item>
     </ion-list>
