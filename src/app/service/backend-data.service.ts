@@ -17,6 +17,8 @@ export class BackendDataService {
   public diagnosesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public recommendationsObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public imageObservable: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public anamenesisObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+
 
 
   constructor(private httpClient: HttpClient,
@@ -62,7 +64,7 @@ export class BackendDataService {
           buttons: ['OK'],
         });
         await alert.present();
-        this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
+        this.router.navigateByUrl('/menu/care/diagnoses', {replaceUrl: true});
       },
       async (res) => {
         console.log('post Diagnose error: ' + res);
@@ -136,7 +138,7 @@ export class BackendDataService {
           buttons: ['OK'],
         });
         await alert.present();
-        await this.router.navigateByUrl('/menu/core-functions/core-functions/patients', {replaceUrl: true});
+        await this.router.navigateByUrl('/menu/care/patients', {replaceUrl: true});
       },
       async (res) => {
         const alert = await this.alertController.create({
@@ -234,8 +236,16 @@ export class BackendDataService {
     });
   }
 
-
   public getImages(filename) {
     return this.httpClient.get(url + '/files/getImg', {params: {filename}, responseType: 'blob'});
+  }
+
+  /*########## Anamnesis requests ##########*/
+  public getAnamnesis() {
+    return this.httpClient.get(url + '/anamnesis/getAnamnesis').subscribe((data: any) => {
+      this.anamenesisObservable.next(data);
+    }, error => {
+      console.log('anamnese error, ' + error);
+    });
   }
 }

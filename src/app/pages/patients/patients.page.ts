@@ -55,7 +55,7 @@ export class PatientsPage implements OnInit{
   }
 
   addPatient() {
-    this.router.navigateByUrl('/patient-details', {replaceUrl: true});
+    this.router.navigateByUrl('menu/care/patient-details', {replaceUrl: true});
   }
 
   deletePatient(item) {

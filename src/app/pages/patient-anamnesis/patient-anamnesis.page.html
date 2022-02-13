@@ -17,6 +17,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-thumbnail class="center-image">
+    <img src="assets/img/patient.png">
+  </ion-thumbnail>
+  <ion-text color="primary" class="ion-text-center">
+    <div class="patient-card-title" *ngIf="patientItem != null">{{patientItem.firstName}} {{patientItem.lastName}}</div>
+  </ion-text>
+  <br>
+  <ion-list *ngFor="let category of anamnesisCategories">
+      <ion-text color="primary">
+        <h2>{{category}}</h2>
+      </ion-text>
+    <ion-list *ngFor = "let item of anamnesis">
+      <ion-text *ngIf="category === item.anamnesisCategory">
+        <p>{{item.question}}</p><ion-toggle></ion-toggle>
+      </ion-text>
+    </ion-list>
+  </ion-list>
 </ion-content>

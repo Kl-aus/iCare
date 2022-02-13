@@ -18,6 +18,7 @@ export const INTRO_KEY = 'intro-seen';
 })
  export class DataService {
   userDetailsModel: UserDetailsModel  = null;
+  diagnosesTabDisabled = new BehaviorSubject(true);//TODO
 
   /* Ionic Storage v3*/
   public diagnosesTab = new BehaviorSubject(true);

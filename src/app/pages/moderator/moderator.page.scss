@@ -6,6 +6,10 @@ ion-content{
   //--background:
 }
 
+ion-segment-button {
+  --indicator-box-shadow: transparent !important;
+}
+
 .textTitle {
   margin: 15px;
   font-size: 20px;

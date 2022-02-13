@@ -72,11 +72,6 @@ export class AuthenticationService {
     await this.dataService.removeData(DIAGNOSES_KEY);
     await this.dataService.removeData(SETTINGS_KEY);
     await this.dataService.removeData(TOKEN_KEY);
-
-    await Storage.remove({key: PATIENT_KEY});
-    await Storage.remove({key: DIAGNOSES_KEY});
-    await Storage.remove({key: SETTINGS_KEY});
-    return await Storage.remove({key: TOKEN_KEY});
   }
 
   register(credentials: {username; password; email}): Observable<any> {

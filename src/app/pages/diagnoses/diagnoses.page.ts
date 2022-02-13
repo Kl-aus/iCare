@@ -1,21 +1,17 @@
-import {AfterContentChecked, Component, ViewChild} from '@angular/core';
+import {AfterContentChecked, Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {BackendDataService} from '../../service/backend-data.service';
 import {ActionSheetController, AlertController, ToastController} from '@ionic/angular';
 import {AuthenticationService} from '../../service/authentication.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DataService} from '../../service/data.service';
+import {DataService, PATIENT_ITEM, PATIENT_KEY} from '../../service/data.service';
 import {SwiperComponent} from 'swiper/angular';
-import SwiperCore, { EffectCoverflow, Pagination } from 'swiper';
-
-import {PATIENT_KEY, PATIENT_ITEM} from '../../service/data.service';
 import {SwiperOptions} from 'swiper';
-
-SwiperCore.use([EffectCoverflow, Pagination]);
 
 @Component({
   selector: 'app-diagnoses',
   templateUrl: './diagnoses.page.html',
   styleUrls: ['./diagnoses.page.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 
 export class DiagnosesPage implements AfterContentChecked{
@@ -28,23 +24,12 @@ export class DiagnosesPage implements AfterContentChecked{
   hideContent = true;
   message = '';
   patientItem: any;
+  segmentType: 'Allgemein';
 
   config: SwiperOptions = {
-    slidesPerView: 1.3,
-    spaceBetween: 20,
-    loop: true,
+    slidesPerView: 'auto',
+    spaceBetween: 30,
     centeredSlides: true,
-    grabCursor: true,
-    watchOverflow: true,
-
-
-    coverflowEffect: {
-      rotate: 0,
-      stretch: 0,
-      depth: 50,
-      modifier: 1,
-      slideShadows: false,
-    }
   };
 
   constructor(private backendDataService: BackendDataService,
@@ -180,6 +165,5 @@ export class DiagnosesPage implements AfterContentChecked{
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
-
 
 }

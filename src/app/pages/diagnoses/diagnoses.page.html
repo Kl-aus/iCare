@@ -18,7 +18,14 @@
 </ion-header>
 
 <ion-content class="ion-margin">
-      <ion-grid>
+  <swiper #swiper [config] = "config" class="swiper-container">
+    <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
+     {{item.nursingDiagnosesNanda}}
+    </ng-template>
+  </swiper>
+
+
+  <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center">
             <ion-chip>
