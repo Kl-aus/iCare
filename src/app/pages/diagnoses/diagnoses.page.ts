@@ -18,7 +18,8 @@ export class DiagnosesPage implements AfterContentChecked{
   @ViewChild('swiper') swiper: SwiperComponent;
 
   searchTerm: string;
-  items = [];
+  diagnoses = [];
+  diagnoseCategory: Set<string> = new Set<string>();
   selectedItems = [];
   selectedPatientId = 0;
   hideContent = true;
@@ -41,11 +42,25 @@ export class DiagnosesPage implements AfterContentChecked{
               private route: ActivatedRoute,
               private router: Router) {
     this.backendDataService.patientDiagnosesObservable.subscribe((data: any[]) => {
-      this.items = [];
+      this.diagnoses = [];
       this.selectedItems = [];
-      this.items = data;
+      this.diagnoses = data;
+      for (const datum of this.diagnoses) {
+        if(datum.nursingDiagnosesCategory.includes(',')) {
+          datum.nursingDiagnosesCategory = 'Kombinationsdiagnose';
+        } else if(!datum.nursingDiagnosesCategory){
+          datum.nursingDiagnosesCategory = 'ohne Kategorie';
+        }
+        this.diagnoseCategory.add(datum.nursingDiagnosesCategory);
+      }
 
-      if(this.items.length > 0) {
+      for (const datum of this.diagnoseCategory) {
+        console.log('CAT:'+ datum);
+      }
+      for (const datum of this.diagnoses) {
+        console.log('DIAG:'+ datum.nursingDiagnosesNanda);
+      }
+        if(this.diagnoses.length > 0) {
             this.hideContent = false;
             this.message = '';
           } else {
@@ -65,6 +80,8 @@ export class DiagnosesPage implements AfterContentChecked{
   }
 
   async ionViewWillEnter() {
+    this.diagnoses = [];
+
     this.dataService.getData(PATIENT_ITEM).subscribe(result => {
       this.patientItem = result;
     }, error => {
@@ -88,16 +105,17 @@ export class DiagnosesPage implements AfterContentChecked{
     await this.backendDataService.getPatientDiagnoses();
   }
 
-  selectItem(item) {
+  selectItem(item, event) {
     if(!this.selectedItems.includes(item)) {
       this.selectedItems.push(item);
     } else {
       this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
     }
+    event.stopPropagation();
   }
 
   addDiagnose() {
-    this.router.navigateByUrl('/choose-diagnose', {replaceUrl: true});
+    this.router.navigateByUrl('/menu/care/choose-diagnose', {replaceUrl: true});
     }
 
   async deleteDiagnose() {

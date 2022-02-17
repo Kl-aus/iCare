@@ -1,17 +1,13 @@
 .center-image {
   max-width: 80px !important;
   max-height: 80px !important;
-  margin: 5px auto 5px;
+  margin: 6px auto 6px;
 }
 
 .patient-image {
   max-width: 80px !important;
   max-height: 80px !important;
-  margin: 5px auto 5px;
-}
-
-.card-button {
-
+  margin: 10px auto 2px;
 }
 
 .card-title {
@@ -38,6 +34,7 @@
   font-weight: normal;
   border-radius: 30px;
   border-color: #90d3ea;
+  max-height: 100px !important;
 }
 
 .patient-card-title {
@@ -45,4 +42,20 @@
   font-weight: normal;
 }
 
+ion-card {
+  height: 110px;
+  //width: 120px;
+}
 
+ion-col {
+}
+
+ion-row {
+}
+
+ion-grid {
+  //align-content: center;
+  //align-items: center;
+  //justify-content: center;
+  //text-align: center;
+}

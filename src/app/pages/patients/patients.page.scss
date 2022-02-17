@@ -13,22 +13,26 @@ cdk-virtual-scroll-viewport {
 
 .patient-card {
   padding: 5px;
-  text-align: center;
+  text-align: left;
   color: white; //primary
-  font-size: 18px;
+  font-size: 12px;
   font-weight: normal;
   border-radius: 30px;
   border-color: #90d3ea;
 }
 
 .patient-card-title {
-  font-size: 18px;
+  font-size: 12px;
   font-weight: normal;
-  margin: 50px;
+  margin: 20px;
 }
 
+
+
 .image-margin {
-  max-width: 80px !important;
-  max-height: 80px !important;
-  margin-left: 50px;
+  min-width: 50px !important;
+  min-height: 50px !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  scale: 70%;
 }

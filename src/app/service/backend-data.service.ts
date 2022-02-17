@@ -152,7 +152,6 @@ export class BackendDataService {
     );
   }
 
-  //TODO: 1x PatientId holen und in dataservice rein
   public deletePatient(patientId: any) {
     const httpOptions: any = {
       headers: {//overwritten by Interceptor
@@ -245,7 +244,26 @@ export class BackendDataService {
     return this.httpClient.get(url + '/anamnesis/getAnamnesis').subscribe((data: any) => {
       this.anamenesisObservable.next(data);
     }, error => {
-      console.log('anamnese error, ' + error);
+      console.log('get anamnesis error, ' + error);
+    });
+  }
+
+
+  public saveAnamnesis(anamnesis, patientId) {
+    const body = {
+      patientId,
+      anamnesis,
+    };
+    return this.httpClient.post(url + '/patient/saveAnamnesis', body).subscribe((data: any) => {
+      // this.anamenesisObservable.next(data);
+    }, async error => {
+      const alert = await this.alertController.create({
+        header: 'Fehler',
+        message: 'Fehler beim speichern der Anamnese',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      console.log('post anamnese error, ' + error);
     });
   }
 }

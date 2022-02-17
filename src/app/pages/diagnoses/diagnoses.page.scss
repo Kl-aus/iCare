@@ -3,100 +3,87 @@
   --ion-item-background:  #2B8C68;
 }
 
-ion-checkbox {
-
-}
-
-ion-list {
-  margin: 20px auto
-}
-
-.patient-chip {
-  color: #3880ff; //primary
+.patient-card-title {
   font-size: 18px;
   font-weight: normal;
 }
 
-.big-icon {
-  font-size: 48px;
+.center-image {
+  max-width: 80px !important;
+  max-height: 80px !important;
+  margin: 10px auto 10px;
 }
 
-ion-chip {
-  height: 50px;
-  padding: 25px;
-  border-radius: 25px;
-  margin: 20px auto;
+.category-image {
+  max-height: 50px;
+  max-width: 50px;
+  padding: 5px;
+  margin: 10px auto 10px;
 }
 
-.swiper {
-  text-align: center;
-  width: 100%;
-  height: auto;
+.expansion-category {
+  padding: 5px;
+  font-size: 12px;
 }
 
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: transparent !important;
-
-  /* Center slide text vertically */
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
+.expansion-title {
+  color: var(--ion-color-primary);
+  margin: 10px;
+  font-size: 12px
 }
 
-.swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-//
-//.swiper-slide:nth-child(2n) {
-//  width: 40%;
-//}
-//
-//.swiper-slide:nth-child(3n) {
-//  width: 20%;
-//}
-
-ion-card {
-  width:100%;
-  height: 350px;
+.expansion-text {
+  padding: 5px;
+  font-size: 10px;
 }
 
-ion-card-header {
-  color: white;
-  background-color: #489097;
-  min-height: 80px;
+.inner-expansion-panel {
+  background: white;
 }
 
-ion-card-title {
-  font-size: 16px;
-  color: white;
+.inner-expansion-panel-header {
+  margin: 2px;
+  background: white;
 }
 
-ion-card-content {
-  margin: 5px;
+.mat-expansion-header {
 }
 
-h3 {
-  background-color: #489097;
-  color: white;
-  border-radius: 5px;
+.mat-expansion-panel {
+  margin: 5px !important;
+}
+.mat-expansion-panel-body {
+  padding: 5px !important;
 }
 
-.categoryTitle {
-  color: #489097;
+.mat-expansion-panel-header {
+  flex-basis: 30%;
 }
 
+.mat-expansion-panel-header-description {
+  flex-basis: 70%;
+  font-size: 8px;
+  color: #3880ff; //ion-color-primary
+  font-weight: bold;
+  margin: 20px auto 20px;
+}
 
+.mat-expansion-Harnausscheidung {
+  background-color: var(--ion-color-category_yellow-tint);
+}
+
+.mat-expansion-Mobilität {
+  background-color: var(--ion-color-category_red-tint);
+}
+
+.mat-expansion-Trinken {
+  background-color: var(--ion-color-category_blue-tint);
+}
+
+.mat-expansion-Kombinationsdiagnose {
+  background-color: var(--ion-color-category-default-tint);
+}
+
+.mat-expansion-ohneKategorie {
+  background-color: white;
+}

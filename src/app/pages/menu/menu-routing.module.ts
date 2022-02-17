@@ -41,6 +41,10 @@ const routes: Routes = [
             path: 'diagnoses',
             loadChildren: () => import('../../pages/diagnoses/diagnoses.module').then( m => m.DiagnosesPageModule)
           },
+          {
+            path: 'choose-diagnose',
+            loadChildren: () => import('../../pages/choose-diagnose/choose-diagnose.module').then( m => m.ChooseDiagnosePageModule),
+          },
         ]
       },
       {

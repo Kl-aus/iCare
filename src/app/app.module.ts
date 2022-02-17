@@ -12,7 +12,6 @@ import {authInterceptorProviders} from './helpers/auth.interceptor';
 import {IonicStorageModule} from '@ionic/storage-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -22,12 +21,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     FormsModule,
     IonicStorageModule.forRoot({
-    name: 'mydb',
+      name: 'mydb',
       // eslint-disable-next-line no-underscore-dangle
-    driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
-  }),
+      driverOrder: [CordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+    }),
     BrowserAnimationsModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, authInterceptorProviders],
+  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, authInterceptorProviders],
   bootstrap: [AppComponent],
+  exports: [
+  ]
 })
 export class AppModule {}

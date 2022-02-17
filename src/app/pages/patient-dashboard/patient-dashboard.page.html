@@ -12,15 +12,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-align-items-center">
-  <br>
-  <ion-thumbnail class="center-image">
+<ion-content>
+
+  <ion-thumbnail class="patient-image">
       <img src="assets/img/patient.png">
     </ion-thumbnail>
     <ion-text color="primary" class="ion-text-center">
       <div class="patient-card-title" *ngIf="patientItem != null">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
     </ion-text>
-  <br>
   <ion-grid>
     <ion-row>
       <ion-col>

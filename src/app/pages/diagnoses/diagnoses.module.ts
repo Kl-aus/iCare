@@ -7,6 +7,8 @@ import { DiagnosesPage } from './diagnoses.page';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { Ng2SearchPipeModule} from 'ng2-search-filter';
 import {SwiperModule} from "swiper/angular";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {PipeModule} from "../../pipes/pipe.module";
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import {SwiperModule} from "swiper/angular";
     DiagnosesPageRoutingModule,
     ScrollingModule,
     Ng2SearchPipeModule,
-    SwiperModule
+    SwiperModule,
+    MatExpansionModule,
+    PipeModule
   ],
   declarations: [DiagnosesPage]
 })

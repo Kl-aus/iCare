@@ -1,5 +1,75 @@
 .center-image {
   max-width: 80px !important;
   max-height: 80px !important;
+  margin: 10px auto 10px;
+}
+
+.patient-card-title {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+ion-toggle {
+  --background: #8b0000;
+  --background-checked: #013214;
+  --handle-background: red;
+  --handle-background-checked: green;
+}
+
+.category-image {
+  max-height: 50px;
+  max-width: 50px;
+  padding: 5px;
   margin: 5px auto 5px;
+}
+
+.expansion-title {
+  margin: 10px;
+  font-size: 12px
+}
+
+.expansion-text {
+  padding: 5px;
+  font-size: 12px;
+}
+
+.mat-expansion-title {
+  margin: 10px;
+}
+
+ion-checkbox {
+  position: absolute;
+  right: 15px;
+}
+
+.mat-expansion-header {
+}
+
+.mat-expansion-panel-header {
+  flex-basis: 30%;
+}
+
+.mat-expansion-panel-header-description {
+  flex-basis: 70%;
+  font-size: 8px;
+  color: #3880ff; //ion-color-primary
+  font-weight: bold;
+  margin: 10px auto 10px;
+}
+
+.mat-expansion-panel {
+  margin: 5px;
+  background: white;
+}
+
+.mat-expansion-Harnausscheidung {
+  background-color: var(--ion-color-category_yellow-tint);
+}
+
+.mat-expansion-MobilitätimBett {
+  background-color: var(--ion-color-category_red-tint);
+}
+
+.mat-expansion-Trinken {
+  background-color: var(--ion-color-category_blue-tint);
 }

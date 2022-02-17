@@ -17,95 +17,58 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-margin">
-  <swiper #swiper [config] = "config" class="swiper-container">
-    <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
-     {{item.nursingDiagnosesNanda}}
-    </ng-template>
-  </swiper>
+<ion-content>
+
+  <ion-thumbnail class="center-image">
+    <img src="assets/img/patient.png">
+  </ion-thumbnail>
+  <ion-text color="primary" class="ion-text-center">
+    <div class="patient-card-title" *ngIf="patientItem != null">{{patientItem.firstName}} {{patientItem.lastName}}</div>
+  </ion-text>
 
 
-  <ion-grid>
-        <ion-row>
-          <ion-col class="ion-text-center">
-            <ion-chip>
-              <ion-icon class="big-icon" name="person-circle"></ion-icon>
-              <ion-label>
-                <div *ngIf="patientItem != null" class="patient-chip">{{patientItem.firstName}} {{patientItem.lastName}}:</div>
-              </ion-label>
-            </ion-chip>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
+  <ion-list *ngFor="let category of diagnoseCategory">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header ngClass = "mat-expansion-{{category | removeWhiteSpaces}}">
+        <mat-panel-title>
+            <ion-img class="category-image" src="/assets/img/{{category | removeWhiteSpaces}}.png"></ion-img>
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="expansion-category">{{category}}</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
       <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center">
-            <ion-searchbar placeholder="Suche Diagnosen" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
+            <ion-searchbar placeholder="Suche" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <div *ngFor="let diagnose of diagnoses | filter: searchTerm">
+        <div *ngIf="category === diagnose.nursingDiagnosesCategory">
+          <mat-expansion-panel class="inner-expansion-panel">
+              <mat-expansion-panel-header class="inner-expansion-panel-header">
+                <div class="expansion-title">{{diagnose.nursingDiagnosesNanda}}</div>
+              </mat-expansion-panel-header>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <div class="expansion-text">{{diagnose.nursingDiagnosesDescription}}</div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-text-end">
+                  <ion-checkbox (click)="selectItem(diagnose, $event)"></ion-checkbox>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
 
-    <ion-list class="ion-text-center">
-      <h2 class="categoryTitle">Haut:</h2>
-      <swiper #swiper [config] = "config" [effect]="'coverflow'" [grabCursor]="true" class="swiper-container" >
-          <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
-            <ion-card tappable (click)="selectItem(item)" class="ion-text-center">
-              <ion-card-header>
-                <ion-card-title>
-                  <ion-checkbox [checked]="selectedItems.includes(item)"></ion-checkbox>
-                  {{item.nursingDiagnosesNanda}}
-                </ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-              <p>{{item.nursingDiagnosesDescription}}</p>
-              </ion-card-content>
-            </ion-card>
-          </ng-template>
-      </swiper>
-
-        <h2 class="categoryTitle">Psyche:</h2>
-
-      <swiper #swiper [config] = "config" [effect]="'coverflow'" [grabCursor]="true" class="swiper-container" >
-        <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
-          <ion-card tappable (click)="selectItem(item)" class="ion-text-center">
-            <ion-card-header>
-              <ion-card-title>{{item.nursingDiagnosesNanda}}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p>{{item.nursingDiagnosesDescription}}</p>
-              <ion-checkbox [checked]="selectedItems.includes(item)"></ion-checkbox>
-            </ion-card-content>
-          </ion-card>
-        </ng-template>
-      </swiper>
-
-      <h2 class="categoryTitle">Bewegung:</h2>
-      <swiper #swiper [config] = "config" [effect]="'coverflow'" [grabCursor]="true" class="swiper-container" >
-        <ng-template swiperSlide class="swiper-slide" *ngFor = "let item of items | filter: searchTerm;" >
-          <ion-card tappable (click)="selectItem(item)" class="ion-text-center">
-            <ion-card-header>
-              <ion-card-title>{{item.nursingDiagnosesNanda}}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p>{{item.nursingDiagnosesDescription}}</p>
-              <ion-checkbox [checked]="selectedItems.includes(item)"></ion-checkbox>
-            </ion-card-content>
-          </ion-card>
-        </ng-template>
-      </swiper>
-        <!--ion-item *ngFor="let item of items | filter: searchTerm; let i = index;"  [ngClass]="{'item-selected': selectedItems.includes(item)}"
-          tappable (click)="selectItem(item)" >
-            <ion-avatar slot="start">
-              <img src="https://loremflickr.com/100/100" alt="irgendeinRandomImage">
-            </ion-avatar>
-            <ion-label>
-              <p>{{item.nursingDiagnosesNanda}}</p>
-            </ion-label>
-          <ion-checkbox slot="end" [checked]="selectedItems.includes(item)"></ion-checkbox>
-          </ion-item-->
-    </ion-list>
-
+          </mat-expansion-panel>
+          <br>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </ion-list>
 
   <ion-text class="ion-text-center" color="primary">
     <h2>{{message}}</h2>

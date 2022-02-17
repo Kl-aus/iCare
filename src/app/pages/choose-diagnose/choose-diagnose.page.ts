@@ -13,13 +13,13 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./choose-diagnose.page.scss'],
 })
 export class ChooseDiagnosePage implements OnInit {
+  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
+
   searchTerm: string;
   items = [];
   selectedItems = [];
   selectedPatientId: number;
   patientItem: any;
-  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
-
 
   constructor(private backendDataService: BackendDataService,
               private dataService: DataService,
@@ -81,7 +81,7 @@ export class ChooseDiagnosePage implements OnInit {
   }
 
   backButton() {
-    // this.router.navigateByUrl('/menu/core-functions/core-functions/diagnoses', {replaceUrl: true});
+    this.router.navigateByUrl('/menu/care/diagnoses', {replaceUrl: true});
   }
 
   logout() {
