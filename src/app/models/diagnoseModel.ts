@@ -1,20 +1,20 @@
 export class DiagnoseModel {
-  private nursingDiagnosesNanda: string;
+  private nursingDiagnoses: string;
   private nursingDiagnosesDescription: string;
 
 
-  constructor(_nursingDiagnosesNanda: string, _nursingDiagnosesDescription: string) {
-    this.nursingDiagnosesNanda = _nursingDiagnosesNanda;
+  constructor(_nursingDiagnoses: string, _nursingDiagnosesDescription: string) {
+    this.nursingDiagnoses = _nursingDiagnoses;
     this.nursingDiagnosesDescription = _nursingDiagnosesDescription;
   }
 
 
-  get _nursingDiagnosesNanda(): string {
-    return this.nursingDiagnosesNanda;
+  get _nursingDiagnoses(): string {
+    return this.nursingDiagnoses;
   }
 
-  set _nursingDiagnosesNanda(value: string) {
-    this.nursingDiagnosesNanda = value;
+  set _nursingDiagnoses(value: string) {
+    this.nursingDiagnoses = value;
   }
 
   get _nursingDiagnosesDescription(): string {

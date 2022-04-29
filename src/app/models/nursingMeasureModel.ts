@@ -4,6 +4,7 @@ export class NursingMeasureModel {
   images: Images[] = [];
   private careRecommendation: string;
   private careRecommendationTitle: string;
+  private
   constructor(_careRecommendation: string, _careRecommendationTitle: string) {
     this.careRecommendation = _careRecommendation;
     this.careRecommendationTitle = _careRecommendationTitle;

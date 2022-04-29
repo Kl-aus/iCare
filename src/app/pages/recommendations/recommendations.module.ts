@@ -9,6 +9,7 @@ import { RecommendationsPageRoutingModule } from './recommendations-routing.modu
 import { RecommendationsPage } from './recommendations.page';
 import {Ng2SearchPipeModule} from 'ng2-search-filter';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {PipeModule} from "../../pipes/pipe.module";
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
         SwiperModule,
         Ng2SearchPipeModule,
         RecommendationsPageRoutingModule,
-        MatExpansionModule
+        MatExpansionModule,
+        PipeModule
     ],
   declarations: [RecommendationsPage]
 })

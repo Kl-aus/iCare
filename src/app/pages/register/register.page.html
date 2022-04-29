@@ -1,6 +1,6 @@
-<ion-header>
+<ion-header color="primary">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Benutzer registrieren</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +16,7 @@
         </div>
 
       <ion-item>
-        <ion-input type="text" placeholder="username" formControlName="username"></ion-input>
+        <ion-input type="text" placeholder="Benutzername" formControlName="username"></ion-input>
       </ion-item>
       <div *ngIf="(username.dirty || username.touched) && username.errors" class="errors">
         <span *ngIf="password.errors?.required">Benutzername muss eingegeben werden!</span>
@@ -30,8 +30,8 @@
         <span *ngIf="password.errors?.required">Passwort muss eingegeben werden!</span>
         <span *ngIf="password.errors?.minlenght">Passwort muss aus mindenstens 6 Zeichen bestehen!</span>
       </div>
-
-      <ion-button type="submit" expand="block" >Benutzer registrieren</ion-button>
     </div>
+    <ion-button type="submit" expand="block" >Benutzer registrieren</ion-button>
+
   </form>
 </ion-content>

@@ -27,7 +27,6 @@
     <ion-segment-button value="save" [disabled] = "lastSegment">
       <ion-icon name="cloud-done"></ion-icon>
     </ion-segment-button>
-
   </ion-segment>
 
 
@@ -35,7 +34,7 @@
     <div *ngSwitchCase="'author'">
 
       <div class="textTitle">
-        <h2>Author & Quellen</h2>
+        <h2>Autor & Quellen</h2>
       </div>
 
       <form (ngSubmit)="submitInfoForm()" [formGroup]="author">
@@ -178,7 +177,7 @@
                 <ion-col class="ion-text-center">
                   <ion-chip>
                     <ion-icon name="medical"></ion-icon>
-                    <ion-label>{{diagnose._nursingDiagnosesNanda}}</ion-label>
+                    <ion-label>{{diagnose._nursingDiagnoses}}</ion-label>
                   </ion-chip>
                 </ion-col>
               </ion-row>

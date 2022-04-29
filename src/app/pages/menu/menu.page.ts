@@ -32,7 +32,6 @@ export class MenuPage implements OnInit {
         { title: 'pflege', url: '/menu/care' },
         { title: 'moderator', url: '/menu/moderator'},
         { title: 'maps', url: '/menu/maps' },
-        // { title: 'Symbole', url: '/menu/profile'}
       ];
     } else {
       this.pages = [

@@ -54,12 +54,12 @@ export class DiagnosesPage implements AfterContentChecked{
         this.diagnoseCategory.add(datum.nursingDiagnosesCategory);
       }
 
-      for (const datum of this.diagnoseCategory) {
-        console.log('CAT:'+ datum);
-      }
-      for (const datum of this.diagnoses) {
-        console.log('DIAG:'+ datum.nursingDiagnosesNanda);
-      }
+      // for (const datum of this.diagnoseCategory) {
+      //   console.log('CAT:'+ datum);
+      // }
+      // for (const datum of this.diagnoses) {
+      //   console.log('DIAG:'+ datum.nursingDiagnosesNanda);
+      // }
         if(this.diagnoses.length > 0) {
             this.hideContent = false;
             this.message = '';

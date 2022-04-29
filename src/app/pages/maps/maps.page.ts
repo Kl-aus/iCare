@@ -90,7 +90,7 @@ export class MapsPage implements OnInit {
   }
 
     private showMap() {
-    const location = new google.maps.LatLng(48.2394808451526, 16.377114982086727); //FH
+    const location = new google.maps.LatLng(48.2394808451526, 16.377114982086727);
     const options = {
       center: location,
       zoom: 10,

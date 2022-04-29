@@ -112,7 +112,7 @@ export class ModeratorPage implements OnInit {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.Uri, //uri instead of base64 because of performance issues
+        resultType: CameraResultType.Uri,
         source: CameraSource.Camera
       });
       if (image) {
@@ -122,7 +122,7 @@ export class ModeratorPage implements OnInit {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.Uri, //uri instead of base64 because of performance issues
+        resultType: CameraResultType.Uri,
         source: CameraSource.Photos
       });
       if (image) {

@@ -33,7 +33,7 @@ export class PatientAnamnesisPage implements OnInit {
   ngOnInit() {
   }
 
-  addQuestion(question) {
+   addQuestion(question) {
     if(!this.anamnesisQuestions.includes(question)) {
       this.anamnesisQuestions.push(question);
     } else {
@@ -78,5 +78,4 @@ export class PatientAnamnesisPage implements OnInit {
   logout() {
     this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
-
 }

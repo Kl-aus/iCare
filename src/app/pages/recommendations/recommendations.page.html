@@ -8,30 +8,40 @@
 </ion-header>
 
 <ion-content>
-  <ion-list [hidden]="hideContent" *ngFor="let item of items | filter: searchTerm; let i = index">
-  <div class="accordion-container">
+<ion-list *ngFor="let category of measureCategory">
+  <mat-expansion-panel class="category-panel">
+    <mat-expansion-panel-header ngClass = "mat-expansion-{{category | removeWhiteSpaces}}">
+      <mat-panel-title>
+        <ion-img class="category-image" src="/assets/img/{{category | removeWhiteSpaces}}.png"></ion-img>
+      </mat-panel-title>
+      <mat-panel-description>
+        <div class="expansion-category">{{category}}</div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-    <mat-accordion class="example-headers-align">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title class = "mat-expansion-title">
-            {{item.careRecommendationTitle}}
-          </mat-panel-title>
-          <mat-panel-description>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <swiper #swiper [config] = "config" class="swiper-container">
-          <ng-template swiperSlide class="swiper-slide" *ngFor = "let img of item.images">
-            <img  class="swiper-slide-container"  height="300 px" width="300 px" [src] = "img.data">
-          </ng-template>
-        </swiper>
-        <h2>{{item.careRecommendationTitle}}</h2>
-        <p> {{item.careRecommendation}}</p>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <div [hidden]="hideContent" *ngFor="let item of items">
+      <div *ngIf="category === item.nursingMeasureCategory">
+          <mat-expansion-panel class="inner-expansion-panel">
+            <mat-expansion-panel-header class="inner-expansion-panel-header">
+              <div>
+                {{item.careRecommendationTitle}}
+              </div>
+            </mat-expansion-panel-header>
+            <swiper #swiper [config] = "config" class="swiper-container">
+              <ng-template swiperSlide class="swiper-slide" *ngFor = "let img of item.images">
+                <div class="swiper-img">
+                  <img [src] = "img.data">
+                </div>
 
-  </div>
-  </ion-list>
+              </ng-template>
+            </swiper>
+            <h2>{{item.careRecommendationTitle}}</h2>
+            <p> {{item.careRecommendation}}</p>
+          </mat-expansion-panel>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</ion-list>
   <ion-text class="ion-text-center" color="primary">
     <h2>{{message}}</h2>
   </ion-text>

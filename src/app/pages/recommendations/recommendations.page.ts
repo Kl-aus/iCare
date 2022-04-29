@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentChecked, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackendDataService} from '../../service/backend-data.service';
 import {SwiperComponent} from 'swiper/angular';
@@ -11,19 +11,22 @@ import {DataService, PATIENT_KEY} from '../../service/data.service';
   selector: 'app-recommendations',
   templateUrl: './recommendations.page.html',
   styleUrls: ['./recommendations.page.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 
 export class RecommendationsPage implements AfterContentChecked, OnInit {
   @ViewChild('swiper') swiper: SwiperComponent;
-  //items = [];
-  items: NursingMeasureModel[] = [];
+  items = [];
+  //items: NursingMeasureModel[] = [];
   images = [];
   navigation: any;
   searchTerm: string;
-  hideContent = true;
+  hideContent = false;
   message = '';
   photo: any;
   selectedPatientId = 0;
+  measureCategory: Set<string> = new Set<string>();
+
 
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -38,6 +41,15 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
               private backendDataService: BackendDataService) {
     this.backendDataService.recommendationsObservable.subscribe((data: any) => {
       this.items = data;
+      for (const datum of this.items) {
+        if(datum.nursingMeasureCategory.includes(',')) {
+          datum.nursingMeasureCategory = 'Kombinationsdiagnose';
+        } else if(!datum.nursingMeasureCategory){
+          datum.nursingMeasureCategory = 'ohne Kategorie';
+        }
+        this.measureCategory.add(datum.nursingMeasureCategory);
+      }
+
       if(this.items.length > 0) {
         this.hideContent = false;
         this.message = '';
@@ -54,7 +66,7 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
         //this.backendDataService.getImages('asd');
     }
 
-  async ionViewWillEnter() {
+  async ionViewDidEnter() {
     this.dataService.getData(PATIENT_KEY).subscribe(result => {
       this.selectedPatientId = result;
       this.backendDataService.getRecommendations(this.selectedPatientId);

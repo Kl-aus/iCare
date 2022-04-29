@@ -195,9 +195,7 @@ export class BackendDataService {
     });
   }
 
-
   /*########## Moderator requests ##########*/
-
   public async saveRecommendation(authorInfo: any, diagnose: any, nursingMeasure: any) {
     const body = { //TODO: send objects, not variables...
       // eslint-disable-next-line no-underscore-dangle
@@ -205,7 +203,7 @@ export class BackendDataService {
       // eslint-disable-next-line no-underscore-dangle
       author: authorInfo._author,
       // eslint-disable-next-line no-underscore-dangle
-      nursingDiagnosesNanda: diagnose._nursingDiagnosesNanda,
+      nursingDiagnoses: diagnose._nursingDiagnoses,
       // eslint-disable-next-line no-underscore-dangle
       nursingDiagnosesDescription: diagnose._nursingDiagnosesDescription,
       nursingMeasure
