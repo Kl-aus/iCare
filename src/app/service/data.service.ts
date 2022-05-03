@@ -20,7 +20,6 @@ export const INTRO_KEY = 'intro-seen';
   userDetailsModel: UserDetailsModel  = null;
   diagnosesTabDisabled = new BehaviorSubject(true);//TODO
 
-  /* Ionic Storage v3*/
   public diagnosesTab = new BehaviorSubject(true);
   public userDetailsReadyObservable = new BehaviorSubject(false);
   private storageReadyObservable = new BehaviorSubject(false);

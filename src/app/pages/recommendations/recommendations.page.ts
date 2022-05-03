@@ -27,7 +27,6 @@ export class RecommendationsPage implements AfterContentChecked, OnInit {
   selectedPatientId = 0;
   measureCategory: Set<string> = new Set<string>();
 
-
   config: SwiperOptions = {
     slidesPerView: 1,
     spaceBetween: 50,

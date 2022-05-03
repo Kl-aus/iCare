@@ -36,6 +36,7 @@ export class ChooseDiagnosePage implements OnInit {
     }, error => {
       console.log('error loading patient from storage: ' + error);
     });
+
     // this.route.queryParams.subscribe(params => { //only used for subscribing to params -> detect changes
     //   // if (params && params.diagnose) { //for navigateByUrl
     //   //   this.diagnose = JSON.parse(params.diagnose);

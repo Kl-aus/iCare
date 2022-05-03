@@ -15,20 +15,19 @@
 <ion-content>
 
   <ion-segment [(ngModel)]="segmentType" scrollable="author">
-    <ion-segment-button value="author" [disabled] = "authorSegment">
+    <ion-segment-button value="author" [disabled]="authorSegment">
       <ion-icon name="information-circle"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="diagnose" [disabled] = "diagnoseSegment">
+    <ion-segment-button value="diagnose" [disabled]="diagnoseSegment">
       <ion-icon name="medical"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="measure" [disabled] = "measureSegment">
+    <ion-segment-button value="measure" [disabled]="measureSegment">
       <ion-icon name="medkit"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="save" [disabled] = "lastSegment">
+    <ion-segment-button value="save" [disabled]="lastSegment">
       <ion-icon name="cloud-done"></ion-icon>
     </ion-segment-button>
   </ion-segment>
-
 
   <div [ngSwitch]="segmentType">
     <div *ngSwitchCase="'author'">
@@ -46,30 +45,74 @@
           <div *ngIf="(name.dirty || name.touched) && name.errors" class="errors">
             <span *ngIf="name.errors?.required">Eingabe erforderlich!</span>
           </div>
-
           <ion-item>
             <ion-label position="floating">Quellen</ion-label>
-            <ion-textarea type="text" formControlName="literatureSources" inputmode="text" auto-grow="true" maxlength="300"></ion-textarea>
+            <ion-textarea type="text" formControlName="literatureSources" inputmode="text" auto-grow="true"
+                          maxlength="300"></ion-textarea>
           </ion-item>
-          <div *ngIf="(literatureSources.dirty || literatureSources.touched) && literatureSources.errors" class="errors">
+          <div *ngIf="(literatureSources.dirty || literatureSources.touched) && literatureSources.errors"
+               class="errors">
             <span *ngIf="literatureSources.errors?.required">Quellenangabe erforderlich!</span>
           </div>
         </div>
         <ion-grid>
           <ion-row>
             <ion-col class="ion-text-center">
-              <ion-button type="submit" >speichern</ion-button>
+              <ion-button type="submit">speichern</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>
       </form>
-
     </div>
   </div>
 
 
   <div [ngSwitch]="segmentType">
-        <div *ngSwitchCase="'diagnose'">
+    <div *ngSwitchCase="'diagnose'">
+
+      <ion-segment [(ngModel)]="subSegmentType">
+        <ion-segment-button value="choose">
+          <ion-label><small>Auswählen</small></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="create">
+          <ion-label><small>Neu erstellen</small></ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <div [ngSwitch]="subSegmentType">
+        <div *ngSwitchCase="'choose'">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-text-center">
+                <ion-searchbar placeholder="Suche" [(ngModel)]="searchTermMeasure" showCancelButton="focus"
+                               animated="true"></ion-searchbar>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div *ngFor="let item of diagnoses | filter: searchTerm">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header [ngClass]="{'selected-header' : item === selectedDiagnose}">
+                <ion-label color="primary">{{item.nursingDiagnoses}}</ion-label>
+              </mat-expansion-panel-header>
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <div>{{item.nursingDiagnosesDescription}}</div>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="ion-text-end">
+                    <ion-button (click)="selectDiagnoseItem(item)">auswählen</ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </mat-expansion-panel>
+            <br>
+          </div>
+        </div>
+      </div>
+
+      <div [ngSwitch]="subSegmentType">
+        <div *ngSwitchCase="'create'">
 
           <div class="textTitle">
             <h2>Erstelle eine Diagnose!</h2>
@@ -79,7 +122,8 @@
             <div class="input-group">
               <ion-item>
                 <ion-label position="floating">Diagnosen Titel</ion-label>
-                <ion-textarea type="text" formControlName="diagnoseTitle" inputmode="text" auto-grow="true" maxlength="300"></ion-textarea>
+                <ion-textarea type="text" formControlName="diagnoseTitle" inputmode="text" auto-grow="true"
+                              maxlength="300"></ion-textarea>
               </ion-item>
               <div *ngIf="(diagnoseTitle.dirty || diagnoseTitle.touched) && diagnoseTitle.errors" class="errors">
                 <span *ngIf="diagnoseTitle.errors?.required">Diagnosen Titel erforderlich!</span>
@@ -87,51 +131,154 @@
 
               <ion-item>
                 <ion-label position="floating">Diagnosen Beschreibung</ion-label>
-                <ion-textarea type="text" formControlName="diagnoseDescription" inputmode="text" auto-grow="true" maxlength="1500"></ion-textarea>
+                <ion-textarea type="text" formControlName="diagnoseDescription" inputmode="text" auto-grow="true"
+                              maxlength="1500"></ion-textarea>
               </ion-item>
-              <div *ngIf="(diagnoseDescription.dirty || diagnoseDescription.touched) && diagnoseDescription.errors" class="errors">
+              <div *ngIf="(diagnoseDescription.dirty || diagnoseDescription.touched) && diagnoseDescription.errors"
+                   class="errors">
                 <span *ngIf="diagnoseDescription.errors?.required">Diagnosen Beschreibung erforderlich!</span>
               </div>
             </div>
+
+            <ion-list>
+              <ion-list-header>
+                <ion-label color="primary">
+                  Wähle eine Kategorie
+                </ion-label>
+              </ion-list-header>
+
+              <ion-item>
+                <ion-label>Kategorie</ion-label>
+                <ion-select value="Trinken" (ionChange)="category = $event.target.value">
+                  <ion-select-option value="Harnausscheidung">Harnausscheidung</ion-select-option>
+                  <ion-select-option value="Trinken">Trinken</ion-select-option>
+                  <ion-select-option value="Mobilität">Mobilität</ion-select-option>
+                  <ion-select-option value="Mobilität im Bett">Mobilität im Bett</ion-select-option>
+                  <ion-select-option value="Haut">Haut</ion-select-option>
+                  <ion-select-option value="Nahrungsaufnahme">Nahrungsaufnahme</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+
             <ion-grid>
               <ion-row>
                 <ion-col class="ion-text-center">
-                  <ion-button type="submit" >speichern</ion-button>
+                  <ion-button type="submit">speichern</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>
-        </form>
-
+          </form>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div [ngSwitch]="segmentType">
-      <div *ngSwitchCase="'measure'">
-
-        <div class="textTitle">
-          <h2>Erstelle eine PflegeMaßnahme</h2>
+  <div [ngSwitch]="segmentType">
+    <div *ngSwitchCase="'measure'">
+      <ion-segment [(ngModel)]="subSegmentType">
+        <ion-segment-button value="choose">
+          <ion-label><small>Auswählen</small></ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="create">
+          <ion-label><small>Neu erstellen</small></ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <div [ngSwitch]="subSegmentType">
+        <div *ngSwitchCase="'choose'">
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-text-center">
+                <ion-searchbar placeholder="Suche" [(ngModel)]="searchTerm" showCancelButton="focus"
+                               animated="true"></ion-searchbar>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <div [hidden]="hideContent" *ngFor="let item of measures | filter: searchTerm">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header [ngClass]="{'selected-header' : item === selectedMeasure}">
+                <ion-text color="primary">
+                  {{item.careRecommendationTitle}}
+                </ion-text>
+              </mat-expansion-panel-header>
+              <h2>{{item.careRecommendationTitle}}</h2>
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <div class="expansion-text">{{item.careRecommendation}}</div>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col class="ion-text-end">
+                    <ion-button (click)="selectMeasureItem(item)">auswählen</ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </mat-expansion-panel>
+            <br>
+          </div>
+          <ion-text class="ion-text-center" color="primary">
+            <p></p>
+            <p></p>
+            <h2>{{message}}</h2>
+          </ion-text>
         </div>
+      </div>
+
+
+      <div [ngSwitch]="subSegmentType">
+        <div *ngSwitchCase="'create'">
+          <div class="textTitle">
+            <h2>Erstelle eine PflegeMaßnahme</h2>
+          </div>
 
           <form (ngSubmit)="submitRecommendationForm()" [formGroup]="recommendationsData">
             <div class="input-group">
 
               <ion-item>
                 <ion-label position="floating">Empfehlungs Titel</ion-label>
-                <ion-textarea type="text" formControlName="recommendationTitle" inputmode="text" auto-grow="true" maxlength="300"></ion-textarea>
+                <ion-textarea type="text" formControlName="recommendationTitle" inputmode="text" auto-grow="true"
+                              maxlength="300"></ion-textarea>
               </ion-item>
-              <div *ngIf="(recommendationTitle.dirty || recommendationTitle.touched) && recommendationTitle.errors" class="errors">
+              <div *ngIf="(recommendationTitle.dirty || recommendationTitle.touched) && recommendationTitle.errors"
+                   class="errors">
                 <span *ngIf="recommendationTitle.errors?.required">Empfehlungstitel erforderlich!</span>
               </div>
 
               <ion-item>
                 <ion-label position="floating">Empfehlung Beschreibung</ion-label>
-                <ion-textarea type="text" formControlName="recommendationDescription" inputmode="text" auto-grow="true" maxlength="1500"></ion-textarea>
+                <ion-textarea type="text" formControlName="recommendationDescription" inputmode="text" auto-grow="true"
+                              maxlength="1500"></ion-textarea>
               </ion-item>
-              <div *ngIf="(recommendationDescription.dirty || recommendationDescription.touched) && recommendationDescription.errors" class="errors">
+              <div
+                *ngIf="(recommendationDescription.dirty || recommendationDescription.touched) && recommendationDescription.errors"
+                class="errors">
                 <span *ngIf="recommendationDescription.errors?.required">Empfehlungs Beschreibung erforderlich!</span>
               </div>
 
-              <h3 *ngIf="images.length == 0" class="ion-padding ion-text-center">Please Select Image!</h3>
+              <ion-list>
+                <ion-list-header>
+                  <ion-label color="primary">
+                    Wähle eine Kategorie
+                  </ion-label>
+                </ion-list-header>
+
+                <ion-item>
+                  <ion-label>Kategorie</ion-label>
+                  <ion-select value="Trinken" (ionChange)="category = $event.target.value">
+                    <ion-select-option value="Harnausscheidung">Harnausscheidung</ion-select-option>
+                    <ion-select-option value="Trinken">Trinken</ion-select-option>
+                    <ion-select-option value="Mobilität">Mobilität</ion-select-option>
+                    <ion-select-option value="Mobilität im Bett">Mobilität im Bett</ion-select-option>
+                    <ion-select-option value="Haut">Haut</ion-select-option>
+                    <ion-select-option value="Nahrungsaufnahme">Nahrungsaufnahme</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </ion-list>
+              <br>
+              <ion-button fill="clear" expand="full" color="primary" (click)="selectImage()">
+                <ion-icon slot="start" name="camera"></ion-icon>
+                Wähle Foto
+              </ion-button>
               <ion-list>
                 <ion-item *ngFor="let file of images">
                   <ion-thumbnail slot="start">
@@ -145,70 +292,66 @@
                   </ion-button>
                 </ion-item>
               </ion-list>
-              <ion-button fill="clear" expand="full" color="primary" (click)="selectImage()">
-                <ion-icon slot="start" name="camera"></ion-icon>
-                wähle Foto
-              </ion-button>
 
               <ion-grid>
                 <ion-row>
                   <ion-col class="ion-text-center">
-                    <ion-button type="submit" >speichern & hinzufügen</ion-button>
+                    <ion-button type="submit">speichern & hinzufügen</ion-button>
                   </ion-col>
                 </ion-row>
               </ion-grid>
             </div>
           </form>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div [ngSwitch]="segmentType">
-      <div *ngSwitchCase="'save'">
-
-          <div>
-            <h2 class="textTitle">Gegenüberstellung:</h2>
-          </div>
-          <ion-card>
-            <ion-label>
-              <h3 class="textTitle">Diagnose:</h3>
-            </ion-label>
-            <ion-grid>
-              <ion-row>
-                <ion-col class="ion-text-center">
-                  <ion-chip>
-                    <ion-icon name="medical"></ion-icon>
-                    <ion-label>{{diagnose._nursingDiagnoses}}</ion-label>
-                  </ion-chip>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-
-          </ion-card>
-          <ion-card>
-            <ion-label>
-              <h3 class="textTitle">Plfegemaßnahmen:</h3>
-            </ion-label>
-            <ion-grid>
-              <ion-row>
-                <ion-col class="ion-text-center">
-                    <ion-chip>
-                      <ion-icon name="medkit"></ion-icon>
-                      <ion-label>{{measure._careRecommendationTitle}}</ion-label>
-                    </ion-chip>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card>
-
+  <div [ngSwitch]="segmentType">
+    <div *ngSwitchCase="'save'">
+      <div>
+        <h2 class="textTitle">Gegenüberstellung:</h2>
+      </div>
+      <ion-card>
+        <ion-label>
+          <h3 class="textTitle">Diagnose:</h3>
+        </ion-label>
         <ion-grid>
           <ion-row>
             <ion-col class="ion-text-center">
-              <ion-button (click)="saveRecommendation()" >Pflegeempfehlung speichern</ion-button>
+              <ion-chip>
+                <ion-icon name="medical"></ion-icon>
+                <ion-label>{{diagnose._nursingDiagnoses}}</ion-label>
+              </ion-chip>
             </ion-col>
           </ion-row>
         </ion-grid>
 
-      </div>
-    </div>
+      </ion-card>
+      <ion-card>
+        <ion-label>
+          <h3 class="textTitle">Plfegemaßnahmen:</h3>
+        </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-chip>
+                <ion-icon name="medkit"></ion-icon>
+                <ion-label>{{measure._careRecommendationTitle}}</ion-label>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card>
 
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <ion-button (click)="saveRecommendation()">Pflegeempfehlung speichern</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </div>
+  </div>
 </ion-content>

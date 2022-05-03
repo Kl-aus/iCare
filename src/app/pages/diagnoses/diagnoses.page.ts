@@ -48,18 +48,12 @@ export class DiagnosesPage implements AfterContentChecked{
       for (const datum of this.diagnoses) {
         if(datum.nursingDiagnosesCategory.includes(',')) {
           datum.nursingDiagnosesCategory = 'Kombinationsdiagnose';
-        } else if(!datum.nursingDiagnosesCategory){
+        } else if(!datum.nursingDiagnosesCategory) {
           datum.nursingDiagnosesCategory = 'ohne Kategorie';
         }
         this.diagnoseCategory.add(datum.nursingDiagnosesCategory);
       }
 
-      // for (const datum of this.diagnoseCategory) {
-      //   console.log('CAT:'+ datum);
-      // }
-      // for (const datum of this.diagnoses) {
-      //   console.log('DIAG:'+ datum.nursingDiagnosesNanda);
-      // }
         if(this.diagnoses.length > 0) {
             this.hideContent = false;
             this.message = '';
@@ -67,7 +61,7 @@ export class DiagnosesPage implements AfterContentChecked{
             this.hideContent = true;
             this.message = 'Bitte wählen Sie zuerst einen Patienten und fügen Sie danach Diagnosen hinzu!';
           }
-    }, error => { //TODO Error handling data = null (switch to page without choosen patient)
+    }, error => {
           console.log(error);
     });
   }

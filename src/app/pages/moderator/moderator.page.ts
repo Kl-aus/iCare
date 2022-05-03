@@ -24,18 +24,26 @@ export class ModeratorPage implements OnInit {
   diagnoseData: FormGroup;
   recommendationsData: FormGroup;
 
-  nursingMeasures = [];
+  searchTerm: string;
+  searchTermMeasure: string;
+  selectedDiagnose: any;
+  selectedMeasure: any;
+  diagnoses = [];
+  measures = [];
+  measure: NursingMeasureModel;
+  images: Images[] = [];
+  diagnose:  DiagnoseModel;
+  authorInfo: RecommendationModel;
+  subSegmentType = 'choose';
   segmentType = 'author';
   authorSegment = false;
   diagnoseSegment = true;
   measureSegment = true;
   lastSegment = true;
-  diagnose:  DiagnoseModel;
-  authorInfo: RecommendationModel;
-  measure: NursingMeasureModel;
+  hideContent = false;
+  message = '';
   //images: LocalFile[] = [];
-  images: Images[] = [];
-
+  category = 'Trinken';
 
   constructor(private platform: Platform,
               private backendDataService: BackendDataService,
@@ -43,9 +51,32 @@ export class ModeratorPage implements OnInit {
               private fb: FormBuilder,
               private loadingController: LoadingController,
               private alertController: AlertController,
-              private router: Router) { }
+              private router: Router) {
+    this.backendDataService.diagnosesObservable.subscribe((data: any[]) => {
+      this.diagnoses = [];
+      this.diagnoses = data;
+    }, error => {
+      console.log(error);
+    });
+    this.backendDataService.measureObservable.subscribe((data: any[]) => {
+      this.measures = [];
+      this.measures = data;
+      if(this.measures.length > 0) {
+        this.hideContent = false;
+        this.message = '';
+      } else {
+        this.hideContent = true;
+        this.message = 'Fehler beim laden der Maßnahmen, überprüfen Sie bitte Ihre Internetverbindung!';
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
 
   ngOnInit() {
+    this.backendDataService.getMeasures();
+    console.log('MASS NAMEN: ' + this.measures);
+    this.backendDataService.getDiagnose();
     this.loadFiles();
     this.author = this.fb.group({
       name: ['', [Validators.required]],
@@ -64,27 +95,31 @@ export class ModeratorPage implements OnInit {
   }
 
   ionViewDidLeave() {
-    this.nursingMeasures = [];
+    this.measures = [];
+    this.diagnoses = [];
     this.diagnoseSegment = true;
     this.measureSegment = true;
     this.lastSegment = true;
+    this.message = '';
   }
 
   submitInfoForm() {
     this.authorInfo = new RecommendationModel(this.author.value.name, this.author.value.literatureSources);
     this.diagnoseSegment = false;
-    // eslint-disable-next-line no-underscore-dangle
+    this.segmentType = 'diagnose';
   }
 
   submitDiagnoseForm() {
-    this.diagnose = new DiagnoseModel(this.diagnoseData.value.diagnoseTitle, this.diagnoseData.value.diagnoseDescription);
+    this.diagnose = new DiagnoseModel(this.diagnoseData.value.diagnoseTitle, this.diagnoseData.value.diagnoseDescription, this.category, 0);
     this.measureSegment = false;
+    this.segmentType = 'measure';
   }
 
   submitRecommendationForm() {
     this.measure = new NursingMeasureModel(this.recommendationsData.value.recommendationTitle,
-                                            this.recommendationsData.value.recommendationDescription);
+                                            this.recommendationsData.value.recommendationDescription, this.category, 0);
     this.lastSegment = false;
+    this.segmentType = 'save';
   }
 
   async saveRecommendation() {
@@ -92,19 +127,35 @@ export class ModeratorPage implements OnInit {
     const loading = await this.loadingController.create({
       message: 'Bilder werden in die "Cloud" hochgeladen...',
     });
+
     await loading.present();
-    setTimeout(async () => { //TODO no timeout needed ?
+    setTimeout(async () => {
       for (const item of this.images) {
         const formData = new FormData();
         const response = await fetch(item.data);
         const blob = await response.blob();
         formData.append('file', blob, item.imageName);
-        // eslint-disable-next-line no-underscore-dangle
         formData.append('title', this.recommendationsData.value.recommendationDescription);
         await this.backendDataService.saveImages(formData);
       }
     }, 1500);
     await loading.dismiss();
+  }
+
+  selectDiagnoseItem(item) {
+    this.diagnose = new DiagnoseModel(item.nursingDiagnoses, item.nursingDiagnosesDescription,
+                                      item.nursingDiagnosesCategory, item.diagnosesId);
+    this.selectedDiagnose = item;
+    this.measureSegment = false;
+    this.segmentType = 'measure';
+  }
+
+  selectMeasureItem(item) {
+    this.selectedMeasure = item;
+    this.measure = new NursingMeasureModel(item.careRecommendation,
+      item.careRecommendationTitle, item.nursingMeasureCategory, item.recommendationId);
+    this.lastSegment = false;
+    this.segmentType = 'save';
   }
 
   async selectImage() {
@@ -130,18 +181,6 @@ export class ModeratorPage implements OnInit {
       }
     }
   }
-
-  // async selectImage() {
-  //     const image = await Camera.getPhoto({
-  //       quality: 90,
-  //       allowEditing: false,
-  //       resultType: CameraResultType.Uri, //uri instead of base64 because of performance issues
-  //       source: CameraSource.Camera
-  //     });
-  //     if (image) {
-  //       await this.saveImage(image);
-  //     }
-  // }
 
   async loadFiles() {
     this.images = [];

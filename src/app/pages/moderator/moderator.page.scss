@@ -1,4 +1,4 @@
-ion-content{
+ion-content {
   --padding-top: 10%;
   --padding-start: 2%;
   --padding-end: 2%;
@@ -8,6 +8,10 @@ ion-content{
 
 ion-segment-button {
   --indicator-box-shadow: transparent !important;
+}
+
+.selected-header {
+  background: var(--ion-color-category-default-tint);
 }
 
 .textTitle {

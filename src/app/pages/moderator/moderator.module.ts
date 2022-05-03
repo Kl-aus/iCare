@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { ModeratorPageRoutingModule } from './moderator-routing.module';
 
 import { ModeratorPage } from './moderator.page';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {Ng2SearchPipeModule} from "ng2-search-filter";
 
 @NgModule({
   imports: [
@@ -14,7 +16,9 @@ import { ModeratorPage } from './moderator.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    ModeratorPageRoutingModule
+    ModeratorPageRoutingModule,
+    MatExpansionModule,
+    Ng2SearchPipeModule
   ],
   declarations: [ModeratorPage]
 })

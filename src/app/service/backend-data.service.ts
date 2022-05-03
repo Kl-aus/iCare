@@ -18,6 +18,7 @@ export class BackendDataService {
   public recommendationsObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public imageObservable: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public anamenesisObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public measureObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
 
 
@@ -195,6 +196,19 @@ export class BackendDataService {
     });
   }
 
+  public getMeasures() {
+    this.httpClient.get<any>(url + '/measure/all').subscribe((data: any) => {
+      this.measureObservable.next(data);
+    }, async error => {
+      const alert = await this.alertController.create({
+        header: 'Fehler',
+        message: 'Das Laden der Maßnahmen hat nicht funktioniert',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    });
+  }
+
   /*########## Moderator requests ##########*/
   public async saveRecommendation(authorInfo: any, diagnose: any, nursingMeasure: any) {
     const body = { //TODO: send objects, not variables...
@@ -202,11 +216,9 @@ export class BackendDataService {
       name: authorInfo._name,
       // eslint-disable-next-line no-underscore-dangle
       author: authorInfo._author,
-      // eslint-disable-next-line no-underscore-dangle
-      nursingDiagnoses: diagnose._nursingDiagnoses,
-      // eslint-disable-next-line no-underscore-dangle
-      nursingDiagnosesDescription: diagnose._nursingDiagnosesDescription,
-      nursingMeasure
+      diagnose,
+      nursingMeasure,
+      userId: this.dataService.userDetailsModel.id,
     };
     this.httpClient.post<any>(url + '/recommendation/save', body).subscribe(async (data: any) => {
       const alert = await this.alertController.create({
