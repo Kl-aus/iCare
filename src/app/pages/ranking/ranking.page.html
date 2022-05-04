@@ -1,0 +1,108 @@
+<ion-header xmlns="http://www.w3.org/1999/html">
+  <ion-toolbar color="primary">
+    <ion-title>ranking</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="backButton()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" slot="icon-only | end">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let rec of recommendations">
+    <ion-card class="center">
+      <ion-card-header>
+        <ion-text>Autor:</ion-text>
+        <ion-text class="autor">{{ rec.name}}</ion-text>
+      </ion-card-header>
+      <ion-card-title>
+
+
+      </ion-card-title>
+      <ion-grid>
+        <ion-row>
+          <ion-icon *ngIf ="rec.rating >= 1" name="star" class="starIcon"></ion-icon>
+          <ion-icon *ngIf ="rec.rating >= 2" name="star" class="starIcon"></ion-icon>
+          <ion-icon *ngIf ="rec.rating >= 3" name="star" class="starIcon"></ion-icon>
+          <ion-icon *ngIf ="rec.rating >= 4" name="star" class="starIcon"></ion-icon>
+          <ion-icon *ngIf ="rec.rating == 5" name="star" class="starIcon"></ion-icon>
+        </ion-row>
+        <ion-row class="ion-padding">
+          <ion-text>Bewertung: {{rec.rating}}</ion-text>
+        </ion-row>
+      </ion-grid>
+
+      <ion-button id="trigger-button" size="small">Bewertung abgeben</ion-button>
+      <ion-popover trigger="trigger-button">
+        <ng-template>
+          <ion-content>
+            <ion-list class="ion-no-margin ion-no-padding">
+              <ion-list-header color="dark" class="text-10">
+                <ion-label class="fw700">Notifications</ion-label>
+              </ion-list-header>
+
+              <ion-item color="secondary" class="text-10">
+                <ion-icon name="mail" color="light"></ion-icon>
+                <ion-label>New Offer 30% OFF</ion-label>
+              </ion-item>
+
+              <ion-item color="light" class="text-10">
+                <ion-icon name="mail-open" color="primary"></ion-icon>
+                <ion-label>New Offer 15% OFF by month!</ion-label>
+              </ion-item>
+
+              <ion-item color="secondary" class="text-10">
+                <ion-icon name="mail" color="light"></ion-icon>
+                <ion-label>New Offer 45% OFF</ion-label>
+              </ion-item>
+
+              <ion-item color="light" class="text-10">
+                <ion-icon name="mail-open" color="primary"></ion-icon>
+                <ion-label>New Offer 25% OFF on Credit Card!</ion-label>
+              </ion-item>
+
+              <ion-item color="light" class="text-10">
+                <ion-icon name="mail-open" color="primary"></ion-icon>
+                <ion-label>New Offer 20% OFF by month!</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+      <br>      <br>      <br>
+      <ion-card-subtitle>
+
+      </ion-card-subtitle>
+      <ion-card-content>
+
+        <ion-grid>
+          <ion-row>
+            <ion-chip>{{rec.diagnoseTitle}}</ion-chip>
+          </ion-row>
+          <ion-row>
+            <ion-icon class="arrowIcon" name="arrow-down-circle"></ion-icon>
+          </ion-row>
+          <ion-row>
+            <ion-chip>
+              <ion-text>{{rec.measureTitle}}</ion-text>
+            </ion-chip>
+          </ion-row>
+          <ion-row class="ion-padding">
+            Quellen: <br>{{rec.sources}}
+          </ion-row>
+        </ion-grid>
+
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+</ion-content>

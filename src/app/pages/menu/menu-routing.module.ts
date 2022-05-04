@@ -65,6 +65,11 @@ const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
       },
+      {
+        path: 'ranking',
+        loadChildren: () => import('../ranking/ranking.module').then( m => m.RankingPageModule),
+        canActivate: [RoleGuard]
+      },
     ]
   },
 ];

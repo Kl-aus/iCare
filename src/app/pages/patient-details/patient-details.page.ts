@@ -4,6 +4,7 @@ import {AlertController, IonDatetime, LoadingController} from '@ionic/angular';
 import {BackendDataService} from '../../service/backend-data.service';
 import {Router} from '@angular/router';
 import { format, parseISO } from 'date-fns';
+import {AuthenticationService} from "../../service/authentication.service";
 
 @Component({
   selector: 'app-patient-details',
@@ -23,6 +24,7 @@ export class PatientDetailsPage implements OnInit {
               private backendDataService: BackendDataService,
               private alertController: AlertController,
               private loadingController: LoadingController,
+              private authService: AuthenticationService,
               private router: Router) {  }
 
   ngOnInit() {
@@ -75,5 +77,9 @@ export class PatientDetailsPage implements OnInit {
 
   backButton() {
     this.router.navigateByUrl('menu/care/patient-dashboard', {replaceUrl: true});
+  }
+
+  logout() {
+    this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
   }
 }

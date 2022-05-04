@@ -55,6 +55,13 @@ export class RegisterPage implements OnInit {
     );
   }
 
+  backButton() {
+    this.router.navigateByUrl('menu/care/patient-dashboard', {replaceUrl: true});
+  }
+
+  logout() {
+    this.authService.logout().then(r => this.router.navigateByUrl('/login', {replaceUrl: true}));
+  }
 
   get email() {
     return this.credentials.get('email');

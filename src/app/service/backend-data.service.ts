@@ -20,8 +20,6 @@ export class BackendDataService {
   public anamenesisObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public measureObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
-
-
   constructor(private httpClient: HttpClient,
               private dataService: DataService,
               private alertController: AlertController,
@@ -210,6 +208,18 @@ export class BackendDataService {
   }
 
   /*########## Moderator requests ##########*/
+  public getAllRecommendations() {
+    this.httpClient.get<any>(url + '/recommendation/all').subscribe((data: any) => {
+      this.recommendationsObservable.next(data);
+    }, async error => {
+      const alert = await this.alertController.create({
+        header: 'Fehler',
+        message: 'Überprüfe deine Internetverbindung!',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    });
+  }
   public async saveRecommendation(authorInfo: any, diagnose: any, nursingMeasure: any) {
     const body = { //TODO: send objects, not variables...
       // eslint-disable-next-line no-underscore-dangle

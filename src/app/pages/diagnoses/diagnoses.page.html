@@ -29,9 +29,9 @@
 
   <ion-list *ngFor="let category of diagnoseCategory">
     <mat-expansion-panel>
-      <mat-expansion-panel-header ngClass = "mat-expansion-{{category | removeWhiteSpaces}}">
+      <mat-expansion-panel-header ngClass="mat-expansion-{{category | removeWhiteSpaces}}">
         <mat-panel-title>
-            <ion-img class="category-image" src="/assets/img/{{category | removeWhiteSpaces}}.png"></ion-img>
+          <ion-img class="category-image" src="/assets/img/{{category | removeWhiteSpaces}}.png"></ion-img>
         </mat-panel-title>
         <mat-panel-description>
           <div class="expansion-category">{{category}}</div>
@@ -40,7 +40,8 @@
       <ion-grid>
         <ion-row>
           <ion-col class="ion-text-center">
-            <ion-searchbar placeholder="Suche" [(ngModel)]="searchTerm" showCancelButton="focus" animated="true"></ion-searchbar>
+            <ion-searchbar placeholder="Suche" [(ngModel)]="searchTerm" showCancelButton="focus"
+                           animated="true"></ion-searchbar>
           </ion-col>
         </ion-row>
       </ion-grid>
